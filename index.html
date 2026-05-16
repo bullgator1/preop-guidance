@@ -542,6 +542,7 @@
     title('Pre-op guidance', 'Pick a topic to get started.');
     stage.appendChild(optGrid([
       {title:'⚠ Red flags — stop & think', sub:'High-stakes scenarios that change the whole plan', urgent:true, onClick:()=>go('Red flags', 'rf', renderRedFlags, true)},
+      {title:'Day-of-surgery changes', sub:'URI, hyperglycemia, missed HD, intox, NPO violation — proceed / delay / cancel?', urgent:true, onClick:()=>go('Day-of', 'dos', renderDayOfRoot, true)},
       {title:'By question', sub:'"Can I proceed?" "Can I do neuraxial?" "Do I need testing?"', onClick:()=>go('By question', 'q', renderByQuestion, true)},
       {title:'Airway / aspiration risk', sub:'Difficult airway, gastric ultrasound, RSI, GLP-1, GERD, achalasia', onClick:()=>go('Airway', 'air', renderAirwayRoot, true)},
       {title:'Anticoagulation / regional', sub:'Neuraxial & deep block timing; reversal in urgent/emergent cases', onClick:()=>go('AC / regional', 'ac', renderACUrgency, true)},
@@ -573,10 +574,14 @@
       {title:'LVAD', sub:'BP, anticoag, programming considerations', urgent:true, onClick:()=>go('LVAD','lv',renderRFLVAD)},
       {title:'Suspected difficult airway', sub:'Prior failed intubation, known anatomy', urgent:true, onClick:()=>go('Difficult AW','da',renderRFDifficultAirway)}
     ]));
+    note('Each card includes a 🛑 HARD STOP marker for scenarios where induction should not proceed without explicit attending awareness. The 🛑 marker also appears throughout other sections of the guide where the same scenarios may arise.');
   }
 
   function renderRFSevereAS() {
     title('Severe aortic stenosis');
+    rec({tone:'danger', label:'🛑 HARD STOP — symptomatic severe AS',
+      main:'Chest pain, syncope, dyspnea at rest, or new HF symptoms = STOP, discuss with attending + cardiology before proceeding with elective NCS',
+      detail:'Symptomatic severe AS without prior intervention carries 10-30% periop mortality for major NCS (2024 AHA/ACC). Consider AVR/TAVR first. For urgent cases that cannot wait: full monitoring (art line, often TEE), accept higher risk, document discussion. <strong>Do not induce an undiagnosed/uncorrected symptomatic severe AS without explicit attending awareness and a hemodynamic plan.</strong>'});
     rec({tone:'danger', label:'Why this is a red flag',
       main:'Fixed cardiac output → can\'t compensate for vasodilation or hypovolemia',
       detail:'Severe AS defined by ANY of: mean gradient ≥40 mmHg, AVA ≤1.0 cm², peak velocity ≥4 m/s. With induction-induced vasodilation, SVR drops faster than CO can rise → severe hypotension → reduced coronary perfusion → ischemia → death spiral.<br><br>2024 AHA/ACC NCS: severe symptomatic AS without prior intervention is associated with 10-30% perioperative mortality for major NCS.'});
@@ -593,6 +598,9 @@
 
   function renderRFPHTN() {
     title('Pulmonary hypertension');
+    rec({tone:'danger', label:'🛑 HARD STOP — severe PHTN with RV failure',
+      main:'sPAP &gt; 70 OR symptomatic RV failure = STOP, discuss with attending + PHTN specialist',
+      detail:'Severe PHTN with RV dysfunction has 4-26% perioperative mortality. Elective NCS: postpone for optimization. Continue all PHTN-specific therapy through morning of surgery. For unavoidable surgery: art line + inhaled pulmonary vasodilator available + ICU postop + consider PA catheter or TEE. <strong>Do not anesthetize severe PHTN without a clear hemodynamic plan and attending involvement.</strong>'});
     rec({tone:'danger', label:'Why this is a red flag',
       main:'Perioperative mortality 4-26% depending on severity; RV failure is the killer',
       detail:'Pulmonary hypertension definitions (2022 ESC/ERS): mPAP &gt;20 mmHg at rest by RHC. Anesthesia stressors (hypoxia, hypercarbia, acidosis, nitrous, positive pressure ventilation, hypothermia) all increase PVR. RV is poorly tolerant of acute afterload increases → RV failure → cardiogenic shock.'});
@@ -609,6 +617,9 @@
 
   function renderRFRecentMI() {
     title('Recent MI');
+    rec({tone:'danger', label:'🛑 HARD STOP — MI within 60 days',
+      main:'Elective NCS within 60 days of MI = STOP, discuss with attending + cardiology',
+      detail:'Reinfarction risk highest in first 60 days. <strong>For elective surgery: postpone</strong>. For time-sensitive (e.g., cancer) or urgent surgery in this window: multidisciplinary decision required, document risks, maximal monitoring. <strong>Do not proceed on autopilot.</strong>'});
     rec({tone:'danger', label:'Why this is a red flag',
       main:'Risk of reinfarction is highest in the first 60 days post-MI',
       detail:'Classic Steen 1978 data: MACE risk after NCS within 3 mo of MI ~30%; 3-6 mo ~15%; &gt;6 mo ~5%. Modern data with revascularization is better but the principle holds — the closer to the MI, the higher the risk.<br><br>2024 AHA/ACC: delay elective NCS for ≥60 days after MI when possible.'});
@@ -623,6 +634,9 @@
 
   function renderRFRecentStroke() {
     title('Recent stroke / TIA');
+    rec({tone:'danger', label:'🛑 HARD STOP — stroke within 3 months',
+      main:'Elective NCS within 3 months of stroke = STOP, discuss with attending + neurology',
+      detail:'Periop stroke/MACE risk within 3 mo of CVA ~70× baseline (Jorgensen JAMA 2014). For elective: postpone. For time-sensitive in 3-9 mo window: active discussion of risk, BP within 10% of baseline, continue antiplatelet when possible. <strong>Do not proceed with elective NCS in the first 3 months post-stroke without explicit attending awareness.</strong>'});
     rec({tone:'danger', label:'Why this is a red flag',
       main:'Perioperative stroke risk highest within 9 months of prior CVA',
       detail:'Jorgensen et al. JAMA 2014 (Danish cohort, N=481k): MACE/stroke risk after NCS within 3 mo of CVA ~70× higher; 3-6 mo ~24×; 6-12 mo ~12×; &gt;12 mo ~5× baseline. The curve plateaus around 9 months.'});
@@ -640,6 +654,9 @@
 
   function renderRFMediastinal() {
     title('Mediastinal mass / anterior airway mass');
+    rec({tone:'danger', label:'🛑 HARD STOP — positional symptoms',
+      main:'Orthopnea, syncope when supine, audible stridor, or &gt; 50% tracheal/PA compression on CT = STOP, multidisciplinary plan required',
+      detail:'Mediastinal mass with positional symptoms or significant compression on imaging is a life-threatening setup for general anesthesia. <strong>Do not induce without:</strong> thoracic surgery aware and available, ECMO/femoral cannulation site preparation discussed, plan for awake fiberoptic with spontaneous ventilation, semi-upright/lateral positioning. Some cases warrant ECMO standby; some require deferring sedation entirely and using local with the surgical team. Attending + thoracic surgery involvement is mandatory.'});
     rec({tone:'danger', label:'Why this is a red flag',
       main:'Loss of airway or cardiovascular collapse on induction — both are catastrophic',
       detail:'Anterior mediastinal masses (lymphoma, thymoma, teratoma, retrosternal goiter) can compress: (1) trachea/main bronchi → airway obstruction with positive pressure or paralysis, (2) SVC → preload drop, (3) heart/great vessels → tamponade-like physiology, (4) pulmonary artery → RV failure.<br><br>Symptoms while awake/upright may be minimal; supine + anesthesia + paralysis = catastrophe.'});
@@ -656,6 +673,9 @@
 
   function renderRFTrachealStenosis() {
     title('Severe tracheal stenosis');
+    rec({tone:'danger', label:'🛑 HARD STOP — stridor or stenosis &lt; 6 mm',
+      main:'Audible stridor, exercise-limiting dyspnea, or imaging showing &lt; 6 mm stenosis = STOP, ENT/thoracic involvement before induction',
+      detail:'Severe tracheal stenosis is a setup for cannot-ventilate-cannot-oxygenate scenario. <strong>Required before proceeding:</strong> CT showing exact diameter, ENT or thoracic surgeon in room with rigid bronchoscope ready, multiple ETT sizes (5.0, 4.5), heliox available, cricothyrotomy kit immediately at hand, attending involvement, plan for awake intubation or awake tracheostomy under local for &lt; 4 mm stenosis. <strong>Do not approach this airway on autopilot.</strong>'});
     rec({tone:'danger', label:'Why this is a red flag',
       main:'May not pass standard ETT; rapid desaturation possible',
       detail:'Causes: prior prolonged intubation, post-tracheostomy, GPA, idiopathic subglottic stenosis, post-radiation, tumor. Symptoms (stridor, exercise dyspnea) may be subtle until critical.'});
@@ -669,6 +689,9 @@
 
   function renderRFMH() {
     title('Malignant hyperthermia susceptibility');
+    rec({tone:'danger', label:'🛑 HARD STOP — confirm trigger-free plan before induction',
+      main:'Personal or family MH history = trigger-free machine confirmed + dantrolene available + attending aware before induction',
+      detail:'No volatile agents. No succinylcholine. Machine must be prepped (flush per institution protocol, ideally with activated charcoal filters). Dantrolene must be in the room. <strong>Verify all three with the attending before bringing the patient back.</strong> If any element is uncertain, delay the case.'});
     rec({tone:'danger', label:'Triggers to AVOID',
       main:'All volatile anesthetics + succinylcholine',
       detail:'Volatile triggers: sevoflurane, isoflurane, desflurane, halothane, enflurane. Succinylcholine is the only IV trigger. Nitrous oxide is SAFE. All other IV drugs are safe (propofol, ketamine, etomidate, opioids, benzodiazepines, non-depolarizing NMBs).'});
@@ -793,13 +816,179 @@
     rec({tone:'warn', label:'LMA / SGA',
       main:'2nd-generation device with gastric port preferred (LMA ProSeal, i-gel, LMA Supreme)',
       detail:'Place if bag-mask is failing or as a rescue. Confirm with capnography. Once oxygenating: decide whether to continue with LMA, exchange to ETT (via Aintree catheter), wake patient, or proceed to surgical airway.'});
-    rec({tone:'danger', label:'Cannot-intubate-cannot-oxygenate (CICO) → surgical airway',
+    rec({tone:'danger', label:'🛑 HARD STOP — Cannot-intubate-cannot-oxygenate (CICO) → surgical airway NOW',
       main:'Cricothyrotomy. Don\'t wait until SpO2 in 50s.',
       detail:'<ul><li><strong>Scalpel-bougie-tube technique with VERTICAL skin incision</strong> (DAS 2025 update — standardized vertical incision replaces prior debate over horizontal vs vertical): vertical incision over cricothyroid membrane, identify membrane by palpation, transverse stab into membrane, rotate scalpel 90°, bougie through stab, 6.0 ETT over bougie.</li><li>Needle cricothyrotomy with jet ventilation is a bridge only — high complication rate, barotrauma risk. DAS 2025 deprioritizes this approach in favor of scalpel-bougie-tube.</li><li>Mental preparation: rehearse this in your mind for every difficult airway. Decision threshold: "if I can\'t oxygenate by any means, I will cut at SpO2 X."</li></ul>',
       cite:'DAS 2025 Guidelines (Ahmad et al. BJA 2026;136:283-307); ASA Difficult Airway 2022.'});
     rec({tone:'info', label:'Wake the patient',
       main:'Always an option if surgery is elective and you got into trouble before incision',
       detail:'For elective cases with a predictable failed airway, reversing/waking and rescheduling with a different plan (awake fiberoptic, surgical standby) is usually the right move. "I can fix this if I just try harder" is the classic trap.'});
+  }
+
+  // ============ DAY-OF-SURGERY CHANGES ============
+  function renderDayOfRoot() {
+    title('Day-of-surgery changes', 'New finding or change today — proceed, delay, or cancel?');
+    stage.appendChild(optGrid([
+      {title:'Respiratory — URI, wheezing, new dyspnea', onClick:()=>go('Resp','r',renderDoSResp)},
+      {title:'Cardiovascular — BP extremes, new chest pain, suspected new arrhythmia', onClick:()=>go('CV','c',renderDoSCV)},
+      {title:'Metabolic — glucose extremes, missed dialysis, electrolyte derangement', onClick:()=>go('Metab','m',renderDoSMetab)},
+      {title:'Volume / GI — NPO violation, new vomiting, dehydration', onClick:()=>go('Vol/GI','v',renderDoSVol)},
+      {title:'Neurologic — new deficit, headache, recent fall', onClick:()=>go('Neuro','n',renderDoSNeuro)},
+      {title:'Substance — acute intoxication, suspected withdrawal', onClick:()=>go('Substance','s',renderDoSSubstance)},
+      {title:'Infection — fever, suspected sepsis, surgical site concerns', onClick:()=>go('Infection','i',renderDoSInfection)},
+      {title:'Other — positive pregnancy test, new bleeding, missed home meds', onClick:()=>go('Other','o',renderDoSOther)}
+    ]));
+    note('Every card terminates in a decision: PROCEED / DELAY / CANCEL / DISCUSS WITH ATTENDING. The default in genuine ambiguity is to call the attending and consider delay — case rescheduling is recoverable, a bad outcome is not. Cards marked 🛑 HARD STOP signal scenarios where induction should not proceed without explicit attending awareness.');
+  }
+
+  function renderDoSResp() {
+    title('Respiratory — day-of changes');
+    rec({tone:'warn', label:'Adult with active URI symptoms',
+      main:'Decision depends on severity, surgery type, and airway plan',
+      detail:'<strong>Mild URI</strong> (clear rhinorrhea, no fever, no cough, no wheeze): proceed for most cases. Risk slightly elevated for laryngospasm/bronchospasm but manageable.<br><br><strong>Moderate URI</strong> (productive cough, low-grade fever, congestion): consider delaying 2 weeks for elective. Proceed for urgent/emergent. Use LMA over ETT if possible, deep extubation, avoid desflurane.<br><br><strong>Severe URI / lower respiratory symptoms</strong> (high fever, productive purulent sputum, wheeze, dyspnea, hypoxia): <strong>DELAY 4-6 weeks</strong> for elective. Bronchial hyperreactivity persists for weeks after URI.<br><br>Higher-risk contexts (asthma history, smokers, planned ETT, abdominal surgery, planned regional): lower threshold to delay.',
+      cite:'Tait Anesthesiology 2001; ASA practice patterns.'});
+    rec({tone:'danger', label:'Pediatric URI — more nuanced threshold',
+      main:'COLDS score helps: cough, low O2, age <5, secretions, smoke exposure',
+      detail:'Children have 2-7× higher perioperative respiratory adverse events with URI. Strong predictors: nocturnal cough, copious secretions, parental concern. <strong>Delay</strong> if: lower respiratory symptoms, fever &gt;38°C, lethargy, &lt;1 year old with significant symptoms. <strong>Proceed cautiously</strong> if: clear rhinorrhea only, well-appearing, planned LMA. Pulse ox baseline ≤95% = delay.',
+      cite:'von Ungern-Sternberg Lancet 2010; COLDS score.'});
+    rec({tone:'warn', label:'Active wheezing on auscultation',
+      main:'DELAY elective if not at patient\'s baseline. Treat before proceeding.',
+      detail:'<strong>If new wheeze in a non-asthmatic</strong>: cancel and work up — could be CHF, allergic reaction, pneumonia, aspiration, PE. Don\'t anesthetize until you know why.<br><br><strong>If known asthmatic, worse than baseline</strong>: nebulizer + assess response. If responds → proceed with caution (deep extubation, avoid histamine releasers, IV lidocaine pre-extubation). If doesn\'t respond → DELAY.<br><br><strong>If at baseline</strong>: proceed with usual asthma plan.'});
+    rec({tone:'danger', label:'🛑 HARD STOP — new dyspnea',
+      main:'CANCEL elective. Workup for CHF, PE, pneumonia, MI, anemia, pneumothorax.',
+      detail:'Acute new dyspnea is rarely benign. ECG, CXR, BNP, troponin, D-dimer as indicated by clinical picture. Cardiology/medicine consult. Reschedule once cause known and treated.'});
+    rec({tone:'warn', label:'Suspected new pneumonia',
+      main:'DELAY elective until treated. Antibiotics + clinical resolution before re-booking.',
+      detail:'Fever, productive cough, focal lung exam, leukocytosis, CXR infiltrate. Even \"walking pneumonia\" patients have airway hyperreactivity and impaired gas exchange. Treat fully before elective surgery.'});
+  }
+
+  function renderDoSCV() {
+    title('Cardiovascular — day-of changes');
+    rec({tone:'warn', label:'Asymptomatic hypertension — how high is too high?',
+      main:'Most guidelines: proceed if SBP &lt; 180 AND DBP &lt; 110, no end-organ symptoms',
+      detail:'2024 AHA/ACC and ESC 2022 agree: <strong>SBP ≥ 180 OR DBP ≥ 110</strong> is the threshold to consider delay for elective surgery — but only if accompanied by end-organ concerns (chest pain, dyspnea, headache, neuro symptoms, AKI). Asymptomatic isolated hypertension does NOT improve with same-day cancellation and re-treatment. Proceed with anesthetic plan that controls BP intraop.<br><br><strong>If symptomatic OR with end-organ findings:</strong> CANCEL, refer for urgent workup. Don\'t anesthetize through a hypertensive emergency.',
+      cite:'2024 AHA/ACC NCS; ESC 2022.'});
+    rec({tone:'danger', label:'🛑 HARD STOP — new chest pain',
+      main:'CANCEL elective. ECG + troponin + cardiology evaluation.',
+      detail:'Even atypical chest pain in a patient with cardiac risk factors warrants workup before elective surgery. Acute MI within 30 days = very high risk; ideally postpone elective surgery for ≥ 60 days post-MI per 2024 AHA/ACC.<br><br>Exceptions: clearly musculoskeletal pain reproducible on palpation with normal ECG and risk factors absent — even then, document and have a low threshold.'});
+    rec({tone:'warn', label:'Suspected new arrhythmia on monitor',
+      main:'Identify the rhythm first — then decide',
+      detail:'<strong>New AF with RVR</strong>: rate control first; if hemodynamically tolerated and not symptomatic, may proceed for urgent/emergent. Elective: DELAY for rate control + anticoagulation decision + cardioversion consideration.<br><br><strong>New AF, rate-controlled</strong>: proceed for urgent. For elective, evaluate cause (electrolytes, ischemia, hyperthyroid) and anticoagulation status.<br><br><strong>New SVT, VT, bradycardia &lt; 40, advanced AV block</strong>: CANCEL elective; cardiology workup.'});
+    rec({tone:'danger', label:'🛑 HARD STOP — new or worsening CHF',
+      main:'CANCEL elective. Decompensated HF in the periop period = very high mortality.',
+      detail:'New orthopnea, leg edema, weight gain, dyspnea on exertion, JVD, S3, rales = decompensated HF until proven otherwise. CXR, BNP, echo, diuresis, then reassess. Periop mortality with decompensated HF is several-fold higher than compensated HF.<br><br>Compensated HF at baseline + asymptomatic = proceed with usual periop plan.'});
+    rec({tone:'warn', label:'Hypotension on arrival',
+      main:'Why? Identify and treat before induction.',
+      detail:'Volume depletion (NPO + diuretics + ACEi held too late), sepsis, occult bleeding, adrenal insufficiency, anaphylaxis, vasovagal. Volume resuscitate, treat cause, reassess. <strong>Don\'t induce a hypotensive patient without understanding why they\'re hypotensive.</strong>'});
+  }
+
+  function renderDoSMetab() {
+    title('Metabolic — day-of changes');
+    rec({tone:'warn', label:'Hyperglycemia on arrival',
+      main:'Targets: ≤ 180 mg/dL ideal; up to 200 acceptable. Higher → assess for DKA.',
+      detail:'<strong>Glucose 200-250, asymptomatic, no ketones</strong>: correct with insulin, proceed. Confirm not in DKA.<br><br><strong>Glucose 250-400</strong>: check β-OHB or urine ketones. If ketones positive → DKA workup (ABG, anion gap). If clean → correct and proceed for urgent; DELAY elective.<br><br><strong>Glucose &gt; 400 OR DKA suspected</strong>: CANCEL elective, treat DKA. If urgent → proceed with insulin infusion + electrolyte correction during case, anesthesia/ICU together.<br><br><strong>Euglycemic DKA on SGLT2i</strong>: glucose can be deceptively normal. Always check β-OHB in SGLT2i patients on day of surgery — see SGLT2 section.',
+      cite:'SAMBA 2024 (Rajan); ADA Standards.'});
+    rec({tone:'danger', label:'Severe hypoglycemia (&lt; 70 mg/dL)',
+      main:'Treat immediately. Identify cause. Delay induction until stable AND cause known.',
+      detail:'Most common cause: insulin given the night before or morning despite being NPO. Less common but dangerous: insulinoma, adrenal insufficiency, sepsis, liver failure. Give 1 amp D50 IV (or D10 infusion if mild), recheck q15 min until stable. Once stable and you know why → proceed if cause identified and resolved.'});
+    rec({tone:'danger', label:'🛑 HARD STOP — missed dialysis with K+ ≥ 6.0',
+      main:'Almost always CANCEL elective. Get K+ + ABG before deciding anything.',
+      detail:'Standard ESRD patient with HD 3×/week who skipped: K+ likely 5.5-7+, volume overloaded, acidotic. <strong>K+ ≥ 6.0 or ECG changes</strong> = CANCEL, dialyze first. <strong>K+ 5.5-5.9, no ECG changes, urgent/emergent surgery</strong> = treat (Ca, insulin/dextrose, bicarbonate, kayexalate) and proceed with anesthesia/nephrology. For elective: dialyze first regardless.<br><br>Volume overload + missed HD = high risk of pulmonary edema on induction.',
+      cite:'Fielding-Singh Anesthesiology 2025.'});
+    rec({tone:'warn', label:'Day-of labs showing new electrolyte derangement',
+      main:'K, Na, Mg, Ca, glucose — assess clinical significance',
+      detail:'<strong>K+ &gt; 5.5</strong>: ECG check. &lt; 5.5 with no ECG changes typically OK. ≥ 6.0 or ECG changes = treat.<br><strong>K+ &lt; 3.0</strong>: replete before elective; for urgent, replete during case.<br><strong>Na &lt; 125 or &gt; 150</strong>: cancel elective, correct slowly (avoid rapid correction).<br><strong>Mg &lt; 1.2</strong>: replete (potentiates arrhythmias, especially if on QT-prolonging meds).<br><strong>iCa abnormalities</strong>: consider underlying cause (parathyroid, sepsis, transfusion).'});
+  }
+
+  function renderDoSVol() {
+    title('Volume / GI — day-of changes');
+    rec({tone:'warn', label:'NPO violation',
+      main:'How recent, how much, what is it — and is the case urgent?',
+      detail:'<strong>Clear liquids &lt; 2 hours ago (small amount)</strong>: typically proceed without modification per 2023 Joshi update. Most healthy adults tolerate without aspiration. Some institutions still default to RSI — defensible.<br><br><strong>Light meal &lt; 6 hours ago, or unclear contents</strong>: DELAY elective. For urgent: treat as full stomach, RSI.<br><br><strong>Full meal &lt; 6 hours OR gastroparesis/diabetic with recent intake</strong>: DELAY elective; for emergent → RSI, consider awake intubation if difficult airway.<br><br><strong>Gum chewing</strong>: minimal aspiration risk (small volume saliva); 2023 guidance permits proceeding.<br><br>For ALL cases: assess aspiration risk holistically — GLP-1, GERD, gastroparesis, obstruction, pregnancy all modify the threshold.',
+      cite:'2023 ASA Joshi modular update; 2017 ASA fasting guidelines.'});
+    rec({tone:'warn', label:'New vomiting today',
+      main:'Why? Bowel obstruction, GI bleed, raised ICP, gastroparesis, infection',
+      detail:'New vomiting on the day of surgery is rarely incidental. Assess for surgical disease (obstruction, perforation — relevant if elective non-GI surgery), CNS process (headache + vomiting = workup), infection, drug toxicity.<br><br><strong>If cause is benign and self-limited (e.g., morning sickness, anxiety)</strong>: proceed with full-stomach precautions.<br><br><strong>If cause unclear or concerning</strong>: CANCEL elective; workup first.'});
+    rec({tone:'warn', label:'Dehydration / volume depletion',
+      main:'Common with NPO + diuretics + ACEi continued. Replete before induction.',
+      detail:'Orthostatic vitals if able. 500-1000 mL crystalloid bolus pre-induction. If severely depleted: full resuscitation, identify cause (vomiting, diarrhea, poor PO intake, diuretic overuse, occult bleeding). Don\'t induce a hypovolemic patient — propofol + positive pressure ventilation = profound hypotension.'});
+    rec({tone:'warn', label:'New abdominal pain in non-surgical patient',
+      main:'Workup before elective non-GI surgery. Acute abdomen disqualifies.',
+      detail:'New abdominal pain on day of surgery in a patient scheduled for, say, knee arthroscopy → workup. Surgical abdomen vs gastroenteritis vs nephrolithiasis. Don\'t anesthetize through an unrecognized acute abdomen — it gets dramatically worse intraop.'});
+  }
+
+  function renderDoSNeuro() {
+    title('Neurologic — day-of changes');
+    rec({tone:'danger', label:'🛑 HARD STOP — new focal neurologic deficit',
+      main:'CANCEL elective. CT/MRI + neurology consult before any anesthesia.',
+      detail:'New weakness, facial droop, dysarthria, ataxia, hemiparesthesias = stroke / TIA / mass / hemorrhage until proven otherwise. Elective surgery within 9 months of stroke = elevated risk; new stroke pre-op = absolute contraindication for elective surgery until evaluated.<br><br>Urgent/emergent: proceed with neuro on the team, document baseline carefully, manage BP carefully (avoid hypotension that worsens watershed injury), monitor for new deficit post-op.'});
+    rec({tone:'warn', label:'New severe headache',
+      main:'Workup before elective. SAH, mass, meningitis, hypertensive crisis on differential.',
+      detail:'"Worst headache of life" = subarachnoid hemorrhage until proven otherwise. New HA + fever = meningitis workup. New HA + focal deficit = stroke/mass workup. New HA + severe HTN = hypertensive encephalopathy. DELAY elective until cause known.<br><br>Mild HA, no red flags, similar to patient\'s usual migraine pattern: proceed with usual plan, treat with non-NSAID analgesics if regional planned.'});
+    rec({tone:'warn', label:'Recent fall (within days)',
+      main:'Assess for head injury, occult fracture, anticoagulation interaction',
+      detail:'Patient on anticoagulants + recent fall + planned surgery: low threshold to image head pre-op (CT head). Even without symptoms, occult subdural hematoma is common in elderly anticoagulated fallers.<br><br>Document baseline neuro exam carefully. If any concerning findings → CT first.<br><br>Recent fall also suggests baseline frailty / deconditioning — affects postop disposition planning (delirium risk, rehab planning).'});
+    rec({tone:'warn', label:'New altered mental status',
+      main:'CANCEL elective. Identify cause before any sedation.',
+      detail:'Drug effects (recent benzo, opioid, anticholinergic), electrolytes (Na, glucose, Ca), infection (UTI is classic in elderly), hypoxia, stroke, intoxication, withdrawal. Anesthetizing a patient with unrecognized altered mentation can produce catastrophic post-op delirium or mask a worsening underlying process.'});
+  }
+
+  function renderDoSSubstance() {
+    title('Substance — day-of changes');
+    rec({tone:'danger', label:'Acute alcohol intoxication',
+      main:'CANCEL elective. Sedative-sparing required if urgent.',
+      detail:'Drunk patient in pre-op: full stomach (aspiration risk), unreliable history, potentiates anesthetic effects, may go into withdrawal mid-case. CANCEL elective.<br><br>Urgent/emergent (e.g., trauma): RSI for full stomach, reduce induction agent doses, anticipate hypotension. Plan for withdrawal in 24-72 h post-op — CIWA monitoring, benzo or dexmedetomidine ladder.'});
+    rec({tone:'danger', label:'🛑 HARD STOP — acute cocaine/meth/stimulant intoxication',
+      main:'CANCEL elective. Avoid sympathetic stimulation in urgent cases.',
+      detail:'Tachycardia, hypertension, hyperthermia, myocardial ischemia, coronary spasm. Recent cocaine use → at least 24 h delay for elective; ideally check ECG for ischemia.<br><br>Urgent: avoid ketamine, ephedrine, epinephrine (catecholamine excess); use direct vasoconstrictors (phenylephrine) cautiously, alpha-blockade if HTN crisis, benzos for sedation, avoid beta-blockers alone (unopposed alpha = vasospasm).<br><br>Hyperthermia + rigidity + cocaine = consider MH mimicker; check CK, treat aggressively.'});
+    rec({tone:'warn', label:'Acute opioid use / suspected new use',
+      main:'Risk of respiratory depression + tolerance assessment',
+      detail:'Patient who appears sedated/intoxicated with opioids: CANCEL elective. Risk of respiratory depression on induction, unpredictable tolerance.<br><br>Patient who uses opioids regularly (chronic pain, OUD): proceed with usual plan; expect higher intraop opioid requirement. See substance use section for bupe/methadone specific guidance.'});
+    rec({tone:'warn', label:'Suspected withdrawal',
+      main:'Identify substance, severity, time since last use. Treat before proceeding electively.',
+      detail:'<strong>Alcohol withdrawal</strong> (24-72 h post-cessation): tremor, tachycardia, HTN, anxiety, hallucinations, seizures (12-48 h), DTs (48-72 h). CIWA score. Benzodiazepine or dexmedetomidine. DELAY elective until treated.<br><br><strong>Opioid withdrawal</strong>: not life-threatening but extremely uncomfortable; rhinorrhea, sweating, pupillary dilation, GI symptoms, restlessness. Treat with clonidine, dexmedetomidine, or buprenorphine; proceed with adequate analgesia plan.<br><br><strong>Benzo withdrawal</strong>: similar to alcohol withdrawal, can cause seizures. Treat with cross-tolerant benzo.'});
+    rec({tone:'warn', label:'Cannabis use within hours',
+      main:'Most patients can proceed; consider increased anesthetic requirement',
+      detail:'Acute cannabis use within hours: tachycardia, sedation, potentially airway hyperreactivity (smoke inhalation). Heavy chronic use: increased anesthetic requirement (propofol, opioids), risk of cannabinoid hyperemesis syndrome.<br><br>If cannabis hyperemesis suspected (cyclic vomiting in chronic user): treat as full stomach, consider RSI.<br><br>Generally not a reason to cancel elective unless patient is acutely impaired or has hyperemesis symptoms.'});
+  }
+
+  function renderDoSInfection() {
+    title('Infection — day-of changes');
+    rec({tone:'danger', label:'Fever in adult (≥ 38.0°C / 100.4°F)',
+      main:'CANCEL elective. Identify source before proceeding.',
+      detail:'Fever pre-op is rarely benign in adults. Differential: respiratory infection, UTI, viremia, cellulitis, occult abscess, drug fever, sepsis, malignancy.<br><br>Even mild fever + planned implant/prosthesis = absolute cancellation (high SSI consequence).<br><br>Mild post-vaccination fever &lt; 24 h: discuss with surgeon; some proceed, some delay 48 h.<br><br>Workup: CBC, BMP, UA, blood cultures if appearing toxic, CXR if respiratory symptoms.'});
+    rec({tone:'warn', label:'Pediatric fever — slightly different threshold',
+      main:'Fever + URI: delay elective per pediatric standards',
+      detail:'Children commonly have low-grade fevers with viral illness. Threshold to cancel elective: fever ≥ 38.5°C OR fever + lower respiratory symptoms OR fever + ill appearance. Asymptomatic child with low-grade fever (38.0-38.4°C) without URI symptoms: discuss with surgical team.'});
+    rec({tone:'danger', label:'🛑 HARD STOP — suspected sepsis',
+      main:'CANCEL elective. RESUSCITATE and treat before any non-life-saving surgery.',
+      detail:'qSOFA ≥ 2 (RR ≥ 22, altered mentation, SBP ≤ 100), or SIRS + suspected infection. Lactate, blood cultures, antibiotics within 1 hour, IV fluids, ICU admission. Source-control surgery (e.g., abscess drainage) proceeds urgently after initial resuscitation — but that\'s NOT "elective surgery on a septic patient," that\'s sepsis source control.<br><br>"Elective hernia repair in a patient who happens to be septic" = absolute cancellation.'});
+    rec({tone:'warn', label:'Surgical site concerns',
+      main:'Skin breakdown, cellulitis, drainage near operative site = CANCEL elective for clean procedures',
+      detail:'Especially for implant surgery (joint replacement, hardware, vascular grafts, pacemaker) — proceeding with active infection nearby risks catastrophic device infection. Even subtle findings (small abrasion over knee planned for TKA) warrant ID/surgeon discussion before proceeding.'});
+    rec({tone:'warn', label:'Recent COVID / respiratory viral illness',
+      main:'Delay elective 4-7 weeks from symptomatic infection (per ASA guidance)',
+      detail:'<strong>ASA 2022 update</strong>: delay elective surgery for at least:<ul><li>4 weeks for asymptomatic / mildly symptomatic, non-hospitalized</li><li>6 weeks for symptomatic non-hospitalized</li><li>8-10 weeks for hospitalized non-ICU</li><li>12 weeks for ICU-level disease</li></ul>Persistent symptoms = further delay. Time-sensitive surgery (e.g., cancer) may proceed sooner with higher risk acceptance.',
+      cite:'ASA + APSF joint statement 2022.'});
+  }
+
+  function renderDoSOther() {
+    title('Other — day-of changes');
+    rec({tone:'warn', label:'Positive pregnancy test on screening',
+      main:'CANCEL elective. Discuss with patient + surgeon + OB.',
+      detail:'Even early pregnancy: avoid teratogenic medications, NSAIDs, ionizing radiation, certain antibiotics. First-trimester surgery has higher miscarriage risk. Most elective surgery can wait.<br><br>Urgent/emergent: proceed with informed consent, minimize teratogenic exposures, fetal monitoring if &gt; 24 weeks, lateral tilt for &gt; 20 weeks, anticipate physiologic changes (FRC, MAC, increased aspiration risk).<br><br>See pregnancy testing section for handling declined tests and counseling.'});
+    rec({tone:'warn', label:'New bruising / petechiae / suspected bleeding disorder',
+      main:'CBC with platelet count, coags, before any neuraxial or major surgery',
+      detail:'New bruising of unclear cause: differential includes thrombocytopenia (ITP, drug-induced, sepsis, TTP), platelet dysfunction (drug, uremia), coagulopathy (liver disease, vitamin K deficiency, DIC), vascular (Cushings, NAI). Workup before proceeding — platelet count is fast and definitive for the most common causes.'});
+    rec({tone:'warn', label:'Patient missed home medications',
+      main:'Depends on the medication — some are critical, some don\'t matter',
+      detail:'<strong>Critical to take or replace</strong>: insulin (long-acting), antiseizure meds (give IV if missed), steroids (give stress dose if chronic + missed), Parkinson\'s meds (significant rigidity/aspiration risk if missed; consider transdermal rotigotine), thyroid hormone (one missed dose typically OK; chronic missed = delay if symptomatic), anti-rejection meds (transplant — call transplant team).<br><br><strong>Should have held</strong>: ACEi/ARB (per Stop-or-Not, both strategies defensible), SGLT2 (problem only if not held — check β-OHB).<br><br><strong>Doesn\'t matter for one dose</strong>: statins, aspirin (if for primary prevention), most antihypertensives other than the above.'});
+    rec({tone:'warn', label:'Family member with same-day acute illness',
+      main:'Pediatric patient: low threshold to delay (occult URI/exposure)',
+      detail:'Child whose sibling/parent has active viral illness today: consider proxy for unrecognized exposure. If the child has any symptoms (even subtle), lean toward delay. For asymptomatic children: discuss with parents and surgeon; many proceed with caution. Watch carefully intraop for new respiratory symptoms.'});
+    rec({tone:'info', label:'When the gestalt is "off" but you can\'t articulate why',
+      main:'Trust it. Discuss with the attending. Consider delay.',
+      detail:'Experienced anesthesiologists develop pattern recognition that precedes conscious analysis. If something feels wrong about a case — patient looks sicker than they should, story doesn\'t add up, vital signs not quite right — that signal is real and worth honoring. Better to delay a case you ultimately could have done than to proceed with one you should have delayed.'});
   }
 
   // ============ BY QUESTION ============
@@ -892,6 +1081,9 @@
       {title:'RSI vs modified RSI', sub:'Indications and technique', onClick:()=>go('RSI','r',renderRSI)},
       {title:'NPO exceptions / unclear fasting', sub:'Trauma, urgent cases, NPO violations', onClick:()=>go('NPO except','n',renderNPOExceptions)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — airway / aspiration',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Prior "uncomplicated" intubation that was actually 3 attempts with blade changes</strong> — the EMR summary says "intubated" but the actual anesthesia record tells a different story. Read the anesthesia note, not the chart summary.</li><li><strong>Achalasia masquerading as "GERD"</strong> — patient with regurgitation of undigested food hours after eating, weight loss, nocturnal cough. Even with prolonged NPO, esophagus retains food. Treat as full stomach.</li><li><strong>OSA in the patient without a sleep study</strong> — high BMI + neck circumference + snoring history but never tested. STOP-Bang ≥ 5 = strong predictor of OSA, treat as if OSA confirmed for difficult mask + postop monitoring planning.</li><li><strong>Anterior airway mass missed because of no hoarseness</strong> — slow-growing thyroid masses, lymphomas. Ask about positional dyspnea, voice changes (even subtle), difficulty swallowing solids. Image if any concern before induction.</li><li><strong>GLP-1 with "I held it" but dose-escalation phase</strong> — patient on weight-loss dosing currently up-titrating has higher gastric retention even with hold. 24-hour clear liquid diet is appropriate even with drug held.</li><li><strong>Severe RA with atlanto-axial instability never imaged</strong> — long-standing RA + neck pain + neuro symptoms = consider C-spine flex/ex imaging before manipulation. Awake intubation if instability confirmed.</li><li><strong>Edentulous patient (predictor of difficult MASK, not intubation)</strong> — easy to underestimate the mask-seal challenge. Have oral and nasal airways immediately available; consider leaving dentures in for induction, remove after intubation.</li></ul>'});
   }
 
   function renderAspirationRisk() {
@@ -1054,6 +1246,9 @@
       {title:'BNP / hs-troponin', sub:'Risk stratification in selected patients', onClick:()=>go('Biomarkers','n',renderBiomarkers)}
     ]));
     note('Adapted from 2024 AHA/ACC NCS, 2012 ASA Practice Advisory for Preanesthesia Evaluation, NICE 2016.');
+    rec({tone:'warn', label:'⚠ Commonly missed — labs & testing',
+      main:'Patterns easy to walk past — and the "what would change?" gate',
+      detail:'<ul><li><strong>Severe anemia (Hgb 7-9) framed as "chronic" in EHR</strong> — even if truly chronic, it still affects periop tolerance. Type & screen, transfusion threshold discussion, consider IV iron pre-op for elective if time.</li><li><strong>Iron-deficiency anemia not worked up in elderly</strong> — new IDA in &gt; 50 = colon cancer workup before elective surgery (esp. if surgery is non-time-sensitive). Delay non-urgent surgery for GI evaluation.</li><li><strong>Sickle trait vs disease confusion</strong> — patient says "I have sickle cell" → could be trait (largely irrelevant) or disease (major implications). Confirm with hemoglobin electrophoresis if uncertain. SS disease: avoid hypoxia, dehydration, acidosis, hypothermia.</li><li><strong>Thrombocytopenia from new alcohol use or new drug</strong> — Plt 80-120 in a previously normal patient warrants quick workup before high-bleed surgery. Cause changes management (ITP vs drug vs liver).</li><li><strong>Pre-op INR drawn while still on warfarin</strong> — INR 2.5 on warfarin tells you the warfarin\'s working, not whether the patient can be operated on. Hold warfarin and recheck before assuming coagulopathy.</li><li><strong>Hyperkalemia on day-of labs not connected to ACEi + recent NSAIDs + AKI</strong> — common combination, common cause. K+ 5.8 day-of: review meds, check creatinine trend, identify the cause before treating.</li></ul><hr style="margin:12px 0;border:0;border-top:1px solid #ccc"><strong>The "what would change?" gate:</strong> Before ordering any test, ask: <em>if this result comes back abnormal, will I do anything differently?</em> Reflexive pre-op echo, stress test, PFTs, CXR for patients where the result wouldn\'t change anesthetic plan or surgical decision wastes time and money and often produces incidental findings that delay care. Test only when the result drives a decision.'});
   }
 
   function renderTestECG() {
@@ -1327,6 +1522,9 @@
       {title:'Drug choices in cirrhosis', sub:'What\'s safe, what\'s not', onClick:()=>go('Drugs','d',renderLiverDrugs)}
     ]));
     note('Adapted from ACG 2025 Clinical Guideline for Perioperative Risk in Cirrhosis (Mahmud et al, Am J Gastroenterol 2025), EASL 2025 Guidelines for Extrahepatic Abdominal Surgery in Cirrhosis, AASLD 2024 Portal Hypertension Practice Guidance, and Cleveland Clinic perioperative reviews.');
+    rec({tone:'warn', label:'⚠ Commonly missed — liver',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Cirrhosis with "normal LFTs"</strong> — synthetic function fails in advanced cirrhosis: AST/ALT often <em>decrease</em> as hepatocytes are lost. Low albumin, low platelets, elevated INR, or hyperbilirubinemia tell more than transaminases.</li><li><strong>Platelet count as a marker of portal hypertension severity</strong> — thrombocytopenia from splenic sequestration often precedes other signs. Plt &lt; 150 in a cirrhotic = significant portal HTN; &lt; 100 = severe.</li><li><strong>INR doesn\'t predict bleeding in cirrhosis</strong> — patients are simultaneously pro- and anti-coagulant (rebalanced hemostasis). An "abnormal" INR doesn\'t justify FFP prophylactically; viscoelastic testing (TEG/ROTEM) is more informative.</li><li><strong>Acute-on-chronic decompensation missed</strong> — patient with stable cirrhosis presenting with new ascites, worsening encephalopathy, or new infection has fundamentally different perioperative risk than stable disease. New decompensation = stop and reassess MELD before proceeding.</li><li><strong>Non-alcoholic etiology in metabolic syndrome</strong> — NAFLD/NASH is increasingly common and often undiagnosed. Obesity + diabetes + abnormal transaminases on routine labs = consider underlying cirrhosis even without alcohol history.</li></ul>'});
   }
 
   function renderLiverSeverity() {
@@ -1345,6 +1543,9 @@
       main:'Older tool — useful when VOCAL-Penn data unavailable',
       detail:'Uses MELD + age + ASA-PS + etiology of liver disease. Available at mayoclinic.org. Provides 7-day, 30-day, 90-day, 1-year, and 5-year mortality estimates. Generally less discriminating than VOCAL-Penn in head-to-head validation.',
       cite:'Teh et al. Gastroenterology 2007.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Severity score → decision tier',
+      detail:'<ul><li><strong>Child A / MELD &lt; 10:</strong> proceed with usual plan. Awareness of subtle issues only.</li><li><strong>Child A with MELD 10-15 OR Child B:</strong> multidisciplinary planning. Optimize ascites, coagulation, nutrition. Art line for major cases. ICU disposition for major abdominal/cardiac.</li><li><strong>Child B with MELD &gt; 15 OR Child C:</strong> elective major surgery generally contraindicated. Transplant evaluation if appropriate. TIPS may be needed first for some procedures. Mortality 40-80% for major abdominal.</li><li><strong>VOCAL-Penn 30-day mortality risk &gt; 15%:</strong> trigger for multidisciplinary review regardless of CTP/MELD.</li></ul>The score itself is a number; the action is what matters. The ACG 2025 guideline emphasizes that severity scoring should drive concrete management decisions, not just risk estimation.'});
   }
 
   function renderLiverRisk() {
@@ -1397,6 +1598,9 @@
     rec({tone:'info', label:'SBP prophylaxis',
       main:'Continue any prior SBP prophylaxis through perioperative period',
       detail:'Patients on norfloxacin/ciprofloxacin/Bactrim for SBP prophylaxis should continue. New SBP can develop perioperatively — fever or new hepatic decompensation should trigger paracentesis for cell count.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications, ordered by priority',
+      detail:'<ul><li><strong>Pre-op decision:</strong> tense ascites → LVP with albumin replacement BEFORE the case for major abdominal surgery. Don\'t let the surgeon discover tense ascites on entry.</li><li><strong>Testing:</strong> Cell count + albumin from a recent paracentesis if SBP suspected. Cr trending in the days before surgery (cirrhotic AKI is treacherous).</li><li><strong>Intraop:</strong> expect rapid hemodynamic shift when ascites drained. Albumin + crystalloid mix for replacement. Avoid over-resuscitation — ascites will reaccumulate.</li><li><strong>Postop:</strong> wound closure complications if ascites reaccumulates and stresses fascial closure. Surgical drains may be needed. Diuresis + sodium restriction restart day 1.</li></ul>'});
   }
 
   function renderLiverVarices() {
@@ -1413,6 +1617,9 @@
     rec({tone:'info', label:'Pre-op screening',
       main:'Recent endoscopy results inform risk; consider screening EGD before major elective surgery if not recent',
       detail:'Cirrhotic patients with known varices should have routine surveillance EGD. For major elective surgery, knowing the current variceal status helps planning.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications, ordered by priority',
+      detail:'<ul><li><strong>Pre-op decision:</strong> continue non-selective beta-blocker through morning of surgery. Recent EGD ideal for major elective.</li><li><strong>Intraop:</strong> AVOID NGT, esophageal temp probe, TEE if possible. If TEE is essential (e.g., cardiac surgery): discuss surgical risk-benefit; some centers use TTE/epicardial echo. Surgeon-placed gastric tube under direct visualization is an alternative when decompression needed.</li><li><strong>If variceal bleeding occurs intraop:</strong> octreotide bolus + infusion, restrictive transfusion (Hb &lt;7 — over-transfusion worsens portal pressure), empirical ceftriaxone, urgent endoscopy. Sengstaken-Blakemore as bridge. TIPS for refractory.</li><li><strong>Postop:</strong> high vigilance for delayed variceal bleeding (24-72 h). Continue beta-blocker as soon as tolerated. Watch for melena, hematemesis, drop in Hb.</li></ul>'});
   }
 
   function renderLiverHE() {
@@ -1429,6 +1636,9 @@
     rec({tone:'warn', label:'Drug choices matter',
       main:'Avoid benzodiazepines; minimize opioids; prefer short-acting agents',
       detail:'Benzodiazepines can dramatically worsen encephalopathy and have prolonged effect in cirrhosis (decreased GABA threshold + impaired clearance). Use propofol cautiously, titrate carefully. Dexmedetomidine is a good alternative for sedation/anxiolysis.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications, ordered by priority',
+      detail:'<ul><li><strong>Pre-op decision:</strong> assess baseline cognition + asterixis. Active grade 2+ HE = consider deferring elective surgery for medical optimization (lactulose, rifaximin, search for triggers).</li><li><strong>Drug avoidance list:</strong> benzodiazepines, meperidine, long-acting opioids. Prefer remifentanil, dexmedetomidine, careful titration of propofol.</li><li><strong>Intraop:</strong> avoid hypovolemia, hypokalemia, alkalosis — all precipitate HE. Maintain euglycemia (hypoglycemia in cirrhosis is bad). NG decompression cautious if varices (see varices page).</li><li><strong>Postop:</strong> high delirium/encephalopathy risk. Resume lactulose/rifaximin ASAP. Watch for new HE triggers: GI bleed, infection (SBP especially), constipation, dehydration, electrolyte derangement. Family at bedside helpful for reorientation.</li><li><strong>Disposition:</strong> lower threshold for monitored bed postop in patients with prior HE episodes.</li></ul>'});
   }
 
   function renderLiverRenal() {
@@ -1445,6 +1655,9 @@
     rec({tone:'warn', label:'Drug dosing',
       main:'Many drugs need adjustment for hepatic AND renal impairment in cirrhosis',
       detail:'Combined hepato-renal dysfunction = compound adjustments. Avoid loading doses of hepatically cleared drugs. Use lower maintenance doses. eGFR overestimates true GFR in cirrhosis (due to muscle wasting) — measured creatinine clearance or cystatin C is more accurate when precision matters.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications, ordered by priority',
+      detail:'<ul><li><strong>Pre-op:</strong> baseline Cr + UA + electrolytes. If baseline Cr already elevated, get cystatin C if available (more accurate in cirrhosis). Identify nephrotoxin exposures in the prior 1-2 weeks.</li><li><strong>Avoid list:</strong> NSAIDs (including ketorolac — single dose can trigger HRS), aminoglycosides, IV contrast in advanced cirrhosis. Hold ACEi/ARB if hypotensive or volume-contracted.</li><li><strong>Intraop:</strong> MAP target ≥ 65 (or higher if chronic HTN). Avoid hypovolemia. Albumin preferred over crystalloid for resuscitation in advanced cirrhosis. Vasopressors if MAP threatened — norepinephrine first.</li><li><strong>If new AKI postop:</strong> exclude prerenal (most common), evaluate for HRS (diagnosis of exclusion), avoid further nephrotoxins. Hepatology involvement. Albumin + vasoconstrictor if HRS suspected.</li><li><strong>Disposition:</strong> baseline CKD + cirrhotic = high AKI risk postop. Daily Cr trending. Lower threshold for ICU.</li></ul>'});
   }
 
   function renderLiverDrugs() {
@@ -1477,6 +1690,9 @@
       {title:'Lithium', sub:'Hold timing, electrolyte risk', onClick:()=>go('Lithium','l',renderLithium)},
       {title:'Serotonergic meds (SSRIs/SNRIs)', sub:'Serotonin syndrome considerations', onClick:()=>go('SSRIs','r',renderSerotonergic)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — substance use',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Pseudocholinesterase deficiency family history</strong> — almost never asked about. Phrase: "Has anyone in your family had a problem with anesthesia where they took a long time to wake up?" Catches it. Avoid sux + mivacurium if positive.</li><li><strong>Methamphetamine use disguised as "just my Adderall"</strong> — patient on prescribed amphetamine may also be using illicit. Ask specifically. Acute meth/cocaine effects can persist 12-24+ hours.</li><li><strong>Kratom use</strong> — legal in most states, often missed on history. Full mu-opioid effects (tolerance, dependence, withdrawal). Affects opioid requirements and withdrawal risk.</li><li><strong>Polysubstance use missed by asking one class at a time</strong> — concurrent benzos + opioids + stimulants + alcohol is common in patients with chronic pain or mental health diagnoses. Specifically ask about each.</li><li><strong>Energy drink / caffeine binge as a missed cardiac stress</strong> — pre-op chest pain or arrhythmia in a younger patient: ask about energy drinks, pre-workout supplements, weight-loss pills (often contain stimulants).</li><li><strong>Cannabis hyperemesis syndrome misdiagnosed as gastroenteritis</strong> — chronic heavy cannabis user with cyclic vomiting and compulsive hot showers/baths for relief. Treat as full stomach.</li><li><strong>Recent "tapered off" benzo or opioid</strong> — patient may have stopped recently and be at peak withdrawal risk on day of surgery, especially if undisclosed.</li></ul>'});
   }
 
   function renderBupe() {
@@ -1548,6 +1764,9 @@
     rec({tone:'info', label:'Medical cannabis',
       main:'Discuss continuation with patient — similar pharmacology to recreational',
       detail:'Patient using medical cannabis for pain/spasticity/seizures should continue their usual regimen. Document the indication.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications',
+      detail:'<ul><li><strong>Pre-op decision:</strong> chronic use → proceed with awareness of altered pharmacology. Acutely intoxicated → delay elective. CHS active episode → treat as full stomach + delay if elective.</li><li><strong>Intraop:</strong> expect ~20% higher propofol and volatile requirement in chronic users. Watch for bronchospasm in chronic smokers; consider LMA or deep extubation. Anticipate PONV — give multimodal antiemetic prophylaxis.</li><li><strong>Postop:</strong> heavy daily users may experience withdrawal at 24-72 h (anxiety, insomnia, GI upset). Symptomatic management. CHS — IV haloperidol or droperidol can be effective.</li><li><strong>Disposition:</strong> chronic users often have higher PONV-related delayed discharge. Set expectations.</li></ul>'});
   }
 
   function renderAlcohol() {
@@ -1567,6 +1786,9 @@
     rec({tone:'info', label:'Medications for AUD',
       main:'Naltrexone, acamprosate, disulfiram — continue or hold?',
       detail:'<ul><li><strong>Naltrexone:</strong> hold for 24-72 hours pre-op if planning to use opioids (it antagonizes them). Long-acting injectable (Vivitrol) — work with addiction specialist for timing.</li><li><strong>Acamprosate:</strong> continue (no opioid interaction).</li><li><strong>Disulfiram:</strong> hold 10-14 days pre-op (causes reaction with alcohol in some surgical preps, IV fluids, and certain drugs).</li></ul>'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications',
+      detail:'<ul><li><strong>Pre-op decision:</strong> intoxicated = cancel elective. Heavy daily use without cessation period = high withdrawal risk during admission; have a CIWA protocol ready. 4+ weeks abstinence ideal for elective.</li><li><strong>Pre-op meds:</strong> thiamine 100 mg before glucose-containing fluids (Wernicke prevention). Folate, B12, multivitamin. Hold naltrexone 24-72 h if opioids planned.</li><li><strong>Intraop:</strong> for the chronic user without acute intoxication, MAC is INCREASED (need more anesthetic). For the acutely intoxicated patient, MAC is decreased and aspiration risk is high — RSI.</li><li><strong>Postop:</strong> CIWA monitoring, scheduled benzo or dexmedetomidine ladder for high-risk patients. Prophylactic treatment for those with prior DTs or seizures. Watch 24-72 h for withdrawal onset.</li><li><strong>Disposition:</strong> monitored bed for moderate-to-high withdrawal risk patients. Consider ICU for severe risk (history of DTs, prior withdrawal seizures, very heavy use). Addiction medicine consult before discharge.</li></ul>'});
   }
 
   function renderStimulants() {
@@ -1583,6 +1805,9 @@
     rec({tone:'info', label:'Prescription stimulants (Adderall, Ritalin, Vyvanse)',
       main:'Generally hold morning of surgery',
       detail:'These cause sympathetic activation that complicates intraop hemodynamics. Hold the morning dose. Resume postop when stable. Patients with ADHD typically tolerate one missed dose without issue. Documented MAOI interaction — see MAOI section.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications',
+      detail:'<ul><li><strong>Pre-op decision:</strong> active cocaine/meth use = delay elective 24-48 h cocaine, longer (often 72 h+) for meth. Positive UDS without acute symptoms = clinical judgment. Chronic cardiomyopathy from meth = consider TTE before major surgery.</li><li><strong>Pre-op meds:</strong> hold prescription stimulants (Adderall, Ritalin) morning of surgery. Beware MAOI co-administration.</li><li><strong>Intraop:</strong> AVOID ephedrine, ketamine boluses (catecholamine excess). Use direct-acting agents (phenylephrine cautiously). For intraop HTN: benzos first for agitation; nicardipine/clevidipine/labetalol/phentolamine for HTN (avoid pure beta-blocker in active cocaine — unopposed alpha). Hyperthermia + cocaine = consider MH-mimic; check CK.</li><li><strong>Postop:</strong> watch for cocaine washout and rebound symptoms, depression, irritability. Chronic users may have higher pain scores due to dopamine dysregulation.</li><li><strong>Disposition:</strong> monitored bed if active intoxication or chronic cardiomyopathy. Routine for resolved/remote use.</li></ul>'});
   }
 
   function renderMAOIs() {
@@ -1602,6 +1827,9 @@
     rec({tone:'info', label:'Serotonin syndrome recognition',
       main:'Triad: mental status change · autonomic instability · neuromuscular hyperactivity (clonus, hyperreflexia)',
       detail:'Hyperthermia, agitation, sweating, diarrhea, tremor, hyperreflexia, clonus, rigidity. Treatment: stop offending drug, supportive care, benzodiazepines, cyproheptadine for severe cases. Can be fatal — recognize and treat aggressively.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications',
+      detail:'<ul><li><strong>Pre-op decision:</strong> continue MAOI unless psychiatry has approved hold. Confirm exact drug + dose.</li><li><strong>Strike from the plan:</strong> meperidine, tramadol, dextromethorphan, ephedrine, indirect sympathomimetics, methylene blue, linezolid.</li><li><strong>Substitutions:</strong> fentanyl family or morphine for opioids; phenylephrine/norepinephrine for vasopressors.</li><li><strong>Intraop:</strong> tag the chart and the team. Verify any pressor or analgesic before push. Hypertension during the case = treat with direct vasodilators (nicardipine, clevidipine, esmolol), NOT by withholding the MAOI.</li><li><strong>Postop:</strong> avoid the same drug list in pain management. Communicate plan in handoff and discharge instructions. Patient education on OTC cough/cold products containing dextromethorphan or pseudoephedrine.</li></ul>'});
   }
 
   function renderLithium() {
@@ -1618,6 +1846,9 @@
     rec({tone:'warn', label:'Restart timing',
       main:'Restart when normal renal function, hydration, and electrolytes confirmed',
       detail:'Don\'t resume lithium in a postop patient with AKI, hyponatremia, or large fluid shifts. Coordinate with psychiatry for restart timing and consider checking a level once stable.'});
+    rec({tone:'info', label:'🎯 What this means for the anesthetic',
+      main:'Practical implications',
+      detail:'<ul><li><strong>Pre-op decision:</strong> minor/short outpatient → continue. Major surgery with anticipated fluid shifts → hold morning of surgery. Recent lithium level if not on file (especially if AKI risk, age, or polypharmacy).</li><li><strong>Pre-op labs:</strong> baseline Cr, Na, K. Lithium level if last one is &gt; 6 months old or any concerning signs.</li><li><strong>Intraop:</strong> reduce NMB doses, use TOF monitoring. Avoid loop/thiazide diuretics intra- and postoperatively. Maintain euvolemia and normal Na.</li><li><strong>Postop:</strong> resume lithium only when renal function and hydration normal. Avoid NSAIDs and ACEi/ARB while on lithium (raise levels). Recheck lithium level at 24-48 h if AKI occurred or if symptoms suggest toxicity (tremor, confusion, ataxia).</li><li><strong>Disposition:</strong> consider longer postop observation in patients with marginal renal function or large fluid shifts before restarting lithium.</li></ul>'});
   }
 
   function renderSerotonergic() {
@@ -1648,6 +1879,9 @@
       {title:'Vagus nerve stimulator (VNS)', sub:'Turn off for cautery near device', onClick:()=>go('VNS','v',renderVNS)},
       {title:'Cochlear implant', sub:'MRI, electrocautery, electrosurgery', onClick:()=>go('CI','i',renderCochlear)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — implanted devices',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Intrathecal baclofen pump interrupted = withdrawal emergency</strong> — sudden cessation of intrathecal baclofen can cause severe rebound spasticity, hyperthermia, rhabdomyolysis, multi-organ failure. Never turn off an IT baclofen pump for surgery. Confirm reservoir volume + battery before long cases.</li><li><strong>SCS not asked about in chronic-pain patients</strong> — patient on chronic pain meds may have an SCS that\'s never volunteered. Specifically ask. Cautery near device can damage it or cause tissue injury.</li><li><strong>DBS programmer absent on day of surgery</strong> — DBS should be turned off for monopolar cautery. If neurologist/programmer not arranged in advance, case may need to be delayed or use bipolar only.</li><li><strong>Cochlear implant on the side of head/neck surgery</strong> — affects bovie use, MRI compatibility (most modern implants are MR-conditional but require specific protocols), positioning to avoid device pressure.</li><li><strong>LVAD patient with non-LVAD-team anesthesiologist taking the case</strong> — even "minor" surgery in an LVAD patient warrants involvement of the LVAD coordinator/program. Pump parameters, anticoag status, RV function, line vs noninvasive BP all matter.</li><li><strong>Pacer "interrogated last year" treated as adequate</strong> — PMs interrogated annually, ICDs every 6 months per AHA. Stale interrogation = arrange a fresh one before the case. Especially important if patient is dependent or device is &gt; 5 years old.</li></ul>'});
   }
 
   function renderSCS() {
@@ -1859,6 +2093,9 @@
       {title:'Resume AC after block / catheter removal', sub:'When to restart drug postoperatively', onClick:()=>go('Resume AC', 'ac-resume', renderACResume)},
       {title:'Antiplatelet agents', sub:'ASA, clopidogrel, ticagrelor, prasugrel', onClick:()=>go('Antiplatelet', 'ac-ap', renderAntiplateletRoot)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — anticoagulation / regional',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Prior difficult epidural not documented in the chart summary</strong> — read the actual anesthesia note from the prior labor/surgery. "Successful epidural" can hide 6 attempts with intrathecal puncture. Sets expectations for time, technique choice (Touhy vs paramedian), and whether to attempt at all.</li><li><strong>DOAC + reduced renal function = longer hold</strong> — apixaban with CrCl &lt; 30, dabigatran with CrCl &lt; 50 = significantly prolonged half-life. The standard 72 h hold may not be enough. Check drug-specific levels (anti-Xa for FXa inhibitors, dilute thrombin time for dabigatran) if uncertain.</li><li><strong>Aspirin-clopidogrel patient where team forgets the clopidogrel</strong> — patient on dual antiplatelet for recent DES often only "remembered" as on aspirin. Specifically ask about every antiplatelet by name. Recent DES (&lt; 6 months) on DAPT = consult cardiology before holding.</li><li><strong>Subcutaneous heparin TID dosing</strong> — TID prophylactic dosing has the same hold interval as therapeutic heparin per ASRA 2025 (12 h, not 4-6 h that some still use). Easy to default to "it\'s just prophylaxis" thinking.</li><li><strong>Patient on "just baby aspirin" plus an SSRI plus fish oil</strong> — multiple weak antiplatelets add up. Generally OK for neuraxial but worth noting for high-stakes blocks.</li><li><strong>Andexanet alfa withdrawal (Dec 2025)</strong> — no longer available in US. PCC 25-50 U/kg is now first-line for apixaban/rivaroxaban/edoxaban reversal. Older protocols still list andexanet — update local cheat sheets.</li><li><strong>LMWH "yesterday at 4 PM" — not 24 hours, count carefully</strong> — therapeutic LMWH needs 24 h, prophylactic needs 12 h. Patient who took prophylactic LMWH yesterday evening at 8 PM is at 14 h hold by 10 AM, which is borderline-OK. Document exact times.</li></ul>'});
     if (ctx.urgency === 'Time-sensitive (within days)') {
       note('Time-sensitive: ESC suggests proceeding when feasible after partial NOAC hold (≥48 h interruption + low/moderate bleed-risk) OR full hold of 3 days FXa / 4–5 days dabigatran for high-bleed surgery. Consider DOAC level testing.');
     } else {
@@ -2107,6 +2344,9 @@
       {title:'Day-of hyperglycemia management', sub:'Targets, sliding scale, when to delay', onClick:()=>go('Hyperglycemia','h',renderHyperG)},
       {title:'DKA / euglycemic DKA', sub:'Recognition and acute management', onClick:()=>go('DKA','d',renderDKA)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — diabetes & endocrine',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Euglycemic DKA in SGLT2i patients</strong> — glucose can be 150-200 mg/dL despite frank ketoacidosis. Always check β-OHB on day of surgery in any SGLT2i patient who hasn\'t had drug held the standard interval, or in any unwell-appearing patient on SGLT2i regardless of glucose.</li><li><strong>Adrenal insufficiency from chronic inhaled or topical steroids</strong> — high-dose ICS (fluticasone, budesonide &gt; 1 mg/day for &gt; 3 weeks) and chronic high-potency topical steroids can suppress HPA axis. Patient won\'t volunteer this; ask specifically about inhalers, eczema creams, intra-articular injections.</li><li><strong>Pheochromocytoma red flags in resistant HTN</strong> — episodic headaches, palpitations, sweating, especially with HTN that\'s difficult to control on multiple agents. Don\'t anesthetize a paroxysmal HTN patient without considering pheo.</li><li><strong>Hypothyroidism mistaken for "just fatigue/depression"</strong> — esp. elderly. TSH is cheap; severe hypothyroidism worsens anesthetic outcomes (bradycardia, hypothermia, prolonged emergence, ileus). Check if symptomatic and never tested.</li><li><strong>"Type 2" patient who\'s actually Type 1 or LADA</strong> — adult-onset autoimmune diabetes is increasingly recognized. Hold-pattern based on T2 assumptions can produce DKA. C-peptide and antibodies clarify if unsure; treat as insulin-dependent until known otherwise.</li><li><strong>HbA1c &gt; 8.5% as a deferral threshold for elective</strong> — A1c &gt; 8.5% associated with increased SSI, wound complications, and mortality. Elective: optimize first. Urgent: proceed with tighter intraop control.</li></ul>'});
   }
 
   function renderGLP1() {
@@ -2333,6 +2573,9 @@
       {title:'Pacemaker / ICD (CIED)', sub:'Decision flow + magnet behavior', onClick:()=>go('CIED','i',renderCIED)},
       {title:'Pulmonary hypertension', sub:'Severity, evaluation, intraop strategy', onClick:()=>go('PHTN','p',renderPHTNRoot)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — cardiac',
+      main:'Patterns experienced clinicians catch that newer ones walk past',
+      detail:'<ul><li><strong>RV dysfunction hidden behind a "normal LVEF"</strong> — TTE reports often emphasize left heart. Look for RV size, TAPSE, RVSP, and septal flattening. RV failure is much harder to manage intraop than LV failure.</li><li><strong>Severe TR with "normal EF"</strong> — severe right-sided regurgitation often gets buried at the bottom of the echo report. Means RV is failing and volume status is precarious.</li><li><strong>Low-flow low-gradient severe AS</strong> — calcified valve + reduced EF can produce a normal-appearing gradient. AVA &lt; 1.0 with mean gradient &lt; 40 in a patient with reduced EF is severe AS until proven otherwise. Dobutamine stress echo distinguishes.</li><li><strong>HFpEF in the "normal echo" patient</strong> — diastolic dysfunction with preserved EF causes 50% of HF admissions. Elderly + HTN + DM + DOE = HFpEF risk regardless of EF.</li><li><strong>Exertional symptoms never specifically asked about</strong> — "I feel fine" patients often haven\'t tried to exert. Ask: "What\'s the most you\'ve walked recently? Have you climbed stairs? Carried groceries?"</li></ul>'});
   }
 
   function renderMETs() {
@@ -2749,7 +2992,7 @@
           main:'HRZ + ICD = anti-tachy MUST be off (false detection of cautery → inappropriate shock)',
           detail:'<strong>Two separate decisions for an ICD in HRZ:</strong><br>1. <strong>Anti-tachy:</strong> disable via magnet OR programmer<br>2. <strong>Pacing:</strong> if pacer-dependent, must convert to asynchronous — magnet does NOT do this for ICD-associated pacing, only programmer can.'});
         if (c.dependent) {
-          rec({tone:'danger', label:'Pacer-dependent + HRZ + ICD',
+          rec({tone:'danger', label:'🛑 HARD STOP — Pacer-dependent + HRZ + ICD',
             main:'Magnet alone is insufficient — programmer required for asynchronous pacing',
             detail:'Page EP fellow for programmer. Apply R2 defibrillator pads BEFORE disabling. After programmer: ICD off, pacing in DOO/VOO. Reverse at end of case.<br><br>If older ICD that does NOT allow pacing mode change: arrange transcutaneous or transvenous backup pacing before induction. Discuss with surgeon — may convince them to use bipolar to minimize cautery.'});
         } else {
@@ -3025,6 +3268,9 @@
       {title:'AV fistula / vascular access', sub:'Positioning, IV access, BP cuff', onClick:()=>go('Access','a',renderESRDAccess)}
     ]));
     note('Adapted from Fielding-Singh et al. (Anesthesiology 2025;143:1030-48), Cronin et al. (J Cardiothorac Vasc Anesth 2023), and institutional practice.');
+    rec({tone:'warn', label:'⚠ Commonly missed — ESRD',
+      main:'Patterns easy to walk past',
+      detail:'<ul><li><strong>Severe anemia normalized as "chronic"</strong> — Hgb 8-9 in a dialysis patient gets dismissed as baseline. But periop O2-delivery considerations don\'t care about chronicity. Type & screen, transfusion threshold discussion with surgeon for major cases.</li><li><strong>Platelet dysfunction from uremia</strong> — platelet count can be normal but function impaired. DDAVP 0.3 mcg/kg IV pre-op for high-bleed-risk surgery if recent dialysis hasn\'t been adequate. Cryoprecipitate is the rescue.</li><li><strong>Calciphylaxis on the skin missed</strong> — painful purplish skin lesions in ESRD patient = vascular calcification with skin necrosis. Affects positioning, surgical site choices.</li><li><strong>Right heart dysfunction from chronic fluid overload</strong> — many dialysis patients have RV dilation and pulmonary HTN. TTE before major surgery worth considering even when LVEF is "normal."</li><li><strong>Missed dialysis hidden in the history</strong> — patient says "I dialyze 3 times a week" but actually skipped this week. Always ask specifically: "When was your last dialysis? Did you go to all your sessions this week?"</li><li><strong>Vascular access of unknown side</strong> — fistula not always obvious on exam (especially BMI). Ask. Mark. Cover with sign or written note before transfer.</li></ul>'});
   }
 
   function renderESRDTiming() {
@@ -3111,6 +3357,9 @@
       {title:'ARISCAT', sub:'Postop pulm complications', onClick:()=>go('ARISCAT','p',renderARISCAT)},
       {title:'STOP-Bang', sub:'OSA screening', onClick:()=>go('STOP-Bang','s',renderSTOPBang)}
     ]));
+    rec({tone:'warn', label:'⚠ Commonly missed — frailty & functional reserve',
+      main:'Predicts outcomes better than many isolated diseases — and easy to miss',
+      detail:'<ul><li><strong>"I\'m independent" that\'s actually IADL dependence</strong> — patient says independent because they live alone, but doesn\'t drive, doesn\'t cook, doesn\'t manage finances, has family doing groceries. Ask specifically: who shops? who cooks? who drives? who manages bills?</li><li><strong>METs by self-report ≠ demonstrated capacity</strong> — patient claims "I can climb stairs" but hasn\'t tried in 6 months because they avoid stairs. Functional decline is gradual and patients adapt. Use DASI or M-DASI-4Q for objective scoring.</li><li><strong>Recent falls not asked about</strong> — falls in the last 6-12 months are a high-yield single question. Predicts postop delirium, length of stay, mortality. Easy to forget on a busy day.</li><li><strong>Significant unintentional weight loss framed as "the diet\'s working"</strong> — elderly cancer patient or chronic disease patient losing weight is sarcopenia/cachexia, not success. &gt; 5% weight loss over 6 months = significant. Affects extubation, mobility, healing.</li><li><strong>Sarcopenia missed because BMI is normal</strong> — elderly patient with normal BMI can still be sarcopenic (low muscle mass with adipose replacement). Grip strength, chair-rise time, or psoas muscle area on CT abdomen are more informative than BMI in &gt; 70.</li><li><strong>Baseline cognition not assessed</strong> — mild cognitive impairment is a powerful predictor of postop delirium and longer LOS. Mini-Cog (3-word recall + clock draw) takes 2 minutes. If positive: postop delirium prevention plan, family present at extubation, avoid benzos, dexmedetomidine preferred for sedation.</li><li><strong>Frailty in the "healthy" patient with one bad disease</strong> — a 55-year-old with severe COPD on home O2 may have frailty rivaling a 90-year-old. Don\'t require advanced age to consider frailty assessment.</li></ul>'});
   }
 
   function renderASAPS() {
