@@ -712,7 +712,7 @@
     ['remifentanil', 'ultiva'],
     ['hydromorphone', 'dilaudid'],
     ['morphine', 'ms contin', 'duramorph'],
-    ['dexmedetomidine', 'dex', 'precedex'],
+    ['dexmedetomidine', 'precedex'],
     ['sevoflurane', 'sevo', 'ultane'],
     ['desflurane', 'des-fluorane', 'suprane'],
     ['isoflurane', 'iso', 'forane'],
@@ -1917,6 +1917,9 @@
 
   function renderQProceed() {
     title('Can I proceed today?');
+    rec({tone:'info', label:'Scope of this page — day-of decisions only',
+      main:'These thresholds answer "should I proceed right now?" — they are NOT the right thresholds for pre-op optimization decisions weeks in advance',
+      detail:'The thresholds on this page are deliberately higher than the thresholds the institutional Pre-op Evaluation &amp; Testing Algorithm uses for elective optimization. <br><br><strong>Why two different thresholds:</strong><ul><li><strong>Day-of (this page):</strong> we ask whether the abnormality justifies cancelling a case the patient and surgical team have prepared for. The cost of cancellation is real; thresholds are higher.</li><li><strong>Pre-op optimization (separate algorithm):</strong> we ask whether an abnormality found weeks in advance is worth treating before surgery. The cost is low and the benefit may be substantial; thresholds are lower and the response is "fix this, then proceed" rather than "cancel."</li></ul>A K+ of 5.6 found two weeks before elective hip replacement may warrant ACE-I hold + recheck before surgery. The same K+ of 5.6 found in pre-op holding on a known-CKD patient with a normal ECG often does not warrant cancellation (this page). Both answers are right for their context.'});
     rec({tone:'danger', label:'Hard stops — cancel or delay',
       main:'Conditions that almost always justify delay for elective surgery',
       detail:'<ul><li>Active ACS, decompensated HF, new significant arrhythmia</li><li>Hemodynamically significant valvular disease not yet evaluated</li><li>Symptomatic severe AS without prior intervention</li><li>Recent MI &lt;60 days (for elective)</li><li>Recent stroke &lt;3 months (for elective)</li><li>Untreated severe HTN (&gt;180/110) on the day</li><li>Active respiratory infection with fever, productive cough, or wheezing</li><li>Uncontrolled DM with DKA/HHS</li><li>Unresolved electrolyte abnormality (K+ &gt;6 in non-ESRD; severe Na+ &lt;125 or &gt;155)</li><li>Acute kidney injury in evolution</li><li>NPO violation that\'s incompatible with the planned anesthetic</li></ul>'});
@@ -2630,6 +2633,10 @@
       related:[
         {label:'GLP-1 aspiration nuance (Airway section)', render:renderGLP1Aspiration}
       ]});
+    rec({tone:'warn', label:'⚠ Check your institutional policy',
+      main:'Some institutions still use the simpler 2023 ASA uniform-hold rule — and that is endorsed by the 2024 guidance as the appropriate fallback when patient-level risk triage isn\'t feasible',
+      detail:'The 2024 Kindel multi-society guidance is explicit that the older ASA approach (hold day-of for daily formulations, hold one weekly dose before surgery for weekly formulations) remains appropriate in settings that lack a dedicated pre-op assessment clinic capable of collecting dose, formulation, escalation status, GI symptoms, and indication for every booking. <br><br>If your institution\'s policy is the uniform hold rule, follow that policy on the patient-facing side — the day-of symptom check and gastric-ultrasound-when-in-doubt approach below still applies regardless of which hold rule was used pre-op.',
+      cite:'Kindel Surg Obes Relat Dis 2024 (fallback endorsement).'});
   }
 
   function showGLP1(freq) {
@@ -2698,6 +2705,10 @@
     rec({tone:'info', label:'Why glucose alone doesn\'t suffice',
       main:'Euglycemic DKA has glucose in the 100-300 range despite severe ketoacidosis',
       detail:'A glucose of 180 in a patient with β-OHB of 4.0 is profound DKA. Without checking ketones, you\'ll miss it.'});
+    rec({tone:'info', label:'If POC β-OHB isn\'t available — use bicarb + anion gap',
+      main:'Stat BMP or VBG: bicarbonate ≥ 20 AND anion gap ≤ 12 → reassuring; either threshold breached → treat as evolving ketoacidosis',
+      detail:'Many institutions don\'t have POC β-hydroxybutyrate meters in pre-op or PACU. The validated surrogate is venous bicarb and anion gap from a stat chem panel or VBG — these capture the metabolic consequence of ketonemia even without measuring ketones directly. <br><br><strong>Operational thresholds (institution-specific but widely used):</strong><ul><li>Bicarb ≥ 20 AND anion gap ≤ 12: reassuring — likely safe to proceed for ambulatory / low-risk cases meeting the other criteria below</li><li>Bicarb &lt; 20 OR anion gap &gt; 12: do not proceed elective; treat as evolving euglycemic DKA pending full workup</li><li>Either threshold breached with any GI symptom (nausea, vomiting, abdominal pain, tachypnea, malaise): cancel elective and admit / treat</li></ul>This is the day-of workflow assumed by many institutional protocols where the labs that come back from a routine pre-op draw are doing the same work that β-OHB does in centers with POC meters.',
+      cite:'Hulst Front Endocrinol 2026; institutional protocols.'});
   }
 
   function renderSGLT2NotHeld() {
