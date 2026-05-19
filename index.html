@@ -379,6 +379,8 @@
   .search-result-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
   .search-result-path { font-size: 11px; color: var(--text-3); margin-bottom: 4px; }
   .search-result-snippet { font-size: 13px; color: var(--text-2); line-height: 1.4; }
+  .search-result-via { font-size: 11px; color: var(--text-3); margin-top: 4px; font-style: italic; }
+  .search-result-via em { color: var(--accent); font-style: normal; font-weight: 500; }
   .search-result mark {
     background: rgba(24, 95, 165, 0.25);
     color: inherit;
@@ -529,6 +531,466 @@
     STEP_REGISTRY[key] = {key, label, render, parents: parents || []};
   }
 
+  // ============ SEARCH SYNONYMS ============
+  // Each row is an equivalence class — every term maps to every other term in the
+  // same row. Order doesn't matter. Lower-case all terms when adding new rows.
+  // Used in two places:
+  //  (1) buildSearchIndex appends every matched synonym to each entry's `searchable`
+  //      string, so docs that say "K+" can be found by typing "potassium" (and vice versa)
+  //  (2) renderSearchResults expands the user's query into all equivalent terms and
+  //      checks each against the index, then highlights whichever term actually matched
+  const SYNONYM_CLASSES = [
+    // Electrolytes / labs
+    ['k+', 'potassium'],
+    ['na+', 'sodium', 'hyponatremia', 'hypernatremia'],
+    ['mg', 'magnesium', 'mg++'],
+    ['ca', 'calcium', 'ca++', 'ionized calcium'],
+    ['cl', 'chloride'],
+    ['phos', 'phosphate', 'phosphorus'],
+    ['hgb', 'hb', 'hemoglobin', 'haemoglobin'],
+    ['hct', 'hematocrit', 'haematocrit'],
+    ['plt', 'platelet', 'platelets', 'thrombocyte'],
+    ['wbc', 'white blood cell', 'leukocyte'],
+    ['cr', 'creatinine', 'scr'],
+    ['bun', 'urea', 'blood urea nitrogen'],
+    ['gfr', 'egfr', 'glomerular filtration rate', 'crcl', 'creatinine clearance'],
+    ['inr', 'international normalized ratio'],
+    ['ptt', 'aptt', 'partial thromboplastin'],
+    ['pt', 'prothrombin time'],
+    ['hba1c', 'a1c', 'hemoglobin a1c', 'glycated hemoglobin', 'glycosylated hemoglobin'],
+    ['bnp', 'b-type natriuretic peptide', 'natriuretic peptide'],
+    ['nt-probnp', 'ntprobnp', 'probnp', 'n-terminal probnp'],
+    ['troponin', 'trop', 'hs-trop', 'hs-troponin', 'high-sensitivity troponin', 'cardiac troponin'],
+    ['β-ohb', 'b-ohb', 'beta-hydroxybutyrate', 'beta hydroxybutyrate', 'ketone', 'ketones', 'ketosis'],
+    ['abg', 'arterial blood gas', 'vbg', 'venous blood gas', 'blood gas'],
+    // Cardio diagnostics & imaging
+    ['ecg', 'ekg', 'electrocardiogram', '12-lead', 'twelve-lead'],
+    ['echo', 'echocardiogram', 'echocardiography', 'tte', 'transthoracic echo'],
+    ['tee', 'transesophageal echo', 'transesophageal echocardiogram'],
+    ['cxr', 'chest x-ray', 'chest xray', 'chest radiograph'],
+    ['ct', 'cat scan', 'computed tomography'],
+    ['pfts', 'pulmonary function test', 'pulmonary function tests', 'spirometry'],
+    ['rhc', 'right heart catheterization', 'right heart cath'],
+    ['cath', 'catheterization'],
+    // Cardiac conditions
+    ['mi', 'myocardial infarction', 'heart attack', 'stemi', 'nstemi', 'acs', 'acute coronary syndrome'],
+    ['hf', 'heart failure', 'chf', 'congestive heart failure', 'hfref', 'hfpef'],
+    ['as', 'aortic stenosis'],
+    ['ar', 'aortic regurgitation', 'aortic insufficiency', 'ai'],
+    ['ms', 'mitral stenosis'],
+    ['mr', 'mitral regurgitation'],
+    ['phtn', 'pulmonary hypertension', 'pulm htn', 'pulm hypertension', 'pah', 'pulmonary arterial hypertension'],
+    ['af', 'afib', 'a-fib', 'atrial fibrillation', 'a fib'],
+    ['aflutter', 'atrial flutter'],
+    ['svt', 'supraventricular tachycardia'],
+    ['vt', 'ventricular tachycardia'],
+    ['vf', 'ventricular fibrillation'],
+    ['cad', 'coronary artery disease', 'ihd', 'ischemic heart disease', 'ischaemic heart disease'],
+    ['htn', 'hypertension', 'high blood pressure'],
+    ['lvh', 'left ventricular hypertrophy'],
+    ['ef', 'ejection fraction', 'lvef'],
+    ['cardiomyopathy', 'cm'],
+    ['rcri', 'revised cardiac risk index', 'lee criteria', 'lee score'],
+    ['mets', 'metabolic equivalents', 'functional capacity'],
+    ['dasi', 'duke activity status index', 'duke activity status'],
+    ['cied', 'pacemaker', 'icd', 'defibrillator', 'crt', 'cardiac implantable electronic device', 'pacer'],
+    ['lvad', 'left ventricular assist device', 'heartmate', 'heartware'],
+    ['dapt', 'dual antiplatelet', 'dual anti-platelet therapy'],
+    ['pci', 'percutaneous coronary intervention', 'stent', 'stenting', 'angioplasty'],
+    ['cabg', 'coronary artery bypass'],
+    ['des', 'drug-eluting stent', 'drug eluting stent'],
+    ['bms', 'bare-metal stent', 'bare metal stent'],
+    // Endocrine
+    ['dm', 'diabetes', 'diabetes mellitus', 't1dm', 't2dm', 'type 1 diabetes', 'type 2 diabetes'],
+    ['dka', 'diabetic ketoacidosis'],
+    ['hhs', 'hyperosmolar', 'hyperosmolar hyperglycemic'],
+    ['euglycemic dka', 'eudka', 'euglycemic ketoacidosis'],
+    ['glp-1', 'glp1', 'glp-1 agonist', 'glp-1 receptor agonist', 'glp1ra', 'incretin',
+      'semaglutide', 'ozempic', 'wegovy', 'rybelsus',
+      'tirzepatide', 'mounjaro', 'zepbound',
+      'liraglutide', 'victoza', 'saxenda',
+      'dulaglutide', 'trulicity',
+      'exenatide', 'byetta', 'bydureon',
+      'lixisenatide', 'adlyxin'],
+    ['sglt2', 'sglt-2', 'sglt2 inhibitor', 'sodium-glucose cotransporter', 'gliflozin', 'flozin',
+      'empagliflozin', 'jardiance',
+      'dapagliflozin', 'farxiga', 'forxiga',
+      'canagliflozin', 'invokana',
+      'ertugliflozin', 'steglatro',
+      'bexagliflozin', 'brenzavvy'],
+    ['dpp4', 'dpp-4', 'dpp-4 inhibitor', 'gliptin',
+      'sitagliptin', 'januvia',
+      'linagliptin', 'tradjenta',
+      'saxagliptin', 'onglyza',
+      'alogliptin', 'nesina'],
+    ['sulfonylurea', 'glipizide', 'glucotrol', 'glyburide', 'diabeta', 'glimepiride', 'amaryl'],
+    ['tzd', 'thiazolidinedione', 'pioglitazone', 'actos', 'rosiglitazone', 'avandia'],
+    ['metformin', 'glucophage'],
+    ['basal insulin', 'long-acting insulin', 'glargine', 'lantus', 'toujeo', 'basaglar', 'degludec', 'tresiba', 'detemir', 'levemir'],
+    ['bolus insulin', 'rapid-acting insulin', 'mealtime insulin', 'lispro', 'humalog', 'aspart', 'novolog', 'fiasp', 'glulisine', 'apidra'],
+    ['nph', 'humulin n', 'novolin n', 'intermediate-acting insulin'],
+    ['regular insulin', 'humulin r', 'novolin r', 'short-acting insulin'],
+    ['steroid', 'glucocorticoid', 'corticosteroid', 'prednisone', 'prednisolone', 'hydrocortisone', 'cortef', 'dexamethasone', 'decadron', 'methylprednisolone', 'solu-medrol', 'medrol'],
+    // Renal
+    ['aki', 'acute kidney injury', 'arf', 'acute renal failure'],
+    ['ckd', 'chronic kidney disease', 'crf', 'chronic renal failure'],
+    ['esrd', 'end-stage renal disease', 'end stage renal disease', 'dialysis dependent', 'eskd'],
+    ['hd', 'hemodialysis', 'haemodialysis'],
+    ['pd', 'peritoneal dialysis'],
+    ['av fistula', 'avf', 'av access', 'arteriovenous fistula', 'fistula'],
+    // Respiratory
+    ['osa', 'obstructive sleep apnea', 'sleep apnea', 'sleep-disordered breathing'],
+    ['stop-bang', 'stop bang', 'stopbang'],
+    ['copd', 'emphysema', 'chronic obstructive pulmonary disease', 'chronic bronchitis'],
+    ['uri', 'upper respiratory infection', 'cold', 'common cold'],
+    ['ards', 'acute respiratory distress syndrome'],
+    ['cpap', 'continuous positive airway pressure', 'bipap', 'bilevel'],
+    // GI / liver
+    ['gerd', 'reflux', 'acid reflux', 'gastroesophageal reflux'],
+    ['ppi', 'proton pump inhibitor', 'omeprazole', 'pantoprazole', 'esomeprazole', 'nexium', 'prilosec', 'protonix'],
+    ['cirrhosis', 'liver disease', 'chronic liver disease', 'cld'],
+    ['meld', 'meld-na', 'meld score', 'model for end-stage liver disease'],
+    ['child-pugh', 'child pugh', 'ctp'],
+    ['he', 'hepatic encephalopathy'],
+    ['hrs', 'hepatorenal syndrome'],
+    ['sbp', 'spontaneous bacterial peritonitis'],
+    ['nsaid', 'nsaids', 'non-steroidal anti-inflammatory', 'ibuprofen', 'motrin', 'advil', 'naproxen', 'aleve', 'ketorolac', 'toradol', 'diclofenac', 'meloxicam'],
+    ['acetaminophen', 'tylenol', 'paracetamol', 'apap', 'ofirmev'],
+    // Anticoagulation
+    ['ac', 'anticoagulation', 'anticoagulant', 'blood thinner'],
+    ['doac', 'noac', 'direct oral anticoagulant', 'novel oral anticoagulant',
+      'apixaban', 'eliquis',
+      'rivaroxaban', 'xarelto',
+      'edoxaban', 'savaysa', 'lixiana',
+      'dabigatran', 'pradaxa'],
+    ['factor xa inhibitor', 'xa inhibitor', 'anti-xa'],
+    ['warfarin', 'coumadin', 'jantoven', 'vitamin k antagonist', 'vka'],
+    ['lmwh', 'low-molecular-weight heparin', 'low molecular weight heparin',
+      'enoxaparin', 'lovenox', 'clexane',
+      'dalteparin', 'fragmin',
+      'tinzaparin', 'innohep'],
+    ['ufh', 'unfractionated heparin', 'heparin'],
+    ['fondaparinux', 'arixtra'],
+    ['protamine', 'protamine sulfate'],
+    ['idarucizumab', 'praxbind'],
+    ['andexanet', 'andexanet alfa', 'andexxa'],
+    ['pcc', '4f-pcc', '4-factor pcc', 'kcentra', 'prothrombin complex concentrate'],
+    ['ffp', 'fresh frozen plasma'],
+    ['cryo', 'cryoprecipitate'],
+    ['tranexamic acid', 'txa', 'cyclokapron'],
+    ['ddavp', 'desmopressin', 'stimate'],
+    ['vitamin k', 'phytonadione', 'mephyton'],
+    // Antiplatelet
+    ['aspirin', 'asa', 'acetylsalicylic acid'],
+    ['p2y12', 'p2y12 inhibitor',
+      'clopidogrel', 'plavix',
+      'ticagrelor', 'brilinta', 'brilique',
+      'prasugrel', 'effient',
+      'cangrelor', 'kengreal',
+      'ticlopidine', 'ticlid'],
+    // Regional / ASRA
+    ['asra', 'american society of regional anesthesia', 'regional anesthesia', 'regional', 'neuraxial'],
+    ['epidural', 'spinal', 'subarachnoid', 'intrathecal'],
+    // Neuro
+    ['cva', 'stroke', 'cerebrovascular accident', 'tia', 'transient ischemic attack'],
+    ['sah', 'subarachnoid hemorrhage'],
+    ['ich', 'intracerebral hemorrhage', 'intracranial hemorrhage'],
+    ['gcs', 'glasgow coma scale'],
+    // Anesthetic drugs / muscle relaxants / reversal
+    ['sux', 'succinylcholine', 'suxamethonium', 'anectine', 'sch'],
+    ['roc', 'rocuronium', 'zemuron'],
+    ['vec', 'vecuronium', 'norcuron'],
+    ['cis', 'cisatracurium', 'nimbex'],
+    ['atracurium', 'tracrium'],
+    ['neostigmine', 'prostigmin'],
+    ['sugammadex', 'bridion'],
+    ['propofol', 'diprivan'],
+    ['etomidate', 'amidate'],
+    ['ketamine', 'ketalar'],
+    ['midazolam', 'versed'],
+    ['fentanyl', 'sublimaze'],
+    ['remifentanil', 'ultiva'],
+    ['hydromorphone', 'dilaudid'],
+    ['morphine', 'ms contin', 'duramorph'],
+    ['dexmedetomidine', 'dex', 'precedex'],
+    ['sevoflurane', 'sevo', 'ultane'],
+    ['desflurane', 'des-fluorane', 'suprane'],
+    ['isoflurane', 'iso', 'forane'],
+    ['nitrous oxide', 'n2o', 'nitrous'],
+    // MH / PChE
+    ['mh', 'malignant hyperthermia', 'malignant hyperpyrexia'],
+    ['dantrolene', 'dantrium', 'ryanodex', 'revonto'],
+    ['pche', 'pseudocholinesterase', 'butyrylcholinesterase', 'bche', 'plasma cholinesterase', 'dibucaine number'],
+    // Vasopressors / inotropes
+    ['norepi', 'norepinephrine', 'levophed', 'noradrenaline'],
+    ['epi', 'epinephrine', 'adrenaline'],
+    ['phenylephrine', 'neosynephrine', 'neo'],
+    ['vasopressin', 'avp', 'pitressin', 'adh'],
+    ['dopamine', 'intropin'],
+    ['dobutamine', 'dobutrex'],
+    ['milrinone', 'primacor'],
+    ['ephedrine'],
+    ['methylene blue'],
+    // Cardiac meds
+    ['beta blocker', 'beta-blocker', 'b-blocker',
+      'metoprolol', 'lopressor', 'toprol',
+      'atenolol', 'tenormin',
+      'carvedilol', 'coreg',
+      'bisoprolol', 'zebeta',
+      'labetalol', 'trandate', 'normodyne',
+      'esmolol', 'brevibloc',
+      'propranolol', 'inderal'],
+    ['acei', 'ace inhibitor', 'ace-inhibitor', 'angiotensin-converting enzyme',
+      'lisinopril', 'prinivil', 'zestril',
+      'enalapril', 'vasotec',
+      'ramipril', 'altace',
+      'captopril', 'capoten',
+      'benazepril', 'lotensin'],
+    ['arb', 'angiotensin receptor blocker', 'angiotensin-receptor blocker', 'sartan',
+      'losartan', 'cozaar',
+      'valsartan', 'diovan',
+      'olmesartan', 'benicar',
+      'irbesartan', 'avapro',
+      'telmisartan', 'micardis',
+      'candesartan', 'atacand'],
+    ['arni', 'sacubitril', 'valsartan-sacubitril', 'entresto'],
+    ['ccb', 'calcium channel blocker',
+      'amlodipine', 'norvasc',
+      'nifedipine', 'procardia', 'adalat',
+      'diltiazem', 'cardizem', 'tiazac',
+      'verapamil', 'calan', 'isoptin'],
+    ['statin', 'hmg-coa reductase inhibitor',
+      'atorvastatin', 'lipitor',
+      'rosuvastatin', 'crestor',
+      'simvastatin', 'zocor',
+      'pravastatin', 'pravachol',
+      'lovastatin', 'mevacor',
+      'pitavastatin', 'livalo'],
+    ['mra', 'mineralocorticoid receptor antagonist',
+      'spironolactone', 'aldactone',
+      'eplerenone', 'inspra'],
+    ['diuretic', 'water pill',
+      'furosemide', 'lasix',
+      'bumetanide', 'bumex',
+      'torsemide', 'demadex',
+      'hctz', 'hydrochlorothiazide', 'chlorthalidone',
+      'metolazone', 'zaroxolyn'],
+    ['nitrate', 'nitroglycerin', 'ntg', 'nitro', 'isosorbide'],
+    ['amiodarone', 'cordarone', 'pacerone'],
+    ['digoxin', 'digitalis', 'lanoxin'],
+    // OUD / pain
+    ['oud', 'opioid use disorder'],
+    ['bupe', 'buprenorphine', 'suboxone', 'subutex', 'sublocade', 'belbuca', 'butrans', 'zubsolv'],
+    ['methadone', 'dolophine', 'methadose'],
+    ['naltrexone', 'vivitrol', 'revia'],
+    ['naloxone', 'narcan', 'evzio'],
+    ['oxycodone', 'oxycontin', 'roxicodone', 'percocet'],
+    ['hydrocodone', 'vicodin', 'norco', 'lortab'],
+    ['tramadol', 'ultram'],
+    ['codeine'],
+    ['tapentadol', 'nucynta'],
+    // Substances
+    ['etoh', 'alcohol', 'ethanol'],
+    ['thc', 'cannabis', 'marijuana', 'weed', 'pot', 'cannabinoid'],
+    ['chs', 'cannabinoid hyperemesis', 'cannabinoid hyperemesis syndrome'],
+    ['cocaine', 'crack'],
+    ['meth', 'methamphetamine', 'amphetamine'],
+    ['mdma', 'ecstasy', 'molly'],
+    // Psych
+    ['ssri', 'selective serotonin reuptake inhibitor',
+      'fluoxetine', 'prozac',
+      'sertraline', 'zoloft',
+      'paroxetine', 'paxil',
+      'citalopram', 'celexa',
+      'escitalopram', 'lexapro',
+      'fluvoxamine', 'luvox'],
+    ['snri', 'serotonin-norepinephrine reuptake inhibitor',
+      'venlafaxine', 'effexor',
+      'duloxetine', 'cymbalta',
+      'desvenlafaxine', 'pristiq'],
+    ['tca', 'tricyclic antidepressant',
+      'amitriptyline', 'elavil',
+      'nortriptyline', 'pamelor',
+      'imipramine', 'tofranil',
+      'doxepin', 'sinequan'],
+    ['maoi', 'monoamine oxidase inhibitor',
+      'phenelzine', 'nardil',
+      'tranylcypromine', 'parnate',
+      'selegiline', 'eldepryl', 'emsam',
+      'isocarboxazid', 'marplan',
+      'linezolid', 'zyvox'],
+    ['lithium', 'lithobid', 'eskalith'],
+    ['benzodiazepine', 'benzo',
+      'alprazolam', 'xanax',
+      'lorazepam', 'ativan',
+      'clonazepam', 'klonopin',
+      'diazepam', 'valium',
+      'temazepam', 'restoril'],
+    ['serotonin syndrome', '5-ht syndrome'],
+    // Surgery types / risk tools
+    ['ncs', 'noncardiac surgery', 'non-cardiac surgery'],
+    ['mins', 'myocardial injury after noncardiac surgery'],
+    ['ssi', 'surgical site infection', 'wound infection'],
+    ['tka', 'total knee arthroplasty', 'knee replacement'],
+    ['tha', 'total hip arthroplasty', 'hip replacement'],
+    ['aaa', 'abdominal aortic aneurysm'],
+    ['turp', 'transurethral resection of prostate'],
+    ['ariscat', 'assess respiratory risk'],
+    ['cfs', 'clinical frailty scale', 'rockwood', 'rockwood frailty'],
+    ['mfi-5', 'mfi5', 'modified frailty index'],
+    ['asa', 'asa physical status', 'asa-ps', 'asa class', 'american society of anesthesiologists'],
+    // Antibiotics
+    ['mrsa', 'methicillin-resistant staphylococcus aureus', 'methicillin-resistant staph'],
+    ['vre', 'vancomycin-resistant enterococcus'],
+    ['cefazolin', 'ancef', 'kefzol'],
+    ['cefoxitin', 'mefoxin'],
+    ['vancomycin', 'vanco', 'vancocin'],
+    ['clindamycin', 'cleocin'],
+    ['metronidazole', 'flagyl'],
+    ['ertapenem', 'invanz'],
+    ['gentamicin', 'gent', 'garamycin'],
+    ['ciprofloxacin', 'cipro'],
+    ['tmp-smx', 'bactrim', 'septra', 'trimethoprim-sulfamethoxazole', 'sulfa'],
+    ['azithromycin', 'zithromax', 'zpack', 'z-pack'],
+    ['pcn', 'penicillin', 'penicillin allergy'],
+    ['endocarditis prophylaxis', 'endocarditis ppx'],
+    // Biologics / DMARDs
+    ['dmard', 'disease-modifying antirheumatic drug'],
+    ['tnf inhibitor', 'tnf-alpha inhibitor', 'anti-tnf',
+      'etanercept', 'enbrel',
+      'adalimumab', 'humira',
+      'infliximab', 'remicade',
+      'certolizumab', 'cimzia',
+      'golimumab', 'simponi'],
+    ['jak inhibitor', 'janus kinase inhibitor',
+      'tofacitinib', 'xeljanz',
+      'baricitinib', 'olumiant',
+      'upadacitinib', 'rinvoq'],
+    ['il-6', 'il6', 'tocilizumab', 'actemra'],
+    ['il-1', 'il1', 'anakinra', 'kineret'],
+    ['rituximab', 'rituxan'],
+    ['methotrexate', 'mtx', 'rheumatrex', 'trexall'],
+    ['hydroxychloroquine', 'hcq', 'plaquenil'],
+    ['sulfasalazine', 'azulfidine'],
+    ['leflunomide', 'arava'],
+    ['mycophenolate', 'mmf', 'cellcept', 'myfortic'],
+    ['cyclosporine', 'sandimmune', 'neoral'],
+    ['tacrolimus', 'prograf', 'fk-506'],
+    ['azathioprine', 'imuran'],
+    // Other
+    ['npo', 'nothing by mouth', 'nil per os', 'fasting'],
+    ['rsi', 'rapid sequence intubation', 'rapid sequence induction'],
+    ['eras', 'enhanced recovery after surgery'],
+    ['paca', 'pacu', 'post-anesthesia care unit'],
+    ['icu', 'intensive care unit', 'critical care'],
+    ['eswt', 'extracorporeal shockwave'],
+    ['pft', 'pulmonary function'],
+    // Pregnancy / breastfeeding
+    ['preg', 'pregnancy', 'pregnant'],
+    ['bf', 'breastfeeding', 'breast-feeding', 'lactating', 'lactation', 'nursing'],
+    // Vitamins / electrolytes therapy
+    ['thiamine', 'b1', 'vitamin b1'],
+    ['folate', 'folic acid', 'b9']
+  ];
+
+  // Build a fast lookup: term → array of all equivalent terms (including itself).
+  // A term can belong to multiple classes (e.g. "asa" → aspirin AND ASA Physical Status);
+  // in that case we union the classes so it expands to all valid meanings.
+  const SYNONYM_MAP = (function(){
+    const m = new Map();
+    SYNONYM_CLASSES.forEach(cls => {
+      cls.forEach(term => {
+        const key = term.toLowerCase();
+        if (!m.has(key)) m.set(key, []);
+        const bucket = m.get(key);
+        cls.forEach(t => {
+          const tl = t.toLowerCase();
+          if (bucket.indexOf(tl) === -1) bucket.push(tl);
+        });
+      });
+    });
+    return m;
+  })();
+
+  // Sorted list of all index terms by length descending, for greedy substring matching
+  const SYNONYM_TERMS_SORTED = (function(){
+    const all = [];
+    SYNONYM_CLASSES.forEach(cls => cls.forEach(t => {
+      const tl = t.toLowerCase();
+      if (all.indexOf(tl) === -1) all.push(tl);
+    }));
+    all.sort((a,b) => b.length - a.length);
+    return all;
+  })();
+
+  // For a piece of text, return every synonym-class member of every term that appears.
+  // Used during index build to expand each entry's searchable string.
+  function collectSynonymsForText(text) {
+    const lower = text.toLowerCase();
+    const found = new Set();
+    SYNONYM_TERMS_SORTED.forEach(term => {
+      // Word-boundary-ish match (avoid matching "as" inside "fast", but allow "K+" anywhere)
+      // For terms with non-word chars (+, -, etc), substring match is fine.
+      // For pure word terms, check letter boundary.
+      let hit = false;
+      if (/^[a-z]+$/.test(term)) {
+        // pure word — need boundaries
+        const re = new RegExp('(^|[^a-z])' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z]|$)', 'i');
+        hit = re.test(lower);
+      } else {
+        hit = lower.indexOf(term) !== -1;
+      }
+      if (hit) {
+        SYNONYM_MAP.get(term).forEach(s => found.add(s));
+      }
+    });
+    return Array.from(found);
+  }
+
+  // Expand a user query into all equivalent terms it could mean.
+  // Returns: { canonical: query, expanded: [query, syn1, syn2, ...] }
+  //
+  // Matching rules:
+  //  - Exact match (q === term): expand
+  //  - q is longer than term and contains term: only expand if term is found at a
+  //    word boundary in q (to avoid "potassium" → "pot" → cannabis)
+  //  - q is shorter than term and term contains q: only expand if q is found at
+  //    a word boundary in term (same reasoning, applied in reverse)
+  //  - For terms that contain non-letter characters (K+, β-OHB, 4F-PCC, GLP-1, etc.),
+  //    plain substring is fine — boundaries are implicit in the punctuation.
+  function _isPureWord(s) { return /^[a-z][a-z ]*$/.test(s); }
+  function _hasAtBoundary(haystack, needle) {
+    // Find needle in haystack at a word boundary (start/end of string or next to non-letter).
+    if (!_isPureWord(needle)) return haystack.indexOf(needle) !== -1;
+    const re = new RegExp('(^|[^a-z])' + needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z]|$)');
+    return re.test(haystack);
+  }
+  function expandQuery(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return { canonical: '', expanded: [] };
+    const expanded = new Set([q]);
+    SYNONYM_TERMS_SORTED.forEach(term => {
+      if (term === q) {
+        SYNONYM_MAP.get(term).forEach(s => expanded.add(s));
+        return;
+      }
+      // Direct lookup: if the user typed an exact synonym key, expand.
+      // Otherwise, check substring containment at word boundaries.
+      if (q.length > term.length) {
+        // term is contained in q? Need word boundary.
+        if (_hasAtBoundary(q, term)) {
+          SYNONYM_MAP.get(term).forEach(s => expanded.add(s));
+        }
+      } else if (term.length > q.length) {
+        // q is contained in term? Need word boundary (in term).
+        if (_hasAtBoundary(term, q)) {
+          SYNONYM_MAP.get(term).forEach(s => expanded.add(s));
+        }
+      }
+    });
+    return { canonical: q, expanded: Array.from(expanded) };
+  }
+
   // Search index entries: {key, label, path, content}
   // Populated by introspection of the render functions' rec() calls.
   let SEARCH_INDEX = [];
@@ -557,13 +1019,20 @@
       }
       const contentText = _indexingMode.content.join(' ');
       const titleText = _indexingMode.titles.join(' ');
+      // Build the searchable string, then enrich it with all synonyms of every
+      // term that appears in the entry. This way, an entry mentioning "K+" can
+      // also be found by typing "potassium", and vice versa.
+      const baseSearchable = (step.label + ' ' + titleText + ' ' + contentText).toLowerCase();
+      const synonymWords = collectSynonymsForText(baseSearchable);
+      const enrichedSearchable = baseSearchable + ' ' + synonymWords.join(' ');
       SEARCH_INDEX.push({
         key: step.key,
         label: step.label,
         parents: step.parents,
         titleText: titleText,
         content: contentText,
-        searchable: (step.label + ' ' + titleText + ' ' + contentText).toLowerCase()
+        searchable: enrichedSearchable,
+        synonymsHit: synonymWords  // for snippet fallback when query doesn't match content directly
       });
     });
 
@@ -850,20 +1319,47 @@
     if (!q) {
       const tip = document.createElement('div');
       tip.className = 'search-empty';
-      tip.innerHTML = `Search across all sections.<br><br>Try: "potassium", "GLP-1", "neuraxial", "stress dose", "DAPT", "MELD", "STOP-Bang"`;
+      tip.innerHTML = `Search across all sections. Synonyms work — "potassium" finds K+, "EKG" finds ECG, "Ozempic" finds GLP-1, etc.<br><br>Try: "potassium", "GLP-1", "Eliquis", "EKG", "neuraxial", "stress dose", "DAPT", "MELD", "STOP-Bang"`;
       searchResults.appendChild(tip);
       return;
     }
+    // Expand the query into all equivalent terms via the synonym map
+    const { expanded } = expandQuery(q);
+    // For each entry, find the best-scoring expansion that matches
     const matches = [];
     SEARCH_INDEX.forEach(entry => {
-      if (entry.searchable.indexOf(q) !== -1) {
-        // Score: label hit > title hit > content hit
+      let bestScore = 0;
+      let bestTerm = q;       // which expansion term actually matched (for highlighting)
+      let bestIdx = -1;       // location in the content
+      let matchedInLabel = false;
+      let matchedInContent = false;
+      expanded.forEach(term => {
+        if (entry.searchable.indexOf(term) === -1) return;
         let score = 0;
-        if (entry.label.toLowerCase().indexOf(q) !== -1) score += 100;
-        if (entry.titleText.toLowerCase().indexOf(q) !== -1) score += 50;
-        const idx = entry.content.toLowerCase().indexOf(q);
-        if (idx !== -1) score += 10;
-        matches.push({entry, score, idx});
+        if (entry.label.toLowerCase().indexOf(term) !== -1) {
+          score += 100;
+          matchedInLabel = true;
+        }
+        if (entry.titleText.toLowerCase().indexOf(term) !== -1) score += 50;
+        const idx = entry.content.toLowerCase().indexOf(term);
+        if (idx !== -1) {
+          score += 10;
+          matchedInContent = true;
+        } else {
+          // Match was through synonym expansion only — entry didn't literally contain
+          // this term, but the synonym enrichment surfaced it. Score modestly.
+          score += 5;
+        }
+        // Prefer the term that matches the original query exactly, all else equal
+        if (term === q) score += 1;
+        if (score > bestScore) {
+          bestScore = score;
+          bestTerm = term;
+          bestIdx = idx;
+        }
+      });
+      if (bestScore > 0) {
+        matches.push({entry, score: bestScore, idx: bestIdx, matchedTerm: bestTerm});
       }
     });
     matches.sort((a, b) => b.score - a.score);
@@ -882,23 +1378,35 @@
       if (i === 0) div.style.background = 'var(--surface-2)';
 
       const pathStr = entry.parents.length ? entry.parents.join(' › ') + ' › ' : '';
+      const matchedTerm = m.matchedTerm;
 
-      // Extract a snippet around the match
+      // Extract a snippet around the match. Prefer the term that actually matched
+      // the content; if the query matched only through synonym expansion (no direct
+      // hit in content), fall back to title text.
       let snippet = '';
       const contentLower = entry.content.toLowerCase();
-      const idx = contentLower.indexOf(q);
-      if (idx !== -1) {
-        const start = Math.max(0, idx - 50);
-        const end = Math.min(entry.content.length, idx + q.length + 100);
+      const snipIdx = contentLower.indexOf(matchedTerm);
+      if (snipIdx !== -1) {
+        const start = Math.max(0, snipIdx - 50);
+        const end = Math.min(entry.content.length, snipIdx + matchedTerm.length + 100);
         snippet = (start > 0 ? '…' : '') + entry.content.substring(start, end) + (end < entry.content.length ? '…' : '');
       } else if (entry.titleText) {
         snippet = entry.titleText.substring(0, 150);
       }
 
+      // Show a small "via synonym" note if the user's typed query differed from
+      // what we actually highlighted in the doc — helps explain why an
+      // unexpected result appeared.
+      const viaNote = (matchedTerm !== q && matchedTerm.length > 0)
+        ? `<div class="search-result-via">matched: <em>${escapeHtml(matchedTerm)}</em></div>`
+        : '';
+
+      // Highlight using the term that matched the doc, not the user's typed query
       div.innerHTML = `
         <div class="search-result-path">${escapeHtml(pathStr)}</div>
-        <div class="search-result-title">${highlightMatch(entry.label, query)}</div>
-        ${snippet ? `<div class="search-result-snippet">${highlightMatch(snippet, query)}</div>` : ''}
+        <div class="search-result-title">${highlightMatch(entry.label, matchedTerm)}</div>
+        ${snippet ? `<div class="search-result-snippet">${highlightMatch(snippet, matchedTerm)}</div>` : ''}
+        ${viaNote}
       `;
       div.onclick = () => {
         closeSearch();
