@@ -1780,9 +1780,9 @@
   function renderDoSMetab() {
     title('Metabolic — day-of changes');
     rec({tone:'warn', label:'Hyperglycemia on arrival',
-      main:'Targets: ≤ 180 mg/dL ideal; up to 200 acceptable. Higher → assess for DKA.',
-      detail:'<strong>Glucose 200-250, asymptomatic, no ketones</strong>: correct with insulin, proceed. Confirm not in DKA.<br><br><strong>Glucose 250-400</strong>: check β-OHB or urine ketones. If ketones positive → DKA workup (ABG, anion gap). If clean → correct and proceed for urgent; DELAY elective.<br><br><strong>Glucose &gt; 400 OR DKA suspected</strong>: CANCEL elective, treat DKA. If urgent → proceed with insulin infusion + electrolyte correction during case, anesthesia/ICU together.<br><br><strong>Euglycemic DKA on SGLT2i</strong>: glucose can be deceptively normal. Always check β-OHB in SGLT2i patients on day of surgery — see SGLT2 section.',
-      cite:'SAMBA 2024 (Rajan); ADA Standards.',
+      main:'SAMBA 2024 target: 180–250 mg/dL. BG &lt; 250 → proceed. BG &gt; 300 → treat. DKA features → postpone.',
+      detail:'<strong>BG &lt; 250, asymptomatic:</strong> proceed, no treatment — this is within the 2024 SAMBA target range.<br><br><strong>BG 250–300, chronic poor control:</strong> proceed without acute correction; chronically elevated BG should not be yanked down on DOS.<br><br><strong>BG 250–300, acute / well-controlled DM / long case:</strong> consider small SQ rapid-acting correction.<br><br><strong>BG &gt; 300:</strong> treat (SQ rapid-acting via the 1800 rule) or postpone if non-urgent. Check β-OHB if SGLT2 or T1DM.<br><br><strong>Glucose &gt; 400 OR DKA / HHNS features (Kussmaul, AMS, ketones):</strong> POSTPONE, transfer to ED — not for the ASC.<br><br><strong>Euglycemic DKA on SGLT2i:</strong> glucose can be deceptively normal. Always check β-OHB in SGLT2i patients on day of surgery.',
+      cite:'SAMBA 2024 (Rajan).',
       related:[
         {label:'SGLT2 ketone monitoring detail', render:renderSGLT2Ketones},
         {label:'Full hyperglycemia management', render:renderHyperG}
@@ -2617,7 +2617,7 @@
       {title:'DKA / euglycemic DKA', onClick:()=>go('DKA','d',renderDKA)},
       {title:'HbA1c — what threshold cancels?', onClick:()=>go('HbA1c','a',renderHbA1c)}
     ]));
-    note('SAMBA 2024 (Rajan): glycemic target ≤180 mg/dL with avoidance of hypoglycemia; tight glycemic control (&lt;140 or &lt;110) NOT beneficial and increases hypoglycemia.');
+    note('SAMBA 2024 (Rajan): intraop target widened to 180–250 mg/dL (not &lt;180). Aggressive day-of correction of chronic hyperglycemia is harmful; tight control (&lt;140 or &lt;110) NOT beneficial and increases hypoglycemia.');
   }
 
   function renderGLP1() {
@@ -2795,27 +2795,263 @@
   }
 
   function renderHyperG() {
-    title('Day-of hyperglycemia management');
-    rec({tone:'success', label:'Target',
-      main:'≤ 180 mg/dL; up to 200 acceptable; tight control (&lt; 110) NOT beneficial',
-      detail:'2024 SAMBA: glycemic target ≤ 180 mg/dL with avoidance of hypoglycemia. Tight glycemic control (&lt; 110) in surgical patients increases hypoglycemia without improving outcomes.',
+    title('Day-of hyperglycemia — practical bedside management', 'Triage → drug/route → dose → recheck → follow-up. Based on SAMBA 2024 update.');
+    rec({tone:'success', label:'2024 SAMBA target: 180–250 mg/dL — not &lt; 180',
+      main:'The intraop target was widened to 180–250 (ceiling can float higher case-by-case). Tight control (&lt;140 or &lt;110) is harmful in this setting.',
+      detail:'<strong>The 2024 SAMBA update endorses the instinct that aggressive day-of correction of chronic hyperglycemia is harmful.</strong> Rationale: short ambulatory cases offer minimal time to safely correct hyperglycemia; glycemic variability itself is harmful; chronically elevated patients are at real risk if you yank their sugar down acutely. <br><br>The old "≤180" target from earlier guidance is superseded for the ambulatory setting.',
+      cite:'Rajan, Duggan, Abdelmalak et al. SAMBA Updated Consensus, Anesth Analg 2024.'});
+    stage.appendChild(optGrid([
+      {title:'1. Triage by arrival BG — proceed / treat / postpone', sub:'The threshold question: do I treat at all?', onClick:()=>go('Triage','t',renderHyperGTriage)},
+      {title:'2. What to give and how — drug, route, mixing', sub:'Rapid-acting SQ vs IV regular; bolus vs drip prep', onClick:()=>go('Drug & route','d',renderHyperGDrug)},
+      {title:'3. Dose calculation — the 1800 rule', sub:'ISF, worked examples, safe ceiling', onClick:()=>go('Dose','x',renderHyperGDose)},
+      {title:'4. The recheck protocol', sub:'When to recheck, by route', onClick:()=>go('Recheck','r',renderHyperGRecheck)},
+      {title:'5. What to do with the recheck result', sub:'Stacking, redose, escalation', onClick:()=>go('Follow-up','f',renderHyperGFollowup)},
+      {title:'6. Hypoglycemia rescue (&lt; 70)', sub:'D50, D10, oral; the asleep patient', onClick:()=>go('Hypoglycemia','y',renderHyperGHypo)},
+      {title:'7. The pump (CSII) patient', sub:'Brief — basal rate, electrocautery, suspend rules', onClick:()=>go('Pump','p',renderHyperGPump)},
+      {title:'8. Dexamethasone — the 4 mg vs 8 mg caveat', sub:'PONV prophylaxis in diabetics', onClick:()=>go('Dex','e',renderHyperGDex)},
+      {title:'9. Day-of medication management', sub:'Hold / take / hold-days-prior — full list', onClick:()=>go('Meds','m',renderHyperGMeds)},
+      {title:'📋 Bedside cheat card', sub:'One-screen quick reference', onClick:()=>go('Cheat card','c',renderHyperGCheat)}
+    ]));
+    rec({tone:'info', label:'A1c is NOT a day-of cancellation trigger',
+      main:'SAMBA 2024 explicitly does NOT recommend postponing based on A1c alone',
+      detail:'ESC 2022 suggests postponing for A1c &gt; 8.5%, but SAMBA found insufficient evidence for this in the ambulatory setting. A1c &gt; 9% is a flag to notify the surgeon (especially for joints, vascular, instrumented spine) — not an automatic cancellation. <br><br>See the HbA1c page for the full threshold discussion.',
+      related:[
+        {label:'HbA1c thresholds — full discussion', render:renderHbA1c}
+      ]});
+  }
+
+  function renderHyperGTriage() {
+    title('1. Triage by arrival BG', 'The threshold question: do I treat at all?');
+    rec({tone:'success', label:'BG &lt; 250 mg/dL',
+      main:'PROCEED — no treatment',
+      detail:'This is now within the SAMBA target range of 180–250. Document and move on.'});
+    rec({tone:'info', label:'BG 250–300, chronic poor control / elevated A1c',
+      main:'PROCEED — no treatment',
+      detail:'Chronically elevated BG should NOT be acutely corrected. This is the formal endorsement of the "if DM isn\'t managed well, why start on DOS?" rationale. Acute correction in this group risks glycemic variability without benefit.'});
+    rec({tone:'warn', label:'BG 250–300, acute rise / well-controlled DM / long case',
+      main:'CONSIDER TREATING — small SQ correction',
+      detail:'Especially if the case will be long enough to see the effect. A patient with a tight baseline who shows up at 280 is different from a patient who lives at 280. <br><br>See the dose page for the calculation.',
+      related:[{label:'Dose calculation', render:renderHyperGDose}]});
+    rec({tone:'warn', label:'BG &gt; 300 mg/dL',
+      main:'TREAT — or postpone if non-urgent and no clear reversible cause',
+      detail:'Minor procedures (endoscopy, cataract) may proceed without aggressive correction if otherwise stable. For longer cases or implant/SSI-sensitive surgery, treat and recheck before incision. Always rule out DKA first if there are any features (Kussmaul, AMS, ketones, dehydration).',
+      related:[
+        {label:'DKA workup', render:renderDKA},
+        {label:'SGLT2 ketone check', render:renderSGLT2Ketones}
+      ]});
+    rec({tone:'danger', label:'Any BG + DKA or HHNS features',
+      main:'POSTPONE — transfer to ED. Not for the ASC.',
+      detail:'Kussmaul respirations, altered mentation, ketones, severe dehydration, or anion-gap acidosis. These patients need inpatient management. Even euglycemic DKA (BG 100–300 with ketoacidosis) belongs in this category — see SGLT2 ketone monitoring.',
+      related:[
+        {label:'DKA / euglycemic DKA', render:renderDKA},
+        {label:'SGLT2 ketone monitoring', render:renderSGLT2Ketones}
+      ]});
+    rec({tone:'info', label:'On A1c specifically',
+      main:'SAMBA 2024 does NOT recommend postponing based on A1c alone',
+      detail:'A1c &gt; 9% is a flag to notify the surgeon for joints / vascular / instrumented spine — not an automatic cancellation in the ambulatory setting.',
       cite:'SAMBA 2024.'});
-    rec({tone:'warn', label:'Glucose 200-300',
-      main:'Correct with insulin, proceed; rule out DKA',
-      detail:'Check β-OHB if SGLT2 user or T1DM. Subcut rapid-acting insulin for correction. Recheck glucose every 1-2 h intraop.',
+  }
+
+  function renderHyperGDrug() {
+    title('2. What to give and how', 'Drug, route, mixing.');
+    rec({tone:'success', label:'Drug of choice: rapid-acting analog, SQ',
+      main:'Lispro (Humalog), aspart (Novolog), or glulisine (Apidra) — whichever your facility stocks. All U-100.',
+      detail:'<strong>Why rapid-acting SQ over regular SQ:</strong><ul><li>Onset 10–15 min vs 30–60 min</li><li>Peak 30–60 min vs 2–4 hours</li><li>Lets you recheck and safely discharge — regular insulin\'s peak often outlasts the PACU stay</li></ul><strong>Why SQ over IV:</strong><ul><li>Comparable efficacy for non-emergent correction</li><li>IV bolus is short-acting → requires repeat dosing and tight monitoring</li><li>IV reserved for BG &gt; 300 in a short procedure where SQ onset is too slow, or as a bridge to drip</li></ul>'});
+    rec({tone:'info', label:'No mixing required for SQ correction',
+      main:'Rapid-acting insulin draws straight from the U-100 vial or pen',
+      detail:'1 unit = 0.01 mL. Use an insulin syringe (U-100 marked). Do not dilute.'});
+    rec({tone:'warn', label:'IV bolus prep — when BG &gt; 300 in a short case',
+      main:'Regular insulin only (Humulin R or Novolin R). Standard bedside mix: 10 units regular insulin into a 10 mL syringe of NS → 1 unit/mL.',
+      detail:'<ul><li>Rapid-acting analogs are NOT FDA-approved for IV use</li><li>Give your calculated dose IV push</li><li>Onset IV: ~5 min. Duration IV: ~30–60 min — plan a follow-up dose or transition to SQ</li><li>Albumin pre-coating of tubing is for <em>infusions</em>, not boluses — skip it for IV push</li></ul>',
+      related:[{label:'Dose calculation', render:renderHyperGDose}]});
+    rec({tone:'warn', label:'IV infusion — rarely needed in an ASC',
+      main:'100 units regular insulin in 100 mL NS = 1 unit/mL. Dedicated pump. Typical start 0.1 U/kg/hr.',
+      detail:'<ul><li>Requires q1h BG checks</li><li>Usually means the patient belongs in a hospital, not your ASC</li><li>If you\'re reaching for a drip in the ASC, also reach for the transfer phone</li></ul>'});
+  }
+
+  function renderHyperGDose() {
+    title('3. Dose calculation — the 1800 rule', 'ISF, examples, safe ceiling.');
+    rec({tone:'success', label:'Insulin Sensitivity Factor (ISF) = 1800 ÷ TDD',
+      main:'ISF = expected mg/dL drop per 1 unit of rapid-acting insulin',
+      detail:'TDD = patient\'s total daily insulin dose (basal + bolus). Get it from the history or pump display.'});
+    rec({tone:'success', label:'Correction dose = (Current BG − Target BG) ÷ ISF',
+      main:'Target BG = 150 mg/dL is a reasonable midpoint',
+      detail:'Some use 140, some 180. Pick one and stay consistent across your practice. 150 puts you safely inside the 180–250 SAMBA range with room for further drop.'});
+    rec({tone:'warn', label:'If you don\'t know the TDD, or the patient is insulin-naïve',
+      main:'Use ISF = 40 (SAMBA-endorsed safe default). 1 unit → ~40 mg/dL drop.',
+      detail:'This is conservative on purpose. T1DM patients are typically more sensitive (ISF 50+) and T2DM less (ISF 20–30), so 40 is a reasonable middle for the unknown patient.'});
+    rec({tone:'info', label:'Worked examples',
+      main:'Plug-and-play scenarios',
+      detail:'<table style="width:100%; border-collapse:collapse; font-size:0.92em"><thead><tr style="border-bottom:1px solid currentColor"><th style="text-align:left; padding:6px 4px">Scenario</th><th style="text-align:left; padding:6px 4px">Calc</th><th style="text-align:left; padding:6px 4px">Dose</th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T1DM, TDD 50, BG 280, tgt 150</td><td style="padding:6px 4px">ISF 36; 130/36 = 3.6</td><td style="padding:6px 4px"><strong>4 u SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM on insulin, TDD 100, BG 320, tgt 180</td><td style="padding:6px 4px">ISF 18; 140/18 = 7.8</td><td style="padding:6px 4px"><strong>8 u SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM on metformin only, BG 290, tgt 180</td><td style="padding:6px 4px">ISF 40 (default); 110/40 = 2.75</td><td style="padding:6px 4px"><strong>3 u SQ lispro</strong></td></tr><tr><td style="padding:6px 4px">T2DM, unknown TDD, BG 350, tgt 180</td><td style="padding:6px 4px">ISF 40; 170/40 = 4.25</td><td style="padding:6px 4px"><strong>4 u SQ lispro</strong></td></tr></tbody></table>'});
+    rec({tone:'warn', label:'T1DM are more insulin-sensitive than T2DM',
+      main:'Same dose drops them further',
+      detail:'Be conservative if you\'re not sure of the TDD — round down. A 4-unit miscalculation in a T1DM patient can produce a profound hypo.'});
+    rec({tone:'danger', label:'Safe ceiling: cap single-bolus correction at ~10 units SQ',
+      main:'Regardless of what the formula says, do not stack beyond 10 u SQ without re-evaluation',
+      detail:'Beyond that, recheck and re-dose rather than push more in. The risk of late hypoglycemia from a 15+ unit single bolus is unacceptable for an ambulatory patient who will be discharged.'});
+  }
+
+  function renderHyperGRecheck() {
+    title('4. Recheck protocol', 'Match the recheck to the kinetics of what you gave.');
+    rec({tone:'info', label:'Timing by route',
+      main:'The peak of what you gave is when to look',
+      detail:'<table style="width:100%; border-collapse:collapse; font-size:0.92em"><thead><tr style="border-bottom:1px solid currentColor"><th style="text-align:left; padding:6px 4px">Route given</th><th style="text-align:left; padding:6px 4px">First recheck</th><th style="text-align:left; padding:6px 4px">Why</th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">SQ rapid-acting</td><td style="padding:6px 4px"><strong>90–120 min</strong></td><td style="padding:6px 4px">Matches peak effect</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">SQ regular</td><td style="padding:6px 4px"><strong>2–4 hours</strong></td><td style="padding:6px 4px">Matches peak (often outlasts case)</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">IV bolus regular</td><td style="padding:6px 4px"><strong>30 min</strong></td><td style="padding:6px 4px">Short duration; redose decisions</td></tr><tr><td style="padding:6px 4px">IV infusion</td><td style="padding:6px 4px"><strong>q1h</strong></td><td style="padding:6px 4px">Standard for any insulin drip</td></tr></tbody></table>'});
+    rec({tone:'warn', label:'Pre-discharge hypoglycemia watch',
+      main:'If any insulin given, confirm BG is safe (&gt; 100, trending stable or up) before discharge',
+      detail:'<ul><li>Observe <strong>≥ 1.5 hr</strong> after SQ rapid-acting</li><li>Observe <strong>3–4 hr</strong> after SQ regular</li><li>Sleeping/sedated patients won\'t express hypo symptoms — scheduled rechecks are essential</li></ul>'});
+  }
+
+  function renderHyperGFollowup() {
+    title('5. What to do with the recheck', 'Reading the result and choosing the next move.');
+    rec({tone:'success', label:'BG dropped appropriately, now in target (150–250)',
+      main:'Continue with the case / proceed to discharge planning. Document.',
+      detail:'No further action on glucose unless trajectory changes. Confirm BG &gt; 100 and stable before discharge.'});
+    rec({tone:'info', label:'BG still elevated, dropping but slowly',
+      main:'Context-dependent — proceed if near discharge and trending down; redose at HALF the original dose if far from target and far from discharge',
+      detail:'<ul><li>Approaching discharge and trending down → often acceptable to discharge with stable trend documented</li><li>Far from target and far from discharge → redose with <strong>half</strong> the original correction to avoid stacking</li><li>Recheck again at 90–120 min after the half-dose</li></ul>The "half-dose" rule exists because the first dose is still active. Giving a full second dose risks delayed hypoglycemia.'});
+    rec({tone:'warn', label:'BG essentially unchanged after the recheck interval',
+      main:'Something is wrong — troubleshoot before redosing at full strength',
+      detail:'<ul><li>Did the insulin get into SQ tissue? Cold injection site, lipohypertrophy, recent ice/cold pack to site?</li><li>Pump malfunction (occlusion, empty reservoir, disconnected site)?</li><li>Reconsider <strong>DKA</strong> — check ketones if available, especially in T1DM. A non-responsive glucose is classic for evolving DKA.</li><li>If pump-mediated dosing failed, switch to SQ from a vial/pen</li><li>Reasonable to give a second, <strong>full-dose</strong> correction with closer monitoring if SQ was given and a mechanical/absorption issue is suspected</li><li>If still no response after 2 doses → escalate to IV insulin or transfer</li></ul>',
       related:[
-        {label:'SGLT2 ketone monitoring detail', render:renderSGLT2Ketones},
-        {label:'DKA / euglycemic DKA management', render:renderDKA}
+        {label:'DKA workup', render:renderDKA},
+        {label:'SGLT2 ketone check', render:renderSGLT2Ketones}
       ]});
-    rec({tone:'warn', label:'Glucose 300-400',
-      main:'Workup for DKA (β-OHB, anion gap), correct, consider delay',
-      detail:'<ul><li>β-OHB negative, anion gap normal: insulin correction, proceed for urgent</li><li>β-OHB positive OR anion gap elevated: DKA workup, delay elective</li></ul>'});
-    rec({tone:'danger', label:'Glucose &gt; 400 OR DKA suspected',
-      main:'CANCEL elective; treat DKA; proceed urgent with insulin drip + close monitoring',
-      detail:'Insulin drip 0.05-0.1 U/kg/h, fluids, electrolyte correction (K+ especially), ICU/PACU postop.',
-      related:[
-        {label:'DKA detail', render:renderDKA}
-      ]});
+    rec({tone:'danger', label:'BG dropped too far (&lt; 100 or frankly hypoglycemic)',
+      main:'See the hypoglycemia rescue page',
+      detail:'',
+      related:[{label:'Hypoglycemia rescue (&lt; 70)', render:renderHyperGHypo}]});
+  }
+
+  function renderHyperGHypo() {
+    title('6. Hypoglycemia rescue (BG &lt; 70 mg/dL)');
+    rec({tone:'danger', label:'Symptomatic and NPO — IV access available',
+      main:'D50 25 mL IV push (12.5 g dextrose), OR D10 250 mL IV',
+      detail:'<ul><li>D50: one full amp (25 g/50 mL) is the classic dose, but only push 25 mL (12.5 g) initially in an adult and recheck — avoids overshoot</li><li>D10 250 mL is a gentler alternative if BG is 50–70 and patient is sedated but not crashing</li><li>If no IV: 1 mg glucagon IM/SQ as a bridge while access is established</li></ul>'});
+    rec({tone:'warn', label:'Awake and able to swallow safely',
+      main:'15–20 g oral glucose (juice, gel, tablets)',
+      detail:'<ul><li>4 oz juice, 4 glucose tabs (4 g each), or one tube of glucose gel</li><li>Avoid chocolate / fat-containing foods — slower absorption</li><li>If the patient is pre-procedure and you give PO glucose, the NPO clock restarts. Discuss with surgeon about case status.</li></ul>'});
+    rec({tone:'info', label:'Recheck cadence',
+      main:'Every 15–30 min until &gt; 100 and stable',
+      detail:'The "rule of 15" — 15 g, recheck in 15 min, repeat if still &lt; 70. Hold any further scheduled insulin. If on a pump, <strong>suspend the pump</strong>.'});
+    rec({tone:'warn', label:'The asleep / sedated patient',
+      main:'Increased vigilance and scheduled rechecks are essential',
+      detail:'Anesthetized patients won\'t manifest or express symptoms. Catecholamine response (tachycardia, hypertension, sweating) may be the only sign — and it\'s easily attributed to surgical stimulus. If any insulin was given pre-induction, schedule a BG check at the expected peak regardless of clinical picture.'});
+    rec({tone:'info', label:'Documentation & QI',
+      main:'Document every hypoglycemic event in the chart and track for QI',
+      detail:'Periop hypoglycemia is a tracked safety event at most institutions. Note: the trigger (insulin dose, NPO duration), the response (treatment given), and the resolution (BG trend, time to recovery).'});
+  }
+
+  function renderHyperGPump() {
+    title('7. The pump (CSII) patient — brief', 'For full pump regimen guidance see the insulin pump page.');
+    rec({tone:'success', label:'Case &lt; 2 hours, pump outside the surgical field',
+      main:'Continue basal rate (or reduce 20% if home target is tight, e.g., &lt; 110)',
+      detail:'Most ambulatory cases this length are safely run on the patient\'s home basal. Don\'t disable correction boluses if the patient is awake and can manage the pump themselves; for sedated patients, place the pump in "do not bolus" mode.'});
+    rec({tone:'warn', label:'BG arrives &lt; 100',
+      main:'Suspend pump, recheck q30 min until &gt; 100',
+      detail:'Resume basal once BG is climbing or stable above 100. Do not give correction during the suspended period.'});
+    rec({tone:'info', label:'Hyperglycemia correction through the pump',
+      main:'Patient-administered if awake; otherwise SQ via facility insulin',
+      detail:'Patient bolusing through their own pump uses their personal ISF, which is usually correct. For sedated/anesthetized correction, calculate via the 1800 rule and give SQ from facility stock.',
+      related:[{label:'Dose calculation', render:renderHyperGDose}]});
+    rec({tone:'warn', label:'Protect from electrocautery / ionizing radiation',
+      main:'Remove pump if unavoidable; replace and verify functional before discharge',
+      detail:'EMI from monopolar cautery near the pump site, MRI, or CT can damage the device or alter its programming. Document the model and serial number; have the patient bring the manufacturer\'s emergency contact info for re-pairing if needed.'});
+    rec({tone:'info', label:'For deeper pump management',
+      main:'See the dedicated pump regimen page',
+      detail:'',
+      related:[{label:'Insulin pump (CSII) management', render:()=>showInsulin('pump')}]});
+  }
+
+  function renderHyperGDex() {
+    title('8. Dexamethasone — 4 mg vs 8 mg in diabetics');
+    rec({tone:'success', label:'SAMBA 2024: use 4 mg, not 8 mg',
+      main:'The 8 mg dose produces meaningfully higher postop BG with no PONV benefit',
+      detail:'For PONV prophylaxis in known diabetics, 4 mg dexamethasone gives equivalent antiemetic effect with significantly less postop hyperglycemia. The 8 mg dose carries a glycemic cost without a corresponding antiemetic gain in this population.',
+      cite:'SAMBA 2024.'});
+    rec({tone:'warn', label:'T1DM and A1c &gt; 9%: individualize',
+      main:'Consider alternative PONV strategy',
+      detail:'For very poorly controlled diabetics or T1DM, even 4 mg dex can produce a meaningful BG bump. Consider a dex-sparing approach:<ul><li>Ondansetron + scopolamine patch</li><li>Propofol TIVA (intrinsic antiemetic effect)</li><li>Aprepitant for high-risk PONV</li><li>Acupressure / P6 stimulation as an adjunct</li></ul>'});
+    rec({tone:'info', label:'Non-diabetic patient',
+      main:'Standard 4–8 mg dexamethasone dosing per usual PONV protocol',
+      detail:'The 4-vs-8 question is specifically about diabetics. In non-diabetics, either dose is appropriate per institutional preference.'});
+  }
+
+  function renderHyperGMeds() {
+    title('9. Day-of medication management', 'Full hold/take list, plus pre-op hydration.');
+    divider('HOLD day-of surgery');
+    rec({tone:'warn', label:'Sulfonylureas',
+      main:'Glipizide, glyburide, glimepiride — HOLD',
+      detail:'Hypoglycemia risk while fasting. Resume with first meal.'});
+    rec({tone:'warn', label:'Meglitinides',
+      main:'Repaglinide, nateglinide — HOLD',
+      detail:'Same rationale as sulfonylureas (insulin secretagogues).'});
+    rec({tone:'warn', label:'GLP-1 agonists',
+      main:'Semaglutide, liraglutide, dulaglutide, exenatide, tirzepatide — context-dependent hold',
+      detail:'See the full GLP-1 section for 2024 multi-society guidance — the old uniform 7-day hold is no longer the default.',
+      related:[{label:'GLP-1 full guidance', render:renderGLP1}]});
+    rec({tone:'warn', label:'Amylin mimetics',
+      main:'Pramlintide — HOLD',
+      detail:'Slows gastric emptying; hypoglycemia risk fasting.'});
+    rec({tone:'warn', label:'SQ regular and rapid insulin in T2DM',
+      main:'HOLD while NPO',
+      detail:'Hypoglycemia risk. Resume with first meal post-op. Correctional rapid-acting can be given for hyperglycemia per the 1800 rule.'});
+    rec({tone:'warn', label:'Alpha-glucosidase inhibitors',
+      main:'Acarbose, miglitol — HOLD if fasting',
+      detail:'Only act on ingested carbs; no purpose while NPO.'});
+    divider('TAKE day-of surgery');
+    rec({tone:'success', label:'Metformin',
+      main:'Take if eGFR ≥ 45 and no IV contrast planned',
+      detail:'The lactic acidosis concern has been largely overstated for stable eGFR ≥ 45 patients without contrast exposure. Hold if eGFR &lt; 45 or contrast study planned.'});
+    rec({tone:'success', label:'DPP-4 inhibitors',
+      main:'Sitagliptin, linagliptin, saxagliptin, alogliptin — TAKE',
+      detail:'Minimal hypoglycemia risk; safe to continue.'});
+    rec({tone:'success', label:'Thiazolidinediones',
+      main:'Pioglitazone — TAKE',
+      detail:'No fasting-related hypoglycemia risk.'});
+    divider('HOLD 3–4 DAYS PRE-OP');
+    rec({tone:'danger', label:'SGLT2 inhibitors',
+      main:'Canagliflozin, dapagliflozin, empagliflozin: 3 days. Ertugliflozin: 4 days.',
+      detail:'Euglycemic DKA risk. See the SGLT2 section for STOP-SGLT2 trial implications and not-held workflow.',
+      related:[{label:'SGLT2 full guidance', render:renderSGLT2}]});
+    divider('LONG-ACTING BASAL INSULIN');
+    rec({tone:'info', label:'Glargine, detemir, degludec',
+      main:'T1DM: full dose evening before (80% if nocturnal/morning hypo history). T2DM: 75–80% of usual dose evening before.',
+      detail:'<ul><li><strong>Day of surgery (T1DM):</strong> may give full dose</li><li><strong>Day of surgery (T2DM):</strong> 75–100% on arrival</li></ul>See the dedicated insulin page for the full regimen breakdown.',
+      related:[{label:'Insulin regimens — full', render:renderInsulin}]});
+    divider('INTERMEDIATE / MIXED INSULIN');
+    rec({tone:'info', label:'NPH, 70/30, 75/25',
+      main:'Evening before: 75% of usual dose. Morning of: 50% of usual dose, or hold if BG &lt; 160.',
+      detail:'The mixed insulins are the trickiest — the short-acting component can produce fasting hypoglycemia.'});
+    divider('PRE-OP HYDRATION');
+    rec({tone:'warn', label:'SAMBA 2024: water, NOT carbohydrate drinks, in diabetic patients',
+      main:'Skip the carb-loading drinks for diabetics',
+      detail:'The enhanced recovery (ERAS) carbohydrate-drink protocols are appropriate for non-diabetics but not for patients with DM — they produce predictable pre-induction hyperglycemia. Clear water within the standard NPO window is fine.',
+      cite:'SAMBA 2024.'});
+  }
+
+  function renderHyperGCheat() {
+    title('📋 Bedside cheat card', 'One-screen quick reference for day-of hyperglycemia.');
+    rec({tone:'info', label:'TRIAGE',
+      main:'BG-based action at a glance',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">BG &lt; 250 .................. proceed, no treatment\nBG 250–300, chronic poor .... proceed, no treatment\nBG 250–300, acute / tight ... treat if long case\nBG &gt; 300 .................. treat (or postpone if non-urgent)\nDKA / HHNS signs ............ POSTPONE, transfer</pre>'});
+    rec({tone:'info', label:'ROUTE',
+      main:'SQ rapid-acting is the default; IV regular only for fast-onset need',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">DEFAULT: SQ rapid-acting (lispro/aspart/glulisine), U-100,\n         no dilution\nIV:      regular insulin only, when BG &gt; 300 + short case\n         + need fast onset (5-min onset, 30–60 min duration)</pre>'});
+    rec({tone:'info', label:'DOSE',
+      main:'Correction = (BG − 150) ÷ ISF; ISF = 1800 ÷ TDD (use 40 if unknown)',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">ISF      = 1800 ÷ TDD     (default 40 if TDD unknown)\nDose     = (BG − 150) ÷ ISF\nCAP      = ~10 units SQ single bolus — beyond that, recheck</pre>'});
+    rec({tone:'info', label:'RECHECK',
+      main:'Time the recheck to the kinetics of what you gave',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">SQ rapid-acting ........ 90–120 min\nSQ regular ............. 2–4 hr\nIV bolus regular ....... 30 min\nIV infusion ............ q1h</pre>'});
+    rec({tone:'danger', label:'HYPOGLYCEMIA (&lt; 70)',
+      main:'D50 25 mL push, or D10 250 mL; PO 15–20 g if awake; recheck q15–30 min',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">IV:      D50 25 mL push, OR D10 250 mL\nPO:      15–20 g glucose (juice/gel/tabs)\nRECHECK: q15–30 min; hold further insulin;\n         suspend pump if applicable</pre>'});
+    rec({tone:'info', label:'DEX FOR PONV',
+      main:'4 mg (not 8) in DM',
+      detail:'Same antiemetic effect, less hyperglycemia. Individualize for T1DM or A1c &gt; 9%.'});
+    rec({tone:'info', label:'Sources',
+      main:'SAMBA 2024 · AACE/ACE · Endocrine Society 2022',
+      cite:'Rajan N, Duggan EW, Abdelmalak BB, et al. SAMBA Updated Consensus on Perioperative Blood Glucose Management. Anesth Analg 2024. · AACE/ACE Consensus Statement on Insulin Pump Management Task Force, Endocr Pract 2014. · Korytkowski MT et al. Management of Hyperglycemia in Hospitalized Adult Patients in Non-Critical Care Settings. J Clin Endocrinol Metab 2022.'});
   }
 
   function renderDKA() {
@@ -4052,6 +4288,16 @@
   registerStep('dm-insulin', 'Insulin perioperative', renderInsulin, ['Diabetes & GLP-1']);
   registerStep('dm-orals', 'Oral diabetes agents', renderOralAgents, ['Diabetes & GLP-1']);
   registerStep('dm-hyperG', 'Hyperglycemia day-of', renderHyperG, ['Diabetes & GLP-1']);
+  registerStep('dm-hyperG-triage', 'Hyperglycemia — triage by BG', renderHyperGTriage, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-drug', 'Hyperglycemia — drug & route', renderHyperGDrug, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-dose', 'Hyperglycemia — 1800 rule / dose calc', renderHyperGDose, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-recheck', 'Hyperglycemia — recheck protocol', renderHyperGRecheck, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-followup', 'Hyperglycemia — follow-up actions', renderHyperGFollowup, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-hypo', 'Hypoglycemia rescue', renderHyperGHypo, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-pump', 'Hyperglycemia — pump patient', renderHyperGPump, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-dex', 'Hyperglycemia — dexamethasone caveat', renderHyperGDex, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-meds', 'Day-of medication hold/take list', renderHyperGMeds, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-cheat', 'Hyperglycemia — bedside cheat card', renderHyperGCheat, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-dka', 'DKA', renderDKA, ['Diabetes & GLP-1']);
   registerStep('dm-hba1c', 'HbA1c thresholds', renderHbA1c, ['Diabetes & GLP-1']);
 
