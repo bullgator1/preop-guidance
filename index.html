@@ -1780,8 +1780,8 @@
   function renderDoSMetab() {
     title('Metabolic — day-of changes');
     rec({tone:'warn', label:'Hyperglycemia on arrival',
-      main:'SAMBA 2024 target: 180–250 mg/dL. BG &lt; 250 → proceed. BG &gt; 300 → treat. DKA features → postpone.',
-      detail:'<strong>BG &lt; 250, asymptomatic:</strong> proceed, no treatment — this is within the 2024 SAMBA target range.<br><br><strong>BG 250–300, chronic poor control:</strong> proceed without acute correction; chronically elevated BG should not be yanked down on DOS.<br><br><strong>BG 250–300, acute / well-controlled DM / long case:</strong> consider small SQ rapid-acting correction.<br><br><strong>BG &gt; 300:</strong> treat (SQ rapid-acting via the 1800 rule) or postpone if non-urgent. Check β-OHB if SGLT2 or T1DM.<br><br><strong>Glucose &gt; 400 OR DKA / HHNS features (Kussmaul, AMS, ketones):</strong> POSTPONE, transfer to ED — not for the ASC.<br><br><strong>Euglycemic DKA on SGLT2i:</strong> glucose can be deceptively normal. Always check β-OHB in SGLT2i patients on day of surgery.',
+      main:'Intraop target ≤300 mg/dL (liberalized). BG &lt; 300 with no override flag → proceed; defer correction to PACU/floor. BG &gt; 300 → treat. DKA features → postpone.',
+      detail:'<strong>BG &lt; 180:</strong> proceed, no treatment.<br><br><strong>BG 180–300, any setting:</strong> proceed intraop; <strong>defer correction to PACU/floor</strong> (awake patient, controlled monitoring, lower error risk). Document the deferral.<br><br><strong>BG 180–300, surgeon-flagged high-stakes case (instrumented spine, vascular graft, cardiac) or long case &gt;4 hr:</strong> treat with small SQ rapid-acting correction.<br><br><strong>BG &gt; 300:</strong> treat (SQ rapid-acting via the 1800 rule, or IV bolus regular if short case + fast onset needed). Check β-OHB if SGLT2 or T1DM.<br><br><strong>Glucose &gt; 400 OR DKA / HHNS features (Kussmaul, AMS, ketones):</strong> POSTPONE, transfer to ED — not for the ASC.<br><br><strong>Euglycemic DKA on SGLT2i:</strong> glucose can be deceptively normal. Always check β-OHB in SGLT2i patients on day of surgery.',
       cite:'SAMBA 2024 (Rajan).',
       related:[
         {label:'SGLT2 ketone monitoring detail', render:renderSGLT2Ketones},
@@ -1792,16 +1792,18 @@
       detail:'Most common cause: insulin given the night before or morning despite being NPO. Less common but dangerous: insulinoma, adrenal insufficiency, sepsis, liver failure. Give 1 amp D50 IV (or D10 infusion if mild), recheck q15 min until stable. Once stable and you know why → proceed if cause identified and resolved.'});
     rec({tone:'danger', label:'🛑 HARD STOP — missed dialysis with K+ ≥ 6.0 in ESRD patient',
       main:'ESRD context. Almost always CANCEL elective. Get K+ + ABG before deciding anything.',
-      detail:'<strong>Standard ESRD patient with HD 3×/week who skipped:</strong> K+ likely 5.5-7+, volume overloaded, acidotic. <strong>K+ ≥ 6.0 or ECG changes</strong> = CANCEL, dialyze first. <strong>K+ 5.5-5.9, no ECG changes, urgent/emergent surgery</strong> = treat (Ca, insulin/dextrose, bicarbonate, kayexalate) and proceed with anesthesia/nephrology. For elective: dialyze first regardless.<br><br>Volume overload + missed HD = high risk of pulmonary edema on induction.<br><br><em>This card is about ESRD patients specifically. For acute hyperkalemia in a non-ESRD patient, see the next card.</em>',
+      detail:'<strong>Standard ESRD patient with HD 3×/week who skipped:</strong> K+ likely 5.5-7+, volume overloaded, acidotic. <strong>K+ ≥ 6.0 or ECG changes</strong> = CANCEL, dialyze first. <strong>K+ 5.5-5.9, no ECG changes, urgent/emergent surgery</strong> = medical management (Ca, insulin/dextrose, albuterol, ± bicarb, ± binder) and proceed with anesthesia/nephrology. For elective: dialyze first regardless.<br><br>Volume overload + missed HD = high risk of pulmonary edema on induction.<br><br><em>This card is about the ESRD-context decision. For specific drug doses, routes, and timing — see the full hyperkalemia management page.</em>',
       cite:'Fielding-Singh Anesthesiology 2025.',
       related:[
+        {label:'⚡ Full hyperkalemia management — doses, routes, timing', render:renderHyperK},
         {label:'Full ESRD K+ management with caveats', render:renderESRDLabs},
         {label:'BMP K+ thresholds (general)', render:renderTestBMP}
       ]});
     rec({tone:'warn', label:'Day-of hyperkalemia in a non-ESRD patient — different physiology',
       main:'K+ ≥ 5.5 in a patient without ESRD = work up the cause, do not just treat the number',
-      detail:'A K+ of 5.8 in a non-ESRD patient is not the same as 5.8 in a stable dialysis patient. Non-ESRD patients are not chronically adapted to elevated K+, so an acute rise is more arrhythmogenic, and it almost always reflects something actionable (ACEi/ARB + NSAIDs + new AKI is the classic combination; spironolactone; rhabdo; hemolyzed sample; adrenal insufficiency; sample drawn from a line with K+-containing fluids).<br><br><strong>Approach:</strong><ul><li><strong>K+ 5.0-5.4:</strong> get an ECG. If unchanged from baseline and asymptomatic, generally proceed; review meds and consider repeat sample to exclude hemolysis.</li><li><strong>K+ 5.5-5.9:</strong> get an ECG, identify cause, address before elective. Hold ACEi/ARB/spironolactone/NSAIDs. Treat the cause. For urgent: medical management (insulin + dextrose, albuterol, calcium if ECG changes) and proceed.</li><li><strong>K+ ≥ 6.0:</strong> address before elective surgery regardless of ECG. Medical management for urgent.</li></ul>If succinylcholine is planned: stricter threshold (&lt; 5.5) given sux-induced K+ rise of ~0.5 mEq/L (more in burns/denervation/prolonged immobilization).<br><br><em>The contrast with the ESRD threshold (&lt; 6.0 generally tolerated) is intentional, not contradictory. See cross-link below.</em>',
+      detail:'A K+ of 5.8 in a non-ESRD patient is not the same as 5.8 in a stable dialysis patient. Non-ESRD patients are not chronically adapted to elevated K+, so an acute rise is more arrhythmogenic, and it almost always reflects something actionable (ACEi/ARB + NSAIDs + new AKI is the classic combination; spironolactone; rhabdo; hemolyzed sample; adrenal insufficiency; sample drawn from a line with K+-containing fluids).<br><br><strong>Approach:</strong><ul><li><strong>K+ 5.0-5.4:</strong> get an ECG. If unchanged from baseline and asymptomatic, generally proceed; review meds and consider repeat sample to exclude hemolysis.</li><li><strong>K+ 5.5-5.9:</strong> get an ECG, identify cause, address before elective. Hold ACEi/ARB/spironolactone/NSAIDs. Treat the cause. For urgent: medical management and proceed.</li><li><strong>K+ ≥ 6.0:</strong> address before elective surgery regardless of ECG. Medical management for urgent.</li></ul>If succinylcholine is planned: stricter threshold (&lt; 5.5) given sux-induced K+ rise of ~0.5 mEq/L (more in burns/denervation/prolonged immobilization).<br><br><em>The contrast with the ESRD threshold (&lt; 6.0 generally tolerated) is intentional, not contradictory. See cross-link below.</em>',
       related:[
+        {label:'⚡ Full hyperkalemia management — doses, routes, timing', render:renderHyperK},
         {label:'ESRD-specific K+ tolerance', render:renderESRDLabs}
       ]});
     rec({tone:'warn', label:'Day-of labs showing other new electrolyte derangement',
@@ -2795,46 +2797,62 @@
   }
 
   function renderHyperG() {
-    title('Day-of hyperglycemia — practical bedside management', 'Triage → drug/route → dose → recheck → follow-up. Based on SAMBA 2024 update.');
-    rec({tone:'success', label:'2024 SAMBA target: 180–250 mg/dL — not &lt; 180',
-      main:'The intraop target was widened to 180–250 (ceiling can float higher case-by-case). Tight control (&lt;140 or &lt;110) is harmful in this setting.',
-      detail:'<strong>The 2024 SAMBA update endorses the instinct that aggressive day-of correction of chronic hyperglycemia is harmful.</strong> Rationale: short ambulatory cases offer minimal time to safely correct hyperglycemia; glycemic variability itself is harmful; chronically elevated patients are at real risk if you yank their sugar down acutely. <br><br>The old "≤180" target from earlier guidance is superseded for the ambulatory setting.',
-      cite:'Rajan, Duggan, Abdelmalak et al. SAMBA Updated Consensus, Anesth Analg 2024.'});
+    title('Day-of hyperglycemia — practical bedside management', 'Liberalized intraop targets · defer correction to PACU/floor where possible. SAMBA 2024 · ADA 2023 · Endocrine Society 2022.');
+    rec({tone:'danger', label:'Core principle: intraop is the worst place to give insulin',
+      main:'Liberalize intraop targets (≤300 mg/dL). Defer correction to PACU / floor where awake patients and dedicated monitoring exist. Do NOT extrapolate ICU glycemic targets to the OR.',
+      detail:'<strong>Five reasons the OR is different from the ICU/floor:</strong><ol><li><strong>Cognitive load.</strong> Drawing up, calculating, and administering insulin competes with airway, hemodynamics, depth, fluids, positioning, and procedural events. Distraction is the most common root cause of OR medication errors.</li><li><strong>The unconscious patient.</strong> Adrenergic warning signs of hypoglycemia (sweating, tachycardia, tremor) are blunted, masked, or misattributed under GA. Hypoglycemic brain injury can persist undetected.</li><li><strong>U-100 dosing errors are a documented event class.</strong> ISMP lists insulin as high-alert for this reason. 10× and 100× errors are well described. The difference between 4 and 40 units is 0.36 mL — easily mistaken under time pressure.</li><li><strong>A better setting exists downstream.</strong> PACU/floor has q4–6h checks, dedicated nursing, awake patients, and standardized SSI / basal-bolus protocols. A BG 220 intraop → 230 PACU → 200 floor on SSI is <em>controlled</em> management.</li><li><strong>The evidence base is weaker than it looks.</strong> Intraop BG → SSI signals come from retrospective studies confounded by A1c, steroids, acuity. NICE-SUGAR showed tight ICU control increased mortality. For most cases, SSI is driven by pre-op A1c and post-op control over days — not your 90 OR minutes.</li></ol>',
+      cite:'Rajan N et al. SAMBA Updated Consensus, Anesth Analg 2024 · ElSayed NA et al. ADA Standards of Care 2023 · Korytkowski MT et al. Endocrine Society 2022.'});
+    rec({tone:'warn', label:'When to override the liberal approach',
+      main:'Treat per matrix when one of these is present:',
+      detail:'<ul><li>Surgeon explicitly flags the case as high-stakes for glycemic control (spine instrumentation, vascular graft, complex cardiac, transplant)</li><li>Cardiac surgery — different evidence base, tighter targets have stronger support</li><li>Long cases (&gt;4 hours) — BG will drift further if untreated, and rechecking is feasible</li><li>T1DM with concerning trend or ketone signal — DKA risk doesn\'t wait for PACU</li><li>Patient arrives on an existing IV insulin infusion (don\'t disrupt the regimen)</li><li>Patient with functioning CGM + pump — monitoring infrastructure is already in place</li><li>Same-day dexamethasone administration — anticipate the BG climb</li><li><strong>BG &gt;300 — risk-benefit shifts; intraop deferral is no longer reasonable</strong></li></ul>'});
+    rec({tone:'info', label:'Scope & exclusions',
+      main:'This guidance is for adult elective day-of-surgery hyperglycemia. Not for:',
+      detail:'<ul><li>Active DKA or HHNS — transfer to ED</li><li>Pediatric patients (different dosing physiology, ISF defaults)</li><li>Pregnancy, especially 3rd trimester (insulin resistance changes meaningfully)</li><li>Critically ill / ICU patients (tighter targets, dedicated IV insulin protocols)</li></ul><strong>Emergent / urgent surgery</strong> — you don\'t get to optimize. Rule out DKA before induction in anyone with BG &gt;250 (anion gap, ketones, osmolarity, pH); positive pressure ventilation and induction agents can mask compensatory mechanisms. IV insulin infusion is preferred for any unstable patient or BG &gt;300. Fluid resuscitation matters more than insulin in DKA — fluid alone drops BG ~50–75 mg/dL/hr before any insulin. Replace K before insulin if K &lt;3.3. Bicarbonate rarely indicated (ADA: pH &lt;6.9).'});
     stage.appendChild(optGrid([
+      {title:'🔲 Care matrix — setting × DM type', sub:'The 4-cell framework: T1DM/T2DM × ambulatory/inpatient', onClick:()=>go('Care matrix','M',renderHyperGMatrix)},
       {title:'1. Triage by arrival BG — proceed / treat / postpone', sub:'The threshold question: do I treat at all?', onClick:()=>go('Triage','t',renderHyperGTriage)},
-      {title:'2. What to give and how — drug, route, mixing', sub:'Rapid-acting SQ vs IV regular; bolus vs drip prep', onClick:()=>go('Drug & route','d',renderHyperGDrug)},
-      {title:'3. Dose calculation — the 1800 rule', sub:'ISF, worked examples, safe ceiling', onClick:()=>go('Dose','x',renderHyperGDose)},
+      {title:'2. What to give and how — drug, route, mixing', sub:'SQ rapid · IV bolus · IV infusion prep', onClick:()=>go('Drug & route','d',renderHyperGDrug)},
+      {title:'3. Dose calculation — the 1800 rule', sub:'ISF (T1DM 60 / T2DM 40), worked examples, safe ceiling', onClick:()=>go('Dose','x',renderHyperGDose)},
       {title:'4. The recheck protocol', sub:'When to recheck, by route', onClick:()=>go('Recheck','r',renderHyperGRecheck)},
       {title:'5. What to do with the recheck result', sub:'Stacking, redose, escalation', onClick:()=>go('Follow-up','f',renderHyperGFollowup)},
-      {title:'6. Hypoglycemia rescue (&lt; 70)', sub:'D50, D10, oral; the asleep patient', onClick:()=>go('Hypoglycemia','y',renderHyperGHypo)},
+      {title:'6. Hypoglycemia rescue (&lt; 70)', sub:'D50, D10, oral; the asleep patient; K+', onClick:()=>go('Hypoglycemia','y',renderHyperGHypo)},
       {title:'7. The pump (CSII) patient', sub:'Brief — basal rate, electrocautery, suspend rules', onClick:()=>go('Pump','p',renderHyperGPump)},
       {title:'8. Dexamethasone — the 4 mg vs 8 mg caveat', sub:'PONV prophylaxis in diabetics', onClick:()=>go('Dex','e',renderHyperGDex)},
       {title:'9. Day-of medication management', sub:'Hold / take / hold-days-prior — full list', onClick:()=>go('Meds','m',renderHyperGMeds)},
+      {title:'📝 Documenting the deferral defensibly', sub:'Suggested chart language', onClick:()=>go('Documentation','D',renderHyperGDocumentation)},
+      {title:'🤝 SDA / inpatient handoff checklist', sub:'What to communicate to the floor team', onClick:()=>go('Handoff','H',renderHyperGHandoff)},
       {title:'📋 Bedside cheat card', sub:'One-screen quick reference', onClick:()=>go('Cheat card','c',renderHyperGCheat)}
     ]));
     rec({tone:'info', label:'A1c is NOT a day-of cancellation trigger',
       main:'SAMBA 2024 explicitly does NOT recommend postponing based on A1c alone',
-      detail:'ESC 2022 suggests postponing for A1c &gt; 8.5%, but SAMBA found insufficient evidence for this in the ambulatory setting. A1c &gt; 9% is a flag to notify the surgeon (especially for joints, vascular, instrumented spine) — not an automatic cancellation. <br><br>See the HbA1c page for the full threshold discussion.',
+      detail:'ESC 2022 suggests an &gt;8.5% threshold for major elective surgery as one input among many. A1c &gt; 9% is a flag to notify the surgeon (especially for joints, vascular, instrumented spine) — not an automatic cancellation in any cell of the matrix. <br><br>See the HbA1c page for the full threshold discussion.',
       related:[
         {label:'HbA1c thresholds — full discussion', render:renderHbA1c}
       ]});
   }
 
   function renderHyperGTriage() {
-    title('1. Triage by arrival BG', 'The threshold question: do I treat at all?');
-    rec({tone:'success', label:'BG &lt; 250 mg/dL',
-      main:'PROCEED — no treatment',
-      detail:'This is now within the SAMBA target range of 180–250. Document and move on.'});
-    rec({tone:'info', label:'BG 250–300, chronic poor control / elevated A1c',
-      main:'PROCEED — no treatment',
-      detail:'Chronically elevated BG should NOT be acutely corrected. This is the formal endorsement of the "if DM isn\'t managed well, why start on DOS?" rationale. Acute correction in this group risks glycemic variability without benefit.'});
-    rec({tone:'warn', label:'BG 250–300, acute rise / well-controlled DM / long case',
-      main:'CONSIDER TREATING — small SQ correction',
-      detail:'Especially if the case will be long enough to see the effect. A patient with a tight baseline who shows up at 280 is different from a patient who lives at 280. <br><br>See the dose page for the calculation.',
+    title('1. Triage by arrival BG', 'The threshold question: do I treat at all? · Intraop target ≤300 across all matrix cells.');
+    rec({tone:'success', label:'Intraop target across all cells: BG ≤ 300 mg/dL',
+      main:'Correction of values between 180 and 300 is generally deferred to the awake-patient setting (PACU for ambulatory, floor for SDA/inpatient).',
+      detail:'The 140–180 target widely cited in perioperative diabetes literature is extrapolated from ICU and inpatient floor data — settings with awake patients, q4–6h checks, and pharmacy-verified doses. The OR has none of those safeguards. <br><br><strong>Post-op target on floor: 140–180 mg/dL via SSI / basal-bolus.</strong>'});
+    rec({tone:'success', label:'BG &lt; 180 mg/dL',
+      main:'PROCEED — no treatment needed',
+      detail:'Within ideal range. Document and move on.'});
+    rec({tone:'info', label:'BG 180–300, any DM type, any setting',
+      main:'PROCEED intraop. DEFER correction to PACU / floor.',
+      detail:'<ul><li>Awake patient · controlled monitoring · two-person verification · lower error risk</li><li>Document the deferral as a deliberate clinical decision</li><li>Communicate handoff: last BG, time, recommendation for SSI or basal-bolus per floor protocol</li></ul><strong>This is the change from prior practice.</strong> The old 250–300 "treat if acute / long case" band has shifted upward to reflect the safety case for delaying correction to a safer setting.',
+      related:[
+        {label:'Documenting the deferral', render:renderHyperGDocumentation},
+        {label:'Handoff checklist', render:renderHyperGHandoff}
+      ]});
+    rec({tone:'warn', label:'BG 180–300, surgeon-flagged high-stakes case OR long case &gt;4 hr',
+      main:'TREAT — small SQ rapid correction. Prefer dosing while patient is awake (pre-op or PACU) when possible.',
+      detail:'<ul><li>Instrumented spine, vascular graft, complex cardiac, transplant</li><li>Long cases (&gt;4 hr) where BG will drift further if untreated and rechecking is feasible</li><li>Existing IV insulin infusion (don\'t disrupt established regimen)</li><li>Same-day dexamethasone given — anticipate BG climb</li></ul>See the dose page for the calculation.',
       related:[{label:'Dose calculation', render:renderHyperGDose}]});
     rec({tone:'warn', label:'BG &gt; 300 mg/dL',
-      main:'TREAT — or postpone if non-urgent and no clear reversible cause',
-      detail:'Minor procedures (endoscopy, cataract) may proceed without aggressive correction if otherwise stable. For longer cases or implant/SSI-sensitive surgery, treat and recheck before incision. Always rule out DKA first if there are any features (Kussmaul, AMS, ketones, dehydration).',
+      main:'TREAT. Risk-benefit shifts at this threshold — SSI risk rises, DKA risk rises, and floor SSI alone may not catch up fast enough.',
+      detail:'<ul><li>Check ketones / anion gap regardless of DM type</li><li>Consider postponing minor electives</li><li>For BG &gt;300 in a short case, IV bolus regular insulin may be appropriate (SQ onset too slow)</li><li>For unstable patients or persistent BG &gt;300, IV infusion is preferred — titratable</li><li>Always rule out DKA first if any features (Kussmaul, AMS, ketones, dehydration)</li></ul>',
       related:[
         {label:'DKA workup', render:renderDKA},
         {label:'SGLT2 ketone check', render:renderSGLT2Ketones}
@@ -2846,49 +2864,56 @@
         {label:'DKA / euglycemic DKA', render:renderDKA},
         {label:'SGLT2 ketone monitoring', render:renderSGLT2Ketones}
       ]});
+    rec({tone:'warn', label:'SGLT-2 caveat — applies at ANY BG',
+      main:'If you cannot confirm the 3–4 day pre-op hold, check ketones and anion gap regardless of BG',
+      detail:'Euglycemic DKA presents with reassuring BG. The reassuring number does not exclude the diagnosis. Check anion gap, β-hydroxybutyrate, and venous gas.',
+      related:[{label:'SGLT2 full guidance', render:renderSGLT2}]});
     rec({tone:'info', label:'On A1c specifically',
       main:'SAMBA 2024 does NOT recommend postponing based on A1c alone',
-      detail:'A1c &gt; 9% is a flag to notify the surgeon for joints / vascular / instrumented spine — not an automatic cancellation in the ambulatory setting.',
+      detail:'ESC 2022 suggests an &gt;8.5% threshold for major elective surgery as one input among many. A1c &gt; 9% is a flag to notify the surgeon for joints / vascular / instrumented spine — not an automatic cancellation in any cell of the matrix.',
       cite:'SAMBA 2024.'});
   }
 
   function renderHyperGDrug() {
     title('2. What to give and how', 'Drug, route, mixing.');
-    rec({tone:'success', label:'Drug of choice: rapid-acting analog, SQ',
+    rec({tone:'success', label:'SQ rapid-acting analog — the workhorse',
       main:'Lispro (Humalog), aspart (Novolog), or glulisine (Apidra) — whichever your facility stocks. All U-100.',
-      detail:'<strong>Why rapid-acting SQ over regular SQ:</strong><ul><li>Onset 10–15 min vs 30–60 min</li><li>Peak 30–60 min vs 2–4 hours</li><li>Lets you recheck and safely discharge — regular insulin\'s peak often outlasts the PACU stay</li></ul><strong>Why SQ over IV:</strong><ul><li>Comparable efficacy for non-emergent correction</li><li>IV bolus is short-acting → requires repeat dosing and tight monitoring</li><li>IV reserved for BG &gt; 300 in a short procedure where SQ onset is too slow, or as a bridge to drip</li></ul>'});
-    rec({tone:'info', label:'No mixing required for SQ correction',
-      main:'Rapid-acting insulin draws straight from the U-100 vial or pen',
-      detail:'1 unit = 0.01 mL. Use an insulin syringe (U-100 marked). Do not dilute.'});
-    rec({tone:'warn', label:'IV bolus prep — when BG &gt; 300 in a short case',
-      main:'Regular insulin only (Humulin R or Novolin R). Standard bedside mix: 10 units regular insulin into a 10 mL syringe of NS → 1 unit/mL.',
-      detail:'<ul><li>Rapid-acting analogs are NOT FDA-approved for IV use</li><li>Give your calculated dose IV push</li><li>Onset IV: ~5 min. Duration IV: ~30–60 min — plan a follow-up dose or transition to SQ</li><li>Albumin pre-coating of tubing is for <em>infusions</em>, not boluses — skip it for IV push</li></ul>',
+      detail:'<ul><li>Onset 10–15 min, peak 30–60 min</li><li>Use in: ambulatory cases, inpatient SQ basal-bolus, transitioning off insulin infusions</li><li>No dilution required — draw straight from vial or pen using a U-100 insulin syringe (1 unit = 0.01 mL)</li><li><strong>Avoid SQ regular in ambulatory</strong> — peak 2–4 hr outlasts the case</li></ul><strong>Why SQ over IV for non-emergent correction:</strong><ul><li>Comparable efficacy without the need for repeat dosing</li><li>IV bolus is short-acting → requires tight monitoring</li><li>IV reserved for BG &gt; 300 in a short procedure where SQ onset is too slow, or as a bridge to drip</li></ul>'});
+    rec({tone:'warn', label:'IV bolus regular insulin — specific indications only',
+      main:'Use when BG &gt;300 in a short case where SQ onset is too slow, or as bridge to drip.',
+      detail:'<ul><li><strong>Bedside mix:</strong> 10 units regular insulin in 10 mL NS → 1 unit/mL</li><li>Use regular insulin only — rapid-acting analogs are not FDA-approved for IV use (though pharmacologically active)</li><li>Onset ~5 min, duration ~30–60 min</li><li>Plan a follow-up dose or transition to SQ — do not rely on IV bolus alone for sustained control</li><li>Albumin pre-coating of tubing is for <em>infusions</em>, not boluses — skip for IV push</li></ul>',
       related:[{label:'Dose calculation', render:renderHyperGDose}]});
-    rec({tone:'warn', label:'IV infusion — rarely needed in an ASC',
-      main:'100 units regular insulin in 100 mL NS = 1 unit/mL. Dedicated pump. Typical start 0.1 U/kg/hr.',
-      detail:'<ul><li>Requires q1h BG checks</li><li>Usually means the patient belongs in a hospital, not your ASC</li><li>If you\'re reaching for a drip in the ASC, also reach for the transfer phone</li></ul>'});
+    rec({tone:'warn', label:'IV insulin infusion — inpatient / unstable / cardiac',
+      main:'Standard mix: 100 units regular insulin in 100 mL NS = 1 U/mL. Dedicated pump.',
+      detail:'<ul><li>Do not piggyback other drugs</li><li>Typical start: 0.05–0.1 U/kg/hr (or per institutional DKA protocol if applicable)</li><li><strong>q1h BG checks mandatory</strong></li><li><strong>Prime tubing with insulin solution (or albumin if your protocol uses it)</strong> to saturate adsorption sites</li><li>Usually means the patient belongs in an ICU or step-down — if you\'re reaching for a drip in the ASC, also reach for the transfer phone</li></ul>'});
+    rec({tone:'danger', label:'Transitioning off an IV insulin infusion',
+      main:'T1DM: give SQ basal insulin AT LEAST 2 HOURS before stopping the drip — DKA can develop rapidly otherwise',
+      detail:'<ul><li><strong>T1DM:</strong> rebound DKA risk is real and fast. Give the SQ long-acting (glargine/detemir/degludec) ≥2 hr before drip-off. Verify the patient has the dose on board before turning off the pump.</li><li><strong>T2DM:</strong> transition can be more abrupt, but a basal-bolus regimen should be initiated (don\'t just stop and walk away).</li><li>Communicate the basal-status in handoff explicitly.</li></ul>'});
   }
 
   function renderHyperGDose() {
-    title('3. Dose calculation — the 1800 rule', 'ISF, examples, safe ceiling.');
+    title('3. Dose calculation — the 1800 rule', 'ISF, examples, sensitivity modifiers, safe ceiling.');
     rec({tone:'success', label:'Insulin Sensitivity Factor (ISF) = 1800 ÷ TDD',
       main:'ISF = expected mg/dL drop per 1 unit of rapid-acting insulin',
-      detail:'TDD = patient\'s total daily insulin dose (basal + bolus). Get it from the history or pump display.'});
+      detail:'TDD = patient\'s total daily insulin dose (basal + prandial + correction). Get it from the history or pump display. When the patient\'s TDD is known, the formula self-corrects for insulin sensitivity: a T1DM on TDD 30 gets ISF=60; a T2DM on TDD 150 gets ISF=12. Both correct.'});
     rec({tone:'success', label:'Correction dose = (Current BG − Target BG) ÷ ISF',
       main:'Target BG = 150 mg/dL is a reasonable midpoint',
-      detail:'Some use 140, some 180. Pick one and stay consistent across your practice. 150 puts you safely inside the 180–250 SAMBA range with room for further drop.'});
-    rec({tone:'warn', label:'If you don\'t know the TDD, or the patient is insulin-naïve',
-      main:'Use ISF = 40 (SAMBA-endorsed safe default). 1 unit → ~40 mg/dL drop.',
-      detail:'This is conservative on purpose. T1DM patients are typically more sensitive (ISF 50+) and T2DM less (ISF 20–30), so 40 is a reasonable middle for the unknown patient.'});
-    rec({tone:'info', label:'Worked examples',
-      main:'Plug-and-play scenarios',
-      detail:'<table style="width:100%; border-collapse:collapse; font-size:0.92em"><thead><tr style="border-bottom:1px solid currentColor"><th style="text-align:left; padding:6px 4px">Scenario</th><th style="text-align:left; padding:6px 4px">Calc</th><th style="text-align:left; padding:6px 4px">Dose</th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T1DM, TDD 50, BG 280, tgt 150</td><td style="padding:6px 4px">ISF 36; 130/36 = 3.6</td><td style="padding:6px 4px"><strong>4 u SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM on insulin, TDD 100, BG 320, tgt 180</td><td style="padding:6px 4px">ISF 18; 140/18 = 7.8</td><td style="padding:6px 4px"><strong>8 u SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM on metformin only, BG 290, tgt 180</td><td style="padding:6px 4px">ISF 40 (default); 110/40 = 2.75</td><td style="padding:6px 4px"><strong>3 u SQ lispro</strong></td></tr><tr><td style="padding:6px 4px">T2DM, unknown TDD, BG 350, tgt 180</td><td style="padding:6px 4px">ISF 40; 170/40 = 4.25</td><td style="padding:6px 4px"><strong>4 u SQ lispro</strong></td></tr></tbody></table>'});
-    rec({tone:'warn', label:'T1DM are more insulin-sensitive than T2DM',
-      main:'Same dose drops them further',
-      detail:'Be conservative if you\'re not sure of the TDD — round down. A 4-unit miscalculation in a T1DM patient can produce a profound hypo.'});
-    rec({tone:'danger', label:'Safe ceiling: cap single-bolus correction at ~10 units SQ',
-      main:'Regardless of what the formula says, do not stack beyond 10 u SQ without re-evaluation',
-      detail:'Beyond that, recheck and re-dose rather than push more in. The risk of late hypoglycemia from a 15+ unit single bolus is unacceptable for an ambulatory patient who will be discharged.'});
+      detail:'Pick one and stay consistent across your practice. 150 puts you safely inside the post-op 140–180 range with room for further drop if needed.'});
+    rec({tone:'warn', label:'TDD unknown — use DM-type defaults (this matters)',
+      main:'T1DM default: ISF = 60 · T2DM default: ISF = 40',
+      detail:'<strong>The single-default era is over.</strong> Population data shows meaningfully different sensitivity by DM type:<ul><li>T1DM ISF typically 50–100 mg/dL per unit (often higher in lean adults and women)</li><li>T2DM on insulin: ISF typically 20–50</li><li>Insulin-naïve T2DM: ISF typically 40–80 depending on adiposity</li></ul><strong>Why these defaults err on the safer side:</strong> applying ISF=40 to a lean, insulin-sensitive T1DM patient whose true ISF is 70+ produces a meaningful overdose. Slight undertreatment with a higher ISF is the safer error in the OR.<br><br>Use <strong>ISF = 70</strong> if T1DM with lean BMI &lt;22.'});
+    rec({tone:'warn', label:'Sensitivity modifiers — higher ISF (smaller dose) when:',
+      main:'Lean / elderly / renal / hepatic / adrenal / post-hypo / post-bariatric',
+      detail:'<ul><li>Lean BMI &lt;22</li><li>Elderly (&gt;70)</li><li>Renal insufficiency (eGFR &lt;45) — reduced insulin clearance</li><li>Hepatic dysfunction</li><li>Adrenal insufficiency</li><li>Recent severe hypoglycemia</li><li>Post-bariatric surgery</li></ul>'});
+    rec({tone:'warn', label:'Sensitivity modifiers — lower ISF (larger dose) when:',
+      main:'Obese / steroids / sepsis / 3rd trimester',
+      detail:'<ul><li>Obese BMI &gt;35</li><li>On chronic steroids or just received intraop dexamethasone</li><li>Sepsis / acute inflammation</li><li>Pregnancy (3rd trimester)</li></ul>For T2DM with BMI &gt;35 or on steroids, drop ISF default to <strong>20–30</strong>.'});
+    rec({tone:'info', label:'Worked examples — intraop dosing (BG &gt; 300 or surgeon-flagged)',
+      main:'Per the liberalized framework, you should mostly be dosing intraop only when BG &gt; 300 or in a high-stakes case',
+      detail:'<table style="width:100%; border-collapse:collapse; font-size:0.92em"><thead><tr style="border-bottom:1px solid currentColor"><th style="text-align:left; padding:6px 4px">Scenario</th><th style="text-align:left; padding:6px 4px">Calc</th><th style="text-align:left; padding:6px 4px">Dose</th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T1DM, TDD 50 known, BG 320, target 150</td><td style="padding:6px 4px">ISF 36; (320−150)/36 = 4.7</td><td style="padding:6px 4px"><strong>4–5 U SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T1DM, lean, TDD unknown, BG 340, target 150</td><td style="padding:6px 4px">ISF 60; (340−150)/60 = 3.2</td><td style="padding:6px 4px"><strong>3 U SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM, TDD 100 known, BG 350, target 150</td><td style="padding:6px 4px">ISF 18; (350−150)/18 = 11.1 → cap</td><td style="padding:6px 4px"><strong>10 U SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM insulin-naïve, BG 320, target 150</td><td style="padding:6px 4px">ISF 40; (320−150)/40 = 4.25</td><td style="padding:6px 4px"><strong>4 U SQ lispro</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">T2DM, BMI 40, on steroids, BG 350, target 150</td><td style="padding:6px 4px">ISF 25; (350−150)/25 = 8</td><td style="padding:6px 4px"><strong>8 U SQ lispro</strong></td></tr><tr><td style="padding:6px 4px">T1DM, instrumented spine, TDD 40, BG 240 (flagged)</td><td style="padding:6px 4px">ISF 45; (240−150)/45 = 2</td><td style="padding:6px 4px"><strong>2 U SQ lispro</strong></td></tr></tbody></table>'});
+    rec({tone:'danger', label:'Safe ceiling: cap single-bolus correction at ~10 U SQ',
+      main:'Regardless of what the formula says, do not stack beyond 10 U SQ without re-evaluation',
+      detail:'Recheck and re-dose rather than push more in. The risk of late hypoglycemia from a 15+ unit single bolus is unacceptable, particularly in an ambulatory patient who will be discharged.'});
   }
 
   function renderHyperGRecheck() {
@@ -2903,9 +2928,9 @@
 
   function renderHyperGFollowup() {
     title('5. What to do with the recheck', 'Reading the result and choosing the next move.');
-    rec({tone:'success', label:'BG dropped appropriately, now in target (150–250)',
+    rec({tone:'success', label:'In target, trending stable',
       main:'Continue with the case / proceed to discharge planning. Document.',
-      detail:'No further action on glucose unless trajectory changes. Confirm BG &gt; 100 and stable before discharge.'});
+      detail:'No further action on glucose unless trajectory changes. For ambulatory: confirm BG &gt; 100 and stable before discharge. For inpatient: handoff with last BG, basal status, planned SSI / basal-bolus regimen.'});
     rec({tone:'info', label:'BG still elevated, dropping but slowly',
       main:'Context-dependent — proceed if near discharge and trending down; redose at HALF the original dose if far from target and far from discharge',
       detail:'<ul><li>Approaching discharge and trending down → often acceptable to discharge with stable trend documented</li><li>Far from target and far from discharge → redose with <strong>half</strong> the original correction to avoid stacking</li><li>Recheck again at 90–120 min after the half-dose</li></ul>The "half-dose" rule exists because the first dose is still active. Giving a full second dose risks delayed hypoglycemia.'});
@@ -2932,7 +2957,13 @@
       detail:'<ul><li>4 oz juice, 4 glucose tabs (4 g each), or one tube of glucose gel</li><li>Avoid chocolate / fat-containing foods — slower absorption</li><li>If the patient is pre-procedure and you give PO glucose, the NPO clock restarts. Discuss with surgeon about case status.</li></ul>'});
     rec({tone:'info', label:'Recheck cadence',
       main:'Every 15–30 min until &gt; 100 and stable',
-      detail:'The "rule of 15" — 15 g, recheck in 15 min, repeat if still &lt; 70. Hold any further scheduled insulin. If on a pump, <strong>suspend the pump</strong>.'});
+      detail:'The "rule of 15" — 15 g, recheck in 15 min, repeat if still &lt; 70. <strong>Hold any further scheduled insulin.</strong> If on a pump, <strong>suspend the pump</strong>; if on an infusion, <strong>stop it</strong>.'});
+    rec({tone:'warn', label:'Restarting an IV insulin infusion after hypoglycemia',
+      main:'Restart at 50% of prior rate once BG &gt; 150 and trending up',
+      detail:'Do not resume at the prior rate. The drip caused the event; an unchanged rate will re-cause it. For T1DM, ensure SQ basal coverage is in place if there will be any gap.'});
+    rec({tone:'warn', label:'Potassium falls with insulin — check K+ q4h on infusion',
+      main:'Hypokalemia is the most common iatrogenic complication of insulin treatment',
+      detail:'<ul><li>On any insulin infusion, check K+ q4h</li><li>Replete if K &lt;4 (and certainly before initiating insulin if K &lt;3.3 — most relevant in DKA management)</li><li>Insulin drives K+ intracellularly; the more aggressive the insulin, the more aggressive the K+ shift</li></ul>'});
     rec({tone:'warn', label:'The asleep / sedated patient',
       main:'Increased vigilance and scheduled rechecks are essential',
       detail:'Anesthetized patients won\'t manifest or express symptoms. Catecholamine response (tachycardia, hypertension, sweating) may be the only sign — and it\'s easily attributed to surgical stimulus. If any insulin was given pre-induction, schedule a BG check at the expected peak regardless of clinical picture.'});
@@ -3030,28 +3061,288 @@
   }
 
   function renderHyperGCheat() {
-    title('📋 Bedside cheat card', 'One-screen quick reference for day-of hyperglycemia.');
+    title('📋 Bedside cheat card', 'One-screen quick reference for day-of hyperglycemia (liberalized framework).');
+    rec({tone:'danger', label:'CORE PRINCIPLE',
+      main:'Intraop = worst place to give insulin. Liberalize · defer to PACU/floor. Do NOT extrapolate ICU targets to OR.',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">Cognitive load high · pt unconscious (no hypo signs)\nU-100 dosing errors are a documented event class\nPACU/floor: awake pt + q4-6h checks + 2-person verify\nSSI signal driven by post-op control, not 90 OR min</pre>'});
+    rec({tone:'success', label:'TARGETS',
+      main:'Intraop ≤300 (all cells) · Post-op 140–180 (floor)',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">Intraop target (all cells) ..... &lt;= 300 mg/dL\nPost-op target (on floor) ...... 140-180 mg/dL</pre>'});
     rec({tone:'info', label:'TRIAGE',
       main:'BG-based action at a glance',
-      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">BG &lt; 250 .................. proceed, no treatment\nBG 250–300, chronic poor .... proceed, no treatment\nBG 250–300, acute / tight ... treat if long case\nBG &gt; 300 .................. treat (or postpone if non-urgent)\nDKA / HHNS signs ............ POSTPONE, transfer</pre>'});
-    rec({tone:'info', label:'ROUTE',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">BG &lt; 180 ..................... proceed, no treatment\nBG 180-300, any setting ...... PROCEED intraop;\n                              defer Rx to PACU/floor\nBG 180-300, surgeon-flagged .. treat (small SQ)\n  (spine, vascular, cardiac, &gt;4 hr case)\nBG &gt; 300 ..................... TREAT; check ketones\nDKA / HHNS signs ............. POSTPONE, transfer</pre>'});
+    rec({tone:'info', label:'ROUTE (when treating)',
       main:'SQ rapid-acting is the default; IV regular only for fast-onset need',
-      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">DEFAULT: SQ rapid-acting (lispro/aspart/glulisine), U-100,\n         no dilution\nIV:      regular insulin only, when BG &gt; 300 + short case\n         + need fast onset (5-min onset, 30–60 min duration)</pre>'});
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">SQ rapid: lispro/aspart/glulisine, U-100, no dilution\nIV bolus: 10 U regular in 10 mL NS = 1 U/mL\nIV drip: 100 U regular in 100 mL NS = 1 U/mL\n         start 0.05-0.1 U/kg/hr · q1h BG</pre>'});
     rec({tone:'info', label:'DOSE',
-      main:'Correction = (BG − 150) ÷ ISF; ISF = 1800 ÷ TDD (use 40 if unknown)',
-      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">ISF      = 1800 ÷ TDD     (default 40 if TDD unknown)\nDose     = (BG − 150) ÷ ISF\nCAP      = ~10 units SQ single bolus — beyond that, recheck</pre>'});
+      main:'Correction = (BG − 150) ÷ ISF · ISF = 1800 ÷ TDD',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">ISF = 1800 / TDD     (preferred — TDD known)\n\nTDD UNKNOWN defaults:\n  T1DM ........ ISF = 60   (use 70 if lean BMI&lt;22)\n  T2DM ........ ISF = 40   (use 20-30 if BMI&gt;35 or steroids)\n\nCAP = ~10 U SQ single bolus; recheck before stacking</pre>'});
     rec({tone:'info', label:'RECHECK',
       main:'Time the recheck to the kinetics of what you gave',
-      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">SQ rapid-acting ........ 90–120 min\nSQ regular ............. 2–4 hr\nIV bolus regular ....... 30 min\nIV infusion ............ q1h</pre>'});
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">SQ rapid-acting ........ 90-120 min\nSQ regular ............. 2-4 hr\nIV bolus regular ....... 30 min\nIV infusion ............ q1h</pre>'});
+    rec({tone:'info', label:'BASAL INSULIN',
+      main:'T1DM: NEVER hold · T2DM: 75–80% night before',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">T1DM ........ NEVER hold (DKA in hours)\nT2DM ........ 75-80% night before\nWhen transitioning OFF drip in T1DM:\n  give SQ basal &gt;=2 hr BEFORE stopping the drip</pre>'});
     rec({tone:'danger', label:'HYPOGLYCEMIA (&lt; 70)',
       main:'D50 25 mL push, or D10 250 mL; PO 15–20 g if awake; recheck q15–30 min',
-      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">IV:      D50 25 mL push, OR D10 250 mL\nPO:      15–20 g glucose (juice/gel/tabs)\nRECHECK: q15–30 min; hold further insulin;\n         suspend pump if applicable</pre>'});
-    rec({tone:'info', label:'DEX FOR PONV',
-      main:'4 mg (not 8) in DM',
-      detail:'Same antiemetic effect, less hyperglycemia. Individualize for T1DM or A1c &gt; 9%.'});
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">IV: D50 25 mL push, OR D10 250 mL\nPO: 15-20 g glucose (juice/gel/tabs)\nRECHECK q15-30 min; hold insulin; suspend pump\nIf restarting drip: 50% of prior rate once BG&gt;150\nK+ falls with insulin -- check q4h on infusion</pre>'});
+    rec({tone:'info', label:'DEX FOR PONV in DM',
+      main:'4 mg (not 8) — same antiemetic effect, less hyperglycemia. Individualize for T1DM or A1c &gt; 9%.'});
+    rec({tone:'warn', label:'SGLT-2 CAVEAT',
+      main:'If not held 3–4 days, check ketones regardless of BG (euglycemic DKA risk)'});
+    rec({tone:'info', label:'DEFERRAL DOCUMENTATION (template)',
+      main:'Suggested chart language',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">"Intraop BG XXX mg/dL. Declining intraop insulin\ncorrection in favor of more controlled PACU/floor-\nbased management to reduce risk of dosing error and\nunrecognized intraoperative hypoglycemia. Handoff\ncommunicated with last BG, time, and recommendation\nfor sliding-scale or basal-bolus dosing per floor\nprotocol."</pre>',
+      related:[{label:'Full deferral documentation guidance', render:renderHyperGDocumentation}]});
     rec({tone:'info', label:'Sources',
-      main:'SAMBA 2024 · AACE/ACE · Endocrine Society 2022',
-      cite:'Rajan N, Duggan EW, Abdelmalak BB, et al. SAMBA Updated Consensus on Perioperative Blood Glucose Management. Anesth Analg 2024. · AACE/ACE Consensus Statement on Insulin Pump Management Task Force, Endocr Pract 2014. · Korytkowski MT et al. Management of Hyperglycemia in Hospitalized Adult Patients in Non-Critical Care Settings. J Clin Endocrinol Metab 2022.'});
+      main:'SAMBA 2024 · ADA Standards of Care 2023 · Endocrine Society 2022 · AACE/ACE',
+      cite:'Rajan N et al. SAMBA Updated Consensus, Anesth Analg 2024. · ElSayed NA et al. ADA Standards of Care 2023, Diabetes Care 2023. · Korytkowski MT et al. Management of Hyperglycemia in Hospitalized Adults in Non-Critical Care Settings, JCEM 2022. · AACE/ACE Insulin Pump Task Force, Endocr Pract 2014. · ASA Consensus on GLP-1 Agonists 2023.'});
+  }
+
+  function renderHyperGMatrix() {
+    title('🔲 Care matrix — setting × DM type', 'The 4-cell framework. Targets, route preference, ISF, and basal handling all vary by cell.');
+    rec({tone:'info', label:'What varies between the four cells',
+      main:'Five axes — keep them separate in your head',
+      detail:'<ul><li><strong>Target BG</strong> — driven by surgical stress and time horizon (setting axis)</li><li><strong>Route preference</strong> — SQ for short cases, IV infusion for long/unstable (setting axis)</li><li><strong>ISF default</strong> — T1DM patients are more insulin-sensitive than T2DM (DM-type axis)</li><li><strong>Basal handling</strong> — T1DM must NEVER lose basal coverage; T2DM tolerates gaps (DM-type axis)</li><li><strong>DKA vigilance</strong> — always higher in T1DM, but emerges quickly with any SGLT-2 use in either type</li></ul>'});
+    rec({tone:'info', label:'The matrix',
+      main:'Setting × DM type · intraop target ≤300 across all cells',
+      detail:'<div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:0.88em"><thead><tr style="border-bottom:2px solid currentColor"><th style="text-align:left; padding:8px 6px; vertical-align:top; width:18%"></th><th style="text-align:left; padding:8px 6px; vertical-align:top">AMBULATORY<br><span style="font-weight:normal; font-size:0.9em">short minor case · rapid PO resumption</span></th><th style="text-align:left; padding:8px 6px; vertical-align:top">SDA / INPATIENT<br><span style="font-weight:normal; font-size:0.9em">major case · prolonged NPO · catabolic stress</span></th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:8px 6px; vertical-align:top"><strong>T1DM</strong><br><span style="font-size:0.9em">insulin-deficient</span></td><td style="padding:8px 6px; vertical-align:top"><strong>Target:</strong> ≤300 mg/dL <em>(liberalize from 180–250)</em><br><strong>Route:</strong> SQ rapid in pre-op or PACU<br><strong>ISF default:</strong> <strong>60</strong> (use 70 if lean BMI&lt;22)<br><strong>Basal:</strong> <strong>never hold</strong> — full glargine/detemir night before (80% if AM hypo history). DKA risk doesn\'t sleep.<br><strong>Pump:</strong> continue at basal or 80%<br><strong>Intraop dose only if:</strong> BG &gt;300, OR concerning upward trend, OR surgeon-flagged<br><strong>Watch:</strong> ketones if BG unexpectedly high</td><td style="padding:8px 6px; vertical-align:top"><strong>Intraop target:</strong> ≤300 mg/dL <em>(do NOT extrapolate 140–180 to OR)</em><br><strong>Post-op target:</strong> 140–180 via SSI / basal-bolus<br><strong>Route:</strong> defer correction to PACU / floor<br><strong>ISF default:</strong> <strong>60</strong><br><strong>Basal:</strong> continue glargine/detemir; <strong>never zero out</strong> (SQ basal ≥2 hr before stopping any drip — rebound DKA risk)<br><strong>Intraop dose only if:</strong> BG &gt;300, case &gt;4 hr, cardiac, sepsis, pre-existing infusion<br><strong>Handoff:</strong> last BG, basal status, planned regimen</td></tr><tr><td style="padding:8px 6px; vertical-align:top"><strong>T2DM</strong><br><span style="font-size:0.9em">insulin-resistant</span></td><td style="padding:8px 6px; vertical-align:top"><strong>Target:</strong> ≤300 mg/dL<br><strong>Route:</strong> SQ rapid in pre-op or PACU; defer intraop dosing when possible<br><strong>ISF default:</strong> <strong>40</strong><br><strong>Basal:</strong> 75–80% of usual evening dose night before<br><strong>Tolerates brief insulin gap</strong> — no DKA risk in hours<br><strong>Intraop dose only if:</strong> BG &gt;300, OR surgeon-flagged<br><strong>Don\'t aggressively treat chronic hyperglycemia</strong> (BG 250–300 with ↑A1c → no Rx)</td><td style="padding:8px 6px; vertical-align:top"><strong>Intraop target:</strong> ≤300 mg/dL <em>(do NOT extrapolate 140–180 to OR)</em><br><strong>Post-op target:</strong> 140–180 via SSI / basal-bolus<br><strong>Route:</strong> defer correction to floor — SSI in PACU/floor catches BG 180–300 in a controlled setting<br><strong>ISF default:</strong> <strong>40</strong> (lower to 20–30 if BMI&gt;35 or steroids)<br><strong>Basal:</strong> continue 75–100% — surgical stress raises requirement<br><strong>Intraop dose only if:</strong> BG &gt;300, case &gt;4 hr, cardiac, sepsis<br><strong>Hold:</strong> orals, GLP-1, SGLT-2 (3–4 days prior)</td></tr></tbody></table></div>'});
+    rec({tone:'warn', label:'A1c &gt; 9% across all cells',
+      main:'Flag the surgeon for high-risk cases (joints, vascular, instrumented spine) — but NOT an automatic cancellation in any cell',
+      detail:'SAMBA 2024 explicitly does not recommend A1c-based postponement. ESC 2022 suggests an &gt;8.5% threshold for major elective surgery as one input among many.',
+      related:[{label:'HbA1c thresholds — full discussion', render:renderHbA1c}]});
+    rec({tone:'info', label:'Why the DM-type ISF split matters',
+      main:'T1DM ISF=60 default avoids overdosing the lean, insulin-sensitive patient. T2DM ISF=40 default accommodates greater insulin resistance.',
+      detail:'Applying a single ISF=40 default to a lean T1DM whose true ISF is 70+ produces a meaningful overdose. The split defaults err on the side of safety (slight undertreatment) while still being responsive to BG &gt;300.'});
+  }
+
+  function renderHyperGDocumentation() {
+    title('📝 Documenting the deferral defensibly', 'When you choose to defer intraop correction, the chart should reflect a deliberate, reasoned decision — not absence of attention.');
+    rec({tone:'success', label:'Three elements make the decision defensible',
+      main:'Deliberate clinical judgment · safety rationale · appropriate handoff',
+      detail:'<ol><li><strong>Deliberate clinical judgment.</strong> The chart shows you noted the BG, considered intervention, and chose a specific path.</li><li><strong>Articulated safety rationale.</strong> The reasoning (dosing error risk, unrecognized hypo, better setting downstream) is stated, not implied.</li><li><strong>Confirmed handoff.</strong> The receiving team knows the BG, time, and recommended regimen.</li></ol>'});
+    rec({tone:'info', label:'Suggested chart language — copy/paste/adapt',
+      main:'A reasonable template covering all three elements',
+      detail:'<div style="background:rgba(127,127,127,0.08); padding:12px; border-left:3px solid currentColor; font-style:italic">"Intraop BG XXX mg/dL. Declining intraop insulin correction in favor of more controlled PACU/floor-based management to reduce risk of dosing error and unrecognized intraoperative hypoglycemia. Handoff communicated with last BG, time, and recommendation for sliding-scale or basal-bolus dosing per floor protocol."</div>'});
+    rec({tone:'warn', label:'What NOT to document',
+      main:'Avoid language suggesting inattention or a missed step',
+      detail:'<ul><li>"BG 220 — no action" (sounds like oversight)</li><li>"BG was high but I was busy" (states the wrong rationale)</li><li>Silence on a checked BG that was elevated (looks like missing data)</li></ul>The point is that a deferral is an active choice with a safety case behind it — make that visible in writing.'});
+    rec({tone:'info', label:'When you DID treat — also document the reasoning',
+      main:'Note which override condition applied',
+      detail:'E.g.: "BG 260 with instrumented spine procedure flagged by surgeon for tight glycemic control. 3 U SQ lispro given pre-induction. Recheck at 120 min." This documents that the decision to treat was guided by the override conditions, not generalized.',
+      related:[{label:'Override conditions', render:renderHyperG}]});
+  }
+
+  function renderHyperGHandoff() {
+    title('🤝 SDA / inpatient handoff checklist', 'When transferring a diabetic patient from OR or PACU to the floor team.');
+    rec({tone:'success', label:'Eight elements to communicate',
+      main:'Standard handoff content for any DM patient going to the floor',
+      detail:'<ol><li><strong>Type and duration of DM</strong> (T1DM 20-yr · T2DM 8-yr)</li><li><strong>Last BG value and time</strong></li><li><strong>All intraop insulin given:</strong> type, dose, route, time</li><li><strong>Whether the patient is currently on an infusion,</strong> and the current rate</li><li><strong>Last home dose of long-acting basal:</strong> type, dose, time</li><li><strong>Planned target shift to 140–180 mg/dL</strong> for the inpatient stay</li><li><strong>Planned regimen</strong> (basal-bolus orders) and any holds</li><li><strong>Expected timing of PO resumption and home regimen restart</strong></li></ol>'});
+    rec({tone:'danger', label:'For T1DM specifically — say it out loud',
+      main:'Explicit note that basal insulin MUST continue even while NPO to prevent DKA',
+      detail:'This is the single most common cause of avoidable in-hospital DKA in the surgical population: someone (anesthesia, surgery, nursing) assumes "NPO = hold all insulin." It does not. The floor team needs to hear, in words: <em>"This patient is T1DM. Basal insulin continues regardless of NPO status. If the home dose was held, restart per the orders below."</em>'});
+    rec({tone:'warn', label:'For patients arriving off a drip — explicit overlap',
+      main:'Confirm SQ basal was given ≥2 hr before the drip was stopped',
+      detail:'If basal was not given pre-stop, communicate that explicitly so the floor team can dose immediately on arrival. Failure here is a recipe for rebound DKA over the next 4–6 hours.'});
+    rec({tone:'info', label:'For patients with CGM / pump',
+      main:'Communicate whether the device is active, suspended, or removed; provide model and the patient\'s pump emergency contact if device was removed',
+      detail:'<ul><li>If active during the case: confirm site integrity, current basal rate, last bolus time</li><li>If suspended: note the time and reason</li><li>If removed (e.g., for MRI / cautery proximity): document model, serial, and last programmed settings. Have the patient or caregiver bring the manufacturer\'s emergency contact info for re-pairing.</li></ul>'});
+    rec({tone:'info', label:'Sample handoff text',
+      main:'A complete, defensible handoff in 3 sentences',
+      detail:'<div style="background:rgba(127,127,127,0.08); padding:12px; border-left:3px solid currentColor; font-style:italic">"57yo T2DM on metformin + glargine 24u qHS, A1c 7.4. Intraop BG 245 at incision, no insulin given (BG &lt;300, no flags). Last BG 230 at 14:20; last basal dose glargine 24u previous evening 21:00. Plan: SSI per floor protocol, target 140–180, resume metformin with first meal, glargine 24u qHS tonight."</div>'});
+  }
+
+  function renderHyperK() {
+    title('⚡ Hyperkalemia — practical bedside management', 'Specific doses, routes, and timing. "Give insulin and glucose" is not an order — these are.');
+    rec({tone:'danger', label:'Core principle: insulin + dextrose for hyperkalemia causes hypoglycemia in ~17–24% of patients',
+      main:'The standard "10 U regular insulin IV + 1 amp D50" regimen has a documented hypoglycemia rate of 17–24% (up to 75% in some series). Insulin lasts 4–6 hr; 25 g dextrose lasts ~1 hr. The mismatch is the problem.',
+      detail:'<strong>This is the hyperkalemia analog of the hyperglycemia framework.</strong> The textbook recipe ("give insulin and glucose") is non-specific, doesn\'t prevent the predictable late hypoglycemia, and gets ordered without engaging the safer modern refinements.<br><br><strong>Three refinements reduce hypoglycemia risk:</strong><ol><li><strong>Reduce insulin to 5 U</strong> (or 0.1 U/kg, max 10 U) if pretreatment BG &lt;150, eGFR &lt;45, or insulin-naïve — similar K+ reduction, fewer hypos. Reserve 10 U for K+ &gt;6 with normal renal function.</li><li><strong>Increase dextrose load or use D10 infusion</strong> — 2 amps D50 (50 g) instead of 1, or D10 250–500 mL over 1 hr. D10 infusion appears at least as effective as D50 bolus for hypoglycemia prevention.</li><li><strong>Monitor BG hourly × 4–6 hr</strong> — match the duration of IV regular insulin. Delayed hypoglycemia (1–4 hr post-administration) is the failure mode.</li></ol><strong>If pretreatment BG &gt;250: skip the dextrose entirely</strong> (the patient already has substrate).<br><br><strong>If pretreatment BG &lt;70: DO NOT give insulin.</strong> Treat the hypoglycemia first.',
+      cite:'Palmer BF, Clegg DJ. Hyperkalemia treatment standard. Nephrol Dial Transplant 2024;39:1097–1104. · Pierce et al. retrospective analysis (5U vs 10U). · LaRue HA et al. Insulin/glucose pearls, J Emerg Med 2019.'});
+    rec({tone:'warn', label:'The four pillars of acute hyperkalemia treatment',
+      main:'Stabilize the membrane · shift K+ into cells · remove K+ from body · prevent rebound',
+      detail:'<strong>1. Stabilize</strong> (calcium) — onset &lt;3 min, lasts 30–60 min. Does NOT lower K+. Buys time.<br><strong>2. Shift</strong> (insulin/dextrose, albuterol, ± bicarb) — onset 15–30 min, lasts 2–6 hr. Temporary; K+ rebounds.<br><strong>3. Remove</strong> (loop diuretic, K+ binder, dialysis) — the only definitive step. Hours to days.<br><strong>4. Prevent rebound</strong> — stop offending meds, restrict K+ intake, plan definitive removal.<br><br>The classic error is doing only steps 1–2 and not planning step 3. The K+ comes back.'});
+    stage.appendChild(optGrid([
+      {title:'1. Triage by K+ level + ECG', sub:'Who needs what, when, and how fast', onClick:()=>go('K+ triage','t',renderHyperKTriage)},
+      {title:'2. Stabilize — calcium', sub:'Gluconate vs chloride · doses · when to repeat', onClick:()=>go('Stabilize','s',renderHyperKStabilize)},
+      {title:'3. Shift — insulin/dextrose, albuterol, bicarb', sub:'Specific doses, routes, why each one', onClick:()=>go('Shift','x',renderHyperKShift)},
+      {title:'4. Remove — diuretic, binder, dialysis', sub:'The only definitive step. Don\'t skip it.', onClick:()=>go('Remove','r',renderHyperKRemove)},
+      {title:'5. Recheck protocol & escalation', sub:'When to recheck, when to call nephrology', onClick:()=>go('Recheck','c',renderHyperKRecheck)},
+      {title:'6. Chronic K+ binders the patient may be on', sub:'Patiromer, SZC (Lokelma), SPS — what to know', onClick:()=>go('Chronic agents','a',renderHyperKChronic)},
+      {title:'📋 Bedside cheat card', sub:'One-screen quick reference', onClick:()=>go('Cheat card','h',renderHyperKCheat)}
+    ]));
+    rec({tone:'info', label:'Two important reminders',
+      main:'Rule out pseudohyperkalemia · rule out succinylcholine in the immediate plan',
+      detail:'<ul><li><strong>Pseudohyperkalemia:</strong> hemolyzed sample, tourniquet too tight, fist-clenching, drawn from line with K+-containing fluids, marked leukocytosis or thrombocytosis. <strong>Repeat the sample</strong> before committing to a full treatment cascade in any patient with no clinical features and no risk factors.</li><li><strong>Succinylcholine:</strong> raises K+ by ~0.5 mEq/L in healthy adults — more (1.0+) in burns, denervation, prolonged immobilization, severe sepsis. Use rocuronium (with sugammadex available) for hyperkalemic patients needing rapid-sequence intubation.</li></ul>'});
+    rec({tone:'info', label:'ESRD context is different — see ESRD K+ tolerance',
+      main:'Chronic dialysis patients tolerate higher K+ levels than non-ESRD patients',
+      detail:'The thresholds on this page are for acute hyperkalemia in non-ESRD or unknown-baseline patients. ESRD-specific thresholds (~6.0 vs 5.5) and the dialysis-vs-medical-management decision live on the ESRD labs page.',
+      related:[{label:'ESRD K+ tolerance', render:renderESRDLabs}]});
+  }
+
+  function renderHyperKTriage() {
+    title('1. Triage by K+ level + ECG', 'The combination matters more than either number alone.');
+    rec({tone:'success', label:'K+ 5.0–5.4 + normal ECG',
+      main:'Generally proceed (non-ESRD). Confirm sample (hemolysis?), review meds, repeat if any clinical doubt.',
+      detail:'No acute treatment needed. Hold ACEi/ARB/spironolactone/NSAIDs if applicable. If succinylcholine is in the plan: get K+ &lt;5.5 first, or use rocuronium.'});
+    rec({tone:'warn', label:'K+ 5.5–5.9 + normal ECG',
+      main:'Identify cause, treat selectively. For elective: address before. For urgent: medical management + proceed.',
+      detail:'<strong>Treatment menu (selective):</strong><ul><li>Hold AAS (ACEi/ARB, spironolactone), NSAIDs</li><li>Albuterol 10–20 mg nebulized (lower threshold to use because no IV needed)</li><li>Consider K+ binder (SZC 10 g PO ×1) if K+ stable and patient can take PO</li><li>Loop diuretic if euvolemic/overloaded + makes urine</li></ul>Calcium is NOT indicated at this level without ECG changes. Insulin/dextrose is usually deferred unless K+ is rising.'});
+    rec({tone:'warn', label:'K+ 6.0–6.4 + normal ECG',
+      main:'Full medical management. Don\'t wait for ECG changes — peaked T-waves are insensitive.',
+      detail:'<strong>Treatment cascade:</strong><ol><li><strong>Calcium gluconate</strong> 1 g IV over 2–3 min (skip if ECG truly normal AND K+ &lt;6.5, but most clinicians give it at K+ ≥6.0)</li><li><strong>Insulin + dextrose</strong> — see shift page for the 5U vs 10U decision and dextrose pairing</li><li><strong>Albuterol</strong> 10–20 mg nebulized</li><li><strong>Definitive removal:</strong> loop diuretic if eGFR ≥45, K+ binder, or dialysis if ESRD</li></ol>For elective surgery: defer until K+ &lt;5.5. For urgent: medical management and proceed with continuous monitoring.',
+      cite:'ACEP 2022 hyperkalemia algorithm.'});
+    rec({tone:'danger', label:'K+ ≥ 6.5 OR any ECG changes (peaked T, wide QRS, sine wave, brady, asystole)',
+      main:'IMMEDIATE: calcium NOW. Then full cascade. CANCEL elective. For emergent: treat and proceed with anesthesia + nephrology.',
+      detail:'<strong>This is a code-tier event.</strong><ol><li><strong>Calcium gluconate 1–3 g IV STAT</strong> (or CaCl₂ 1 g via central line). Repeat q5 min until ECG normalizes. Onset &lt;3 min.</li><li><strong>Insulin 10 U IV + dextrose</strong> (skip dextrose if BG &gt;250)</li><li><strong>Albuterol 10–20 mg nebulized</strong> (additive to insulin)</li><li><strong>Bicarbonate 50 mEq IV</strong> ONLY if metabolic acidosis with bicarb &lt;22 (limited evidence for K+ lowering otherwise)</li><li><strong>Definitive removal:</strong> call nephrology for emergent dialysis if ESRD or refractory</li><li><strong>Cardiac monitoring continuous</strong> — at least until 4 hr after last shift therapy</li></ol>',
+      cite:'Palmer & Clegg 2024.'});
+    rec({tone:'info', label:'ECG changes — what to look for, in order of appearance',
+      main:'Peaked T-waves (earliest, but insensitive) → PR prolongation → QRS widening → sine wave → asystole',
+      detail:'<strong>Important:</strong> ECG sensitivity for hyperkalemia is poor. A normal ECG does NOT mean the K+ is safe — many patients with K+ &gt;6.5 have normal-appearing ECGs. Treat the number plus the clinical picture; don\'t wait for ECG changes to start therapy at K+ ≥6.0.<br><br><strong>Sine wave morphology</strong> = pre-arrest. This is the moment to push calcium even if you\'re still drawing up the rest.'});
+    rec({tone:'warn', label:'Succinylcholine planned? Stricter threshold',
+      main:'Want K+ &lt; 5.5 before sux. In burns, denervation, prolonged immobilization, severe sepsis: K+ rise can be 1.0+ mEq/L.',
+      detail:'For RSI in a patient with K+ &gt;5.0 or any risk factor for exaggerated K+ rise, <strong>use rocuronium with sugammadex available</strong>. Rocuronium 1.2 mg/kg gives comparable intubating conditions in 60–90 sec.'});
+  }
+
+  function renderHyperKStabilize() {
+    title('2. Stabilize — calcium', 'Membrane stabilization. Onset &lt;3 min. Does NOT lower K+ — buys time for the shift/remove steps.');
+    rec({tone:'success', label:'Calcium gluconate 10% — the workhorse',
+      main:'1 g (10 mL of 10% solution) IV over 2–3 min via peripheral line',
+      detail:'<ul><li><strong>Indication:</strong> K+ ≥6.5 regardless of ECG, OR any K+ with ECG changes (peaked T, wide QRS, brady, sine wave)</li><li><strong>Dose:</strong> 1 g (10 mL of 10%) IV over 2–3 min</li><li><strong>Onset:</strong> &lt;3 min · <strong>Duration:</strong> 30–60 min</li><li><strong>Repeat:</strong> q5 min until ECG normalizes (typically 1–3 doses)</li><li><strong>Vein:</strong> peripheral OK — gluconate is less irritating than chloride</li><li><strong>Continuous cardiac monitoring</strong> during and after — discontinue if HR drops significantly</li></ul>'});
+    rec({tone:'warn', label:'Calcium chloride 10% — when you need more bang or only have central access',
+      main:'1 g (10 mL of 10% solution) IV over 2–3 min — CENTRAL line strongly preferred',
+      detail:'<ul><li><strong>3× more elemental calcium</strong> per mL than gluconate (13.6 vs 4.6 mEq per 10 mL of 10%)</li><li><strong>Use when:</strong> severe ECG changes / arrest, central access available, refractory to gluconate</li><li><strong>Peripheral line:</strong> only if no central access AND you cannot wait. Extravasation causes tissue necrosis.</li><li><strong>Onset and duration:</strong> same as gluconate (&lt;3 min onset, 30–60 min duration)</li></ul>'});
+    rec({tone:'danger', label:'Digoxin caveat — give calcium SLOWLY',
+      main:'In digoxin toxicity, calcium can precipitate refractory arrhythmias ("stone heart")',
+      detail:'<strong>If digoxin toxicity is suspected (chronic dig + hyperkalemia is the classic combo):</strong><ul><li>Give calcium over <strong>30 minutes</strong> instead of 2–3 min</li><li>Consider <strong>magnesium sulfate 2 g IV over 5 min</strong> for arrhythmia stabilization instead</li><li>The definitive treatment is <strong>digoxin-specific Fab antibodies (DigiFab)</strong> — call your pharmacy</li></ul>The "stone heart" risk from rapid calcium in digoxin toxicity is real but rare. Don\'t withhold calcium in a coding patient over this concern.',
+      cite:'Roberts Hedges 8th ed; American Heart Association.'});
+    rec({tone:'info', label:'What calcium does NOT do',
+      main:'Calcium does not lower the serum K+. It does not shift K+ into cells. It does not remove K+ from the body.',
+      detail:'It stabilizes the cardiomyocyte membrane by raising the threshold potential, reducing the likelihood that the elevated resting potential (from high K+) will trigger an arrhythmia. <strong>You still have to lower the K+ with shift + remove therapies.</strong>'});
+    rec({tone:'warn', label:'No IV access?',
+      main:'IO access acceptable for calcium gluconate (not chloride) in extremis',
+      detail:'A peripheral IV is almost always achievable in an OR / PACU setting. If truly impossible, IO is the next step. Calcium gluconate is preferred for IO because chloride causes severe local tissue damage.'});
+  }
+
+  function renderHyperKShift() {
+    title('3. Shift — move K+ into cells', 'Insulin/dextrose, albuterol, ± bicarbonate. Temporary effect (2–6 hr). Plan removal in parallel.');
+    rec({tone:'success', label:'Insulin + dextrose — the workhorse, but engage the refinements',
+      main:'Regular insulin 5 U or 10 U IV BOLUS + dextrose (D50 bolus OR D10 infusion). NOT a combined drip.',
+      detail:'<strong>To answer the natural question directly:</strong> standard practice is <strong>bolus + bolus</strong>. The insulin is a single IV push, paired with a dextrose IV push (D50) given immediately before or with it. The D10 infusion alternative replaces only the dextrose component, not the insulin.<br><br><strong>How to choose 5 U vs 10 U:</strong><table style="width:100%; border-collapse:collapse; font-size:0.92em; margin-top:8px"><thead><tr style="border-bottom:1px solid currentColor"><th style="text-align:left; padding:6px 4px">Factor</th><th style="text-align:left; padding:6px 4px">5 U</th><th style="text-align:left; padding:6px 4px">10 U</th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Pretreatment BG</td><td style="padding:6px 4px">&lt; 150</td><td style="padding:6px 4px">≥ 150</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Renal function</td><td style="padding:6px 4px">eGFR &lt; 45 / ESRD</td><td style="padding:6px 4px">eGFR ≥ 45</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Insulin status</td><td style="padding:6px 4px">Naïve or low TDD</td><td style="padding:6px 4px">Established on insulin</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Weight</td><td style="padding:6px 4px">&lt; 60 kg, female</td><td style="padding:6px 4px">≥ 60 kg</td></tr><tr><td style="padding:6px 4px">K+ severity</td><td style="padding:6px 4px">5.5–6.4</td><td style="padding:6px 4px">≥ 6.5 (K+ drop ~1.08 vs 0.83 mEq/L)</td></tr></tbody></table><strong>Alternative weight-based:</strong> 0.1 U/kg (max 10 U) — useful in obesity.<br><br><strong>Practical note:</strong> 5 U and 10 U produce nearly identical K+ drops in most patients; the 10 U advantage only shows up when K+ &gt;6. So in the patient with K+ 5.8 and BG 110, 5 U is the safer choice.',
+      cite:'Pierce et al. retrospective (5U vs 10U); Palmer/Clegg 2024 endorses 5U baseline.'});
+    rec({tone:'success', label:'The dextrose pairing — two acceptable strategies',
+      main:'Option A: D50 bolus 25–50 g · Option B: D10 infusion 250–500 mL over 1 hr',
+      detail:'<strong>Option A — D50 bolus (classic):</strong><ul><li><strong>25 g (1 amp / 50 mL of D50) IV push</strong> — minimum dose</li><li><strong>50 g (2 amps / 100 mL of D50) IV push</strong> — preferred to cover the insulin duration better (J Emerg Med 2019 pearls)</li><li>Give <strong>just before or simultaneously with</strong> the insulin (some protocols mandate dextrose first)</li><li>Onset of glucose &lt;5 min · duration 30–60 min</li></ul><strong>Option B — D10 infusion:</strong><ul><li><strong>D10W 500 mL IV over 60 min</strong> = 50 g dextrose (UpToDate alternative)</li><li>Or <strong>D10W 250 mL × 2 sequential bags</strong> with hourly BG checks</li><li>Comparable hypoglycemia prevention to D50 bolus in retrospective data; useful during D50 shortages</li><li>Lasts longer — better matches the 4–6 hr duration of IV regular insulin</li></ul><strong>If pretreatment BG &gt; 250:</strong> skip dextrose entirely. The patient already has substrate. Insulin alone is fine.<br><br><strong>If pretreatment BG &lt; 70:</strong> treat the hypoglycemia first. Do NOT give insulin until BG &gt; 100.'});
+    rec({tone:'danger', label:'Monitor BG hourly × 4–6 hours after IV insulin',
+      main:'Late hypoglycemia (1–4 hr post-administration) is the failure mode. ~17–24% incidence overall.',
+      detail:'<strong>Why hourly:</strong> IV regular insulin lasts 4–6 hr; D50 bolus dextrose only ~1 hr. The mismatch produces late hypoglycemia.<br><br><strong>Highest risk groups:</strong><ul><li>Pretreatment BG &lt; 150</li><li>Female sex</li><li>Lower weight</li><li>CKD / ESRD (reduced insulin clearance)</li><li>Insulin-naïve</li><li>No subsequent oral intake (NPO for surgery)</li></ul><strong>If hypoglycemia develops:</strong> D50 25 mL IV push, recheck q15–30 min. Continue hourly checks until 6 hr from insulin administration. <strong>In the OR/PACU especially, schedule the rechecks</strong> — the anesthetized patient won\'t signal hypoglycemia symptoms.',
+      related:[{label:'Hypoglycemia rescue (full)', render:renderHyperGHypo}]});
+    rec({tone:'success', label:'Albuterol nebulized — additive to insulin, no IV needed',
+      main:'10–20 mg nebulized over 10–15 min (4–8× the bronchodilator dose, back-to-back)',
+      detail:'<ul><li><strong>Dose:</strong> 10 mg if IHD or significant tachycardia; 20 mg otherwise</li><li><strong>Practical delivery:</strong> 4 standard nebs (2.5 mg each) back-to-back, or 8 if 20 mg dose. Or use 5 mg/3 mL unit-dose vials.</li><li><strong>Onset:</strong> 15–30 min · <strong>Duration:</strong> 2–4 hr</li><li><strong>K+ drop:</strong> 0.6–1.0 mEq/L · <strong>Additive to insulin</strong></li><li><strong>ESRD caveat:</strong> ~50% reduction in efficacy — still use it, but don\'t expect the full effect</li><li><strong>Side effects:</strong> tachycardia, tremor, anxiety. Avoid or reduce dose in active myocardial ischemia or tachyarrhythmia.</li></ul><strong>Key advantage:</strong> doesn\'t require IV access, no hypoglycemia risk, can be started while drawing up other meds.',
+      cite:'Palmer & Clegg 2024.'});
+    rec({tone:'warn', label:'Sodium bicarbonate — selective use only',
+      main:'150 mEq isotonic bicarb (3 amps in 1 L D5W) infused over 2–4 hr — ONLY if metabolic acidosis with bicarb &lt; 22',
+      detail:'<strong>Routine use is no longer recommended.</strong> Evidence for K+ lowering as monotherapy is weak. Use only when:<ul><li>Concurrent metabolic acidosis with serum bicarb &lt; 22</li><li>Combined with insulin/dextrose (additive effect documented in this context)</li></ul><strong>Dose:</strong><ul><li><strong>Isotonic bicarb (preferred):</strong> 150 mEq (3 amps of 8.4%) in 1 L D5W, infused over 2–4 hr</li><li><strong>Bolus (if hemodynamically unstable):</strong> 50 mEq (1 amp of 8.4%) IV push over 5 min</li></ul><strong>Critical reminder:</strong> do NOT give sodium bicarbonate through the same IV line as calcium — they precipitate as insoluble calcium carbonate. Flush thoroughly between, or use separate access.<br><br><strong>Avoid in:</strong> volume-overloaded patients (CHF, ESRD with no urine output) — adds sodium load.',
+      cite:'EMRA 2018; Palmer & Clegg 2024.'});
+    rec({tone:'info', label:'The "GIK" infusion alternative (rare in periop)',
+      main:'Glucose-insulin-potassium drip: 500 mL D10W + 10 U regular insulin, run at 100 mL/hr',
+      detail:'Used in select cardiac surgery contexts and prolonged ICU management. Not a typical OR/PACU bedside choice for acute hyperkalemia — the bolus regimen acts faster. The GIK formulation also adds K+ to prevent hypokalemia in <em>prolonged</em> infusion, which is the opposite of what you want when treating acute hyperkalemia, so the K+ component is usually omitted in this indication.'});
+  }
+
+  function renderHyperKRemove() {
+    title('4. Remove — get K+ out of the body', 'The only definitive step. Stabilize and shift buy time; remove is what actually treats the hyperkalemia.');
+    rec({tone:'success', label:'Loop diuretic — first-line if making urine + reasonable eGFR',
+      main:'Furosemide 40–80 mg IV (or 20–40 if naïve · 80–160 if CKD/already on it)',
+      detail:'<ul><li><strong>Indication:</strong> patient makes urine AND eGFR ≥45 (lower eGFR works but is less effective)</li><li><strong>Furosemide:</strong> 20–40 mg IV if loop-naïve · 40–80 mg if on home dose · 80–160 mg if CKD or chronic loop</li><li><strong>Bumetanide:</strong> 1–2 mg IV (more potent, equivalent to ~40 mg furosemide)</li><li><strong>Torsemide:</strong> 10–40 mg IV (alternative)</li><li><strong>Onset:</strong> 5–15 min IV · <strong>Effect:</strong> kaliuresis over 2–6 hr</li><li><strong>Watch volume status</strong> — don\'t dry out a patient who\'s already pre-op NPO + bleeding</li><li><strong>Combine with isotonic saline</strong> if needed to maintain volume during diuresis</li></ul><strong>Useless in anuric ESRD patients.</strong> Skip and go to binder or dialysis.'});
+    rec({tone:'success', label:'K+ binder — sodium zirconium cyclosilicate (SZC / Lokelma)',
+      main:'10 g PO ×1 acute dose (can repeat q8h × 24 hr) — onset ~1 hr, effective acute option',
+      detail:'<ul><li><strong>SZC (Lokelma) is the modern acute binder</strong> — FDA-approved for acute and chronic hyperkalemia</li><li><strong>Dose:</strong> 10 g PO ×1, mixed in 45 mL water. Can repeat q8h up to 30 g total in first 24 hr.</li><li><strong>Onset:</strong> ~1 hr (faster than patiromer) · <strong>Effect:</strong> K+ drop ~0.4–0.7 mEq/L</li><li><strong>Maintenance:</strong> 5–10 g PO daily after acute correction</li><li><strong>Caution in volume-sensitive patients</strong> — contains sodium; can cause edema in HF/ESRD</li><li><strong>Drug interactions:</strong> separate from other oral meds by 2 hr (binds them too)</li></ul><strong>Practical note:</strong> if the patient is NPO for surgery, oral binders are off the table until PACU. Plan around this.',
+      cite:'LOKELMA prescribing information 2024; Palmer & Clegg 2024.'});
+    rec({tone:'info', label:'Patiromer (Veltassa) — slower, more of a chronic agent',
+      main:'8.4 g PO daily (titrate up to 25.2 g) — onset 7 hr; not useful for acute control',
+      detail:'<ul><li><strong>Onset 7 hr</strong> — too slow for true acute hyperkalemia</li><li><strong>Useful for:</strong> transition to chronic management once acute crisis controlled; ongoing K+ control in patients on ACEi/ARB/spironolactone</li><li><strong>Drug interactions:</strong> binds many oral meds — separate by 3 hr</li><li><strong>Hypomagnesemia</strong> is the main side effect; check Mg periodically</li></ul>'});
+    rec({tone:'warn', label:'Sodium polystyrene sulfonate (SPS / Kayexalate) — falling out of favor',
+      main:'Historically used; now largely avoided due to colonic necrosis risk, especially with sorbitol',
+      detail:'<ul><li><strong>SPS with sorbitol</strong> is associated with bowel necrosis, particularly post-op and in patients with ileus/bowel pathology</li><li><strong>FDA warning</strong> against use with sorbitol post-op</li><li><strong>If used at all:</strong> 15–30 g PO mixed in water (NO sorbitol), or 30–60 g PR retention enema</li><li><strong>Onset:</strong> hours · <strong>Effect:</strong> modest, often unreliable</li><li><strong>Avoid in:</strong> post-op patients, ileus, bowel obstruction, recent abdominal surgery</li></ul><strong>Modern preference:</strong> use SZC if a binder is needed. SPS is the historical option, not the contemporary choice.',
+      cite:'FDA Drug Safety Communication; multiple case series.'});
+    rec({tone:'danger', label:'Emergent dialysis — the definitive treatment for severe/refractory hyperkalemia',
+      main:'Call nephrology for: K+ ≥6.5 in ESRD, refractory K+ despite medical therapy, severe acidosis, volume overload',
+      detail:'<strong>Indications for emergent HD:</strong><ul><li>ESRD patient with K+ ≥6.0 not responding to medical therapy</li><li>Any patient with K+ ≥6.5 + ECG changes refractory to calcium</li><li>Tumor lysis syndrome with rapidly rising K+</li><li>Crush injury / rhabdo with established AKI</li><li>Severe acidosis (pH &lt;7.1) not correctable medically</li><li>Volume overload preventing safe induction</li></ul><strong>Practical:</strong> emergent HD takes 1–3 hr to set up at most institutions. Medical management bridges to dialysis; don\'t wait for the machine to start treating.<br><br><strong>For perioperative ESRD patients:</strong> elective dialysis the day before surgery (not same day — leaves the patient with relative hypovolemia and electrolyte shifts at induction).'});
+    rec({tone:'info', label:'Stop the source — easy to forget',
+      main:'Identify and stop ongoing K+ inputs',
+      detail:'<ul><li><strong>Hold:</strong> ACEi, ARB, ARNI (sacubitril/valsartan), spironolactone, eplerenone, amiloride, triamterene, trimethoprim, NSAIDs, K+ supplements, K+-containing salt substitutes (LoSalt)</li><li><strong>Review IV fluids:</strong> LR has 4 mEq K+/L — fine in most cases but worth noting in massive transfusion or rapid resuscitation</li><li><strong>Blood products:</strong> stored blood (especially &gt;14 days old) releases K+ — relevant in massive transfusion</li><li><strong>Dietary K+:</strong> bananas, oranges, potatoes, tomatoes, salt substitutes — counsel for ongoing management</li></ul>'});
+  }
+
+  function renderHyperKRecheck() {
+    title('5. Recheck protocol & escalation', 'When to recheck the K+, when to call nephrology.');
+    rec({tone:'info', label:'Recheck cadence by therapy given',
+      main:'Match the recheck to the kinetics of the most recent therapy',
+      detail:'<table style="width:100%; border-collapse:collapse; font-size:0.92em"><thead><tr style="border-bottom:1px solid currentColor"><th style="text-align:left; padding:6px 4px">Therapy</th><th style="text-align:left; padding:6px 4px">Recheck K+</th><th style="text-align:left; padding:6px 4px">Recheck BG</th></tr></thead><tbody><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Calcium only</td><td style="padding:6px 4px">After full cascade given</td><td style="padding:6px 4px">—</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Insulin/dextrose</td><td style="padding:6px 4px"><strong>30–60 min</strong>, then q1–2 hr × 6 hr</td><td style="padding:6px 4px"><strong>q1h × 4–6 hr</strong></td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Albuterol</td><td style="padding:6px 4px">30–60 min after neb</td><td style="padding:6px 4px">—</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Bicarbonate</td><td style="padding:6px 4px">After infusion complete (2–4 hr)</td><td style="padding:6px 4px">—</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">Loop diuretic</td><td style="padding:6px 4px">2–4 hr (after urine output)</td><td style="padding:6px 4px">—</td></tr><tr style="border-bottom:1px solid currentColor"><td style="padding:6px 4px">SZC (PO)</td><td style="padding:6px 4px">2 hr, then q8h until stable</td><td style="padding:6px 4px">—</td></tr><tr><td style="padding:6px 4px">Dialysis</td><td style="padding:6px 4px">End of session + 1 hr post</td><td style="padding:6px 4px">—</td></tr></tbody></table>'});
+    rec({tone:'warn', label:'K+ still elevated at recheck — escalation ladder',
+      main:'The pattern matters: did it drop at all? How much? How fast is it rebounding?',
+      detail:'<strong>K+ dropped 0.5–1 mEq/L but still ≥6:</strong> shift therapy worked; need definitive removal. Add binder, ensure diuresis, or call nephrology for dialysis.<br><br><strong>K+ unchanged after full medical management:</strong> consider <ul><li>Ongoing K+ release (rhabdo, tumor lysis, hemolysis from line/sample) — find and treat the source</li><li>Lab/sample error — repeat the K+ from a different site</li><li>Severe ESRD/anuric — medical management is insufficient; needs dialysis</li><li>Massive transfusion ongoing — switch to washed/fresh RBCs if possible</li></ul><strong>K+ initially dropped then rebounded:</strong> expected pattern of shift therapy. The K+ comes back from the intracellular compartment as insulin/albuterol wear off (2–6 hr). This is why removal therapy is mandatory — don\'t just keep redosing insulin.'});
+    rec({tone:'danger', label:'When to call nephrology — earlier is better',
+      main:'ESRD + K+ ≥6.0 OR any K+ ≥6.5 OR refractory K+ after full medical cycle OR severe ECG changes',
+      detail:'<ul><li><strong>ESRD patient with K+ ≥ 6.0:</strong> medical management is a bridge; dialysis is the answer. Call early.</li><li><strong>Any patient with K+ ≥ 6.5 + ECG changes:</strong> nephrology now, even while you\'re still pushing calcium</li><li><strong>Refractory K+ after one full cycle</strong> (calcium + insulin/dex + albuterol + diuretic or binder): definitive removal needed</li><li><strong>Concurrent severe acidosis</strong> (pH &lt;7.1) refractory to bicarb</li><li><strong>Crush injury / rhabdo with rising K+:</strong> ongoing release; dialysis often needed</li></ul><strong>Practical:</strong> at most hospitals, "call nephrology" means a 1–3 hr lead time to dialysis setup. Calling early doesn\'t commit to dialysis — it preserves the option.'});
+    rec({tone:'info', label:'Disposition decisions',
+      main:'After the acute fire is out — where does the patient go?',
+      detail:'<ul><li><strong>Proceeded with urgent surgery:</strong> continuous K+ monitoring (q2–4h) for first 24 hr post-op; cardiac telemetry; nephrology consult on the floor</li><li><strong>Elective deferred:</strong> address the cause, optimize, return for surgery in 1–7 days depending on etiology</li><li><strong>ESRD missed-HD scenario:</strong> elective dialysis, then elective surgery the next day (not same-day HD → surgery, which leaves the patient relatively hypovolemic at induction)</li></ul>'});
+  }
+
+  function renderHyperKChronic() {
+    title('6. Chronic K+ binders the patient may be on', 'Brief context for periop decision-making — these are NOT acute treatment options.');
+    rec({tone:'info', label:'Why this section exists',
+      main:'CKD and HF patients on RAAS inhibitors increasingly take chronic K+ binders to enable continued use of guideline-directed therapy',
+      detail:'You\'ll see these on med lists. Knowing what they are clarifies the patient\'s baseline risk and informs whether you can hold them safely.'});
+    rec({tone:'info', label:'Patiromer (Veltassa)',
+      main:'Cross-linked polymer · binds K+ in distal colon · dose 8.4–25.2 g PO daily',
+      detail:'<ul><li><strong>Onset:</strong> 7 hr — NOT an acute treatment</li><li><strong>Mechanism:</strong> exchanges calcium for potassium in the gut → fecal K+ excretion</li><li><strong>Periop:</strong> generally safe to continue or hold for 1–2 days NPO without significant K+ rebound. If holding &gt;48 hr in a high-risk patient (RAAS inhibitor + CKD), monitor K+.</li><li><strong>Drug interactions:</strong> separate from other oral meds by 3 hr (binds many drugs including ciprofloxacin, levothyroxine, metformin, metoprolol)</li><li><strong>Side effects:</strong> hypomagnesemia (~5–8%) — relevant if QT-prolonging drugs are in the anesthetic plan</li></ul>'});
+    rec({tone:'info', label:'Sodium zirconium cyclosilicate (SZC / Lokelma)',
+      main:'Selective K+ binder · dose 5–10 g PO daily for chronic; 10 g TID acutely',
+      detail:'<ul><li><strong>Onset:</strong> ~1 hr — can be used acutely (see Remove page)</li><li><strong>Mechanism:</strong> exchanges sodium and hydrogen for potassium in the GI tract</li><li><strong>Periop:</strong> can be continued or held briefly. <strong>Sodium load matters in HF/ESRD</strong> — 10 g delivers ~400 mg Na.</li><li><strong>Drug interactions:</strong> separate from other oral meds by 2 hr</li><li><strong>Side effects:</strong> edema (more in HF patients), mild QT prolongation reported</li></ul><strong>SZC has been shown to have a higher rate of HF/edema events than patiromer</strong> in real-world data — relevant if your patient has HFpEF or volume-sensitive physiology.',
+      cite:'Desai et al. KID 2024 (HF/edema event comparison).'});
+    rec({tone:'warn', label:'Sodium polystyrene sulfonate (SPS / Kayexalate)',
+      main:'Old-school binder · falling out of favor due to colonic necrosis risk',
+      detail:'<ul><li><strong>Mechanism:</strong> non-selective cation-exchange resin</li><li><strong>Concern:</strong> bowel necrosis, especially with sorbitol formulations and post-op patients</li><li><strong>Periop:</strong> if a patient is on chronic SPS, ask why — usually they\'ve been on it for years because alternatives weren\'t covered. Hold post-op until normal bowel function returns.</li><li><strong>Modern practice:</strong> if a new chronic binder is needed, patiromer or SZC is preferred</li></ul>'});
+    rec({tone:'info', label:'What to do periop with a patient on a chronic binder',
+      main:'Continue if possible; brief NPO holds are safe; check K+ on day-of if at all uncertain',
+      detail:'<ul><li><strong>Continue through morning of surgery</strong> if patient can take small amount of water — most binders are taken with small fluid volumes</li><li><strong>Hold morning dose if strict NPO</strong> — restart with first PO post-op</li><li><strong>Day-of K+ check</strong> for any patient on a binder + RAAS inhibitor + CKD — the combination is what they\'re managing, and missing one dose can rebound</li><li><strong>Drug interaction reminder:</strong> if you give oral meds in PACU before the binder, the binder will reduce absorption — separate by 2–3 hr</li></ul>'});
+  }
+
+  function renderHyperKCheat() {
+    title('📋 Bedside cheat card', 'One-screen quick reference for acute hyperkalemia.');
+    rec({tone:'danger', label:'CORE PRINCIPLE',
+      main:'Insulin/dextrose causes hypoglycemia in ~17–24%. Use the modern refinements: 5 U if low BG/CKD/naïve, 10 U only if K+ &gt;6 with normal renal fn. Skip dex if BG &gt;250. Monitor BG hourly × 4–6 hr.'});
+    rec({tone:'info', label:'TRIAGE (K+ + ECG)',
+      main:'Treatment intensity by combined K+ + ECG',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">K+ 5.0-5.4 + ECG normal ... proceed; recheck if doubt\nK+ 5.5-5.9 + ECG normal ... hold AAS+NSAIDs, ± albuterol\nK+ 6.0-6.4 + ECG normal ... FULL CASCADE; defer elective\nK+ &gt;=6.5 OR any ECG chg .. EMERGENT; calcium NOW\n  ECG: peaked T → wide QRS → sine wave → asystole</pre>'});
+    rec({tone:'success', label:'STABILIZE (calcium)',
+      main:'Onset &lt;3 min; lasts 30-60 min; does NOT lower K+',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">Ca gluconate 10%: 1 g (10 mL) IV over 2-3 min, peripheral OK\nCa chloride 10%:  1 g (10 mL) IV over 2-3 min, CENTRAL line\nRepeat q5 min until ECG normalizes\nDigoxin tox: give SLOWLY (30 min) or use MgSO4 2 g</pre>'});
+    rec({tone:'success', label:'SHIFT — insulin + dextrose (BOLUS + BOLUS, not a drip)',
+      main:'5 U or 10 U insulin IV PUSH + dextrose IV PUSH (or D10 infusion as alt)',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">INSULIN: 5 U regular IV bolus (default safer choice)\n         10 U regular IV bolus only if K+&gt;6 + eGFR&gt;=45\n         + normal pretreatment BG\nDEXTROSE pairing (choose one):\n  D50 25-50 g IV push (1-2 amps) with insulin\n  D10W 500 mL over 1 hr (= 50 g) as infusion\nIf BG &gt;250: skip dextrose entirely\nIf BG &lt;70:  DO NOT give insulin -- treat hypo first</pre>'});
+    rec({tone:'success', label:'SHIFT — albuterol',
+      main:'10-20 mg nebulized over 10-15 min (4-8 nebs back-to-back)',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">10 mg if IHD or marked tachycardia · 20 mg otherwise\nOnset 15-30 min · duration 2-4 hr · K+ drop 0.6-1.0 mEq/L\nESRD: ~50% efficacy · additive to insulin</pre>'});
+    rec({tone:'warn', label:'SHIFT — bicarbonate (selective only)',
+      main:'150 mEq isotonic over 2-4 hr OR 50 mEq IV push — ONLY if metabolic acidosis + HCO3 &lt;22',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">DO NOT give via same line as calcium (precipitates)\nAvoid in volume-overloaded patients (CHF, anuric ESRD)\nWeak K+-lowering effect as monotherapy</pre>'});
+    rec({tone:'success', label:'REMOVE — the only definitive step',
+      main:'Loop diuretic · SZC · dialysis',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">Furosemide 40-80 mg IV (if eGFR&gt;=45 + makes urine)\n         or bumetanide 1-2 mg IV\nSZC (Lokelma) 10 g PO ×1, repeat q8h (onset ~1 hr)\nDialysis: ESRD + K+&gt;=6 OR refractory + K+&gt;=6.5</pre>'});
+    rec({tone:'info', label:'MONITORING',
+      main:'K+ + glucose schedule',
+      detail:'<pre style="white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:0.88em; margin:0">K+ recheck:  30-60 min post insulin/dex, then q1-2 hr × 6 hr\nBG hourly × 4-6 hr after IV insulin (key safety step)\nContinuous cardiac monitor until 4 hr post last shift Rx\nMg (if on patiromer or QT drugs)</pre>'});
+    rec({tone:'warn', label:'SUCCINYLCHOLINE',
+      main:'Want K+ &lt;5.5; use rocuronium + sugammadex if K+ ≥5.0 or risk factors',
+      detail:'Sux raises K+ ~0.5 mEq/L baseline; 1.0+ in burns, denervation, immobilization, severe sepsis.'});
+    rec({tone:'info', label:'STOP THE SOURCE',
+      main:'ACEi/ARB/ARNI · spironolactone/eplerenone/amiloride · trimethoprim · NSAIDs · K+ supplements · LoSalt',
+      detail:'Plus: review LR fluids (4 mEq/L), stored blood, dietary K+, any IV K+-containing infusions.'});
+    rec({tone:'info', label:'Sources',
+      main:'Palmer/Clegg 2024 · ACEP 2022 algorithm · Pierce et al. (5U vs 10U) · J Emerg Med 2019 pearls',
+      cite:'Palmer BF, Clegg DJ. Hyperkalemia treatment standard. Nephrol Dial Transplant 2024;39:1097–1104. · ACEP Adult Hyperkalemia Management Algorithm 2022. · LaRue HA et al. Management of hyperkalemia with insulin and glucose: pearls for the emergency clinician. J Emerg Med 2019. · Fielding-Singh V et al. Perioperative management of the patient receiving hemodialysis. Anesthesiology 2025;143:1030–48.'});
   }
 
   function renderDKA() {
@@ -4288,6 +4579,7 @@
   registerStep('dm-insulin', 'Insulin perioperative', renderInsulin, ['Diabetes & GLP-1']);
   registerStep('dm-orals', 'Oral diabetes agents', renderOralAgents, ['Diabetes & GLP-1']);
   registerStep('dm-hyperG', 'Hyperglycemia day-of', renderHyperG, ['Diabetes & GLP-1']);
+  registerStep('dm-hyperG-matrix', 'Hyperglycemia — care matrix (setting × DM type)', renderHyperGMatrix, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-hyperG-triage', 'Hyperglycemia — triage by BG', renderHyperGTriage, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-hyperG-drug', 'Hyperglycemia — drug & route', renderHyperGDrug, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-hyperG-dose', 'Hyperglycemia — 1800 rule / dose calc', renderHyperGDose, ['Diabetes & GLP-1', 'Hyperglycemia']);
@@ -4297,7 +4589,17 @@
   registerStep('dm-hyperG-pump', 'Hyperglycemia — pump patient', renderHyperGPump, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-hyperG-dex', 'Hyperglycemia — dexamethasone caveat', renderHyperGDex, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-hyperG-meds', 'Day-of medication hold/take list', renderHyperGMeds, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-documentation', 'Hyperglycemia — documenting the deferral', renderHyperGDocumentation, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('dm-hyperG-handoff', 'Hyperglycemia — SDA/inpatient handoff checklist', renderHyperGHandoff, ['Diabetes & GLP-1', 'Hyperglycemia']);
   registerStep('dm-hyperG-cheat', 'Hyperglycemia — bedside cheat card', renderHyperGCheat, ['Diabetes & GLP-1', 'Hyperglycemia']);
+  registerStep('em-hyperK', 'Hyperkalemia management', renderHyperK, ['Emergencies', 'Electrolytes']);
+  registerStep('em-hyperK-triage', 'Hyperkalemia — triage by K+ and ECG', renderHyperKTriage, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
+  registerStep('em-hyperK-stabilize', 'Hyperkalemia — stabilize (calcium)', renderHyperKStabilize, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
+  registerStep('em-hyperK-shift', 'Hyperkalemia — shift (insulin/dextrose, albuterol, bicarb)', renderHyperKShift, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
+  registerStep('em-hyperK-remove', 'Hyperkalemia — remove (diuretic, binder, dialysis)', renderHyperKRemove, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
+  registerStep('em-hyperK-recheck', 'Hyperkalemia — recheck and escalation', renderHyperKRecheck, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
+  registerStep('em-hyperK-chronic', 'Hyperkalemia — chronic binders (patiromer, SZC, SPS)', renderHyperKChronic, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
+  registerStep('em-hyperK-cheat', 'Hyperkalemia — bedside cheat card', renderHyperKCheat, ['Emergencies', 'Electrolytes', 'Hyperkalemia']);
   registerStep('dm-dka', 'DKA', renderDKA, ['Diabetes & GLP-1']);
   registerStep('dm-hba1c', 'HbA1c thresholds', renderHbA1c, ['Diabetes & GLP-1']);
 
