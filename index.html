@@ -296,6 +296,90 @@
     font-size: 12px;
     font-variant-numeric: tabular-nums;
   }
+  /* Local anesthetic dose calculator */
+  .la-field { margin-bottom: 12px; }
+  .la-field > label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-3);
+    margin-bottom: 5px;
+  }
+  .la-input, .la-select {
+    width: 100%;
+    font-size: 16px;
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .la-input:focus, .la-select:focus { border-color: var(--accent); outline: none; }
+  .la-select {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a8a82' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+  }
+  .la-row2 { display: flex; gap: 10px; }
+  .la-row2 .la-field { flex: 1; }
+  .la-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 15px;
+  }
+  .la-toggle input[type="checkbox"] {
+    width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--accent); margin: 0;
+  }
+  .la-result {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-top: 4px;
+  }
+  .la-result .la-headline {
+    font-size: 28px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    color: var(--accent);
+  }
+  .la-result .la-headline .la-unit { font-size: 15px; font-weight: 500; color: var(--text-2); }
+  .la-result .la-sub {
+    font-size: 13px;
+    color: var(--text-2);
+    margin-top: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .la-result.over .la-headline { color: var(--danger-fg); }
+  .la-budget {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--border);
+    font-size: 13px;
+    color: var(--text-2);
+  }
+  .la-budget-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--border);
+    overflow: hidden;
+    margin: 6px 0;
+  }
+  .la-budget-bar > div { height: 100%; background: var(--success-fg); transition: width 0.15s, background 0.15s; }
+  .la-budget-bar > div.warn { background: var(--warn-fg); }
+  .la-budget-bar > div.over { background: var(--danger-fg); }
   .footer-note {
     text-align: center;
     font-size: 11px;
@@ -691,6 +775,15 @@
     // Regional / ASRA
     ['asra', 'american society of regional anesthesia', 'regional anesthesia', 'regional', 'neuraxial'],
     ['epidural', 'spinal', 'subarachnoid', 'intrathecal'],
+    // Local anesthetics / max dose
+    ['local anesthetic', 'local anaesthetic', 'la', 'max dose', 'maximum dose', 'toxic dose', 'mg/kg', 'last', 'local anesthetic systemic toxicity'],
+    ['lidocaine', 'lignocaine', 'xylocaine'],
+    ['bupivacaine', 'marcaine', 'sensorcaine'],
+    ['ropivacaine', 'naropin'],
+    ['mepivacaine', 'carbocaine', 'polocaine'],
+    ['chloroprocaine', 'nesacaine'],
+    ['prilocaine', 'citanest', 'methemoglobinemia', 'methaemoglobinaemia'],
+    ['tumescent', 'liposuction', 'klein technique'],
     // Neuro
     ['cva', 'stroke', 'cerebrovascular accident', 'tia', 'transient ischemic attack'],
     ['sah', 'subarachnoid hemorrhage'],
@@ -1426,7 +1519,7 @@
       {title:'Day-of-surgery changes', sub:'URI, hyperglycemia, missed HD, intox, NPO violation — proceed / delay / cancel?', urgent:true, onClick:()=>go('Day-of', 'dos', renderDayOfRoot, true)},
       {title:'By question', sub:'"Can I proceed?" "Can I do neuraxial?" "Do I need testing?"', onClick:()=>go('By question', 'q', renderByQuestion, true)},
       {title:'Airway / aspiration risk', sub:'Difficult airway, gastric ultrasound, RSI, GLP-1, GERD, achalasia', onClick:()=>go('Airway', 'air', renderAirwayRoot, true)},
-      {title:'Anticoagulation / regional', sub:'Neuraxial & deep block timing; reversal in urgent/emergent cases', onClick:()=>go('AC / regional', 'ac', renderACUrgency, true)},
+      {title:'Anticoagulation / regional', sub:'AC & neuraxial timing · local anesthetic max-dose calculator', onClick:()=>go('AC / regional', 'ac', renderRegionalRoot, true)},
       {title:'Diabetes & GLP-1', sub:'GLP-1 (any indication), SGLT2, insulin, oral agents, perioperative scenarios', onClick:()=>go('Diabetes & GLP-1', 'bg', renderBGRoot, true)},
       {title:'Cardiac work-up', sub:'Functional capacity, RCRI, biomarkers, when to test, CIED, PHTN', onClick:()=>go('Cardiac', 'card', renderCardRoot, true)},
       {title:'Dialysis / ESRD', sub:'HD timing, K+ check, AV fistula, IV access', onClick:()=>go('Dialysis', 'hd', renderESRD, true)},
@@ -2294,6 +2387,263 @@
     rec({tone:'info', label:'Better alternatives for general pulmonary risk',
       main:'ARISCAT score, functional capacity (METs), smoking history, recent exacerbation, SpO2 on room air',
       detail:'These bedside tools predict postop pulmonary complications better than PFTs in non-thoracic surgery. ARISCAT &gt;26 = elevated risk → consider lung-protective ventilation, regional anesthesia, postop incentive spirometry.'});
+  }
+  // ============ REGIONAL (landing) ============
+  function renderRegionalRoot() {
+    title('Anticoagulation / regional', 'Pick a topic.');
+    stage.appendChild(optGrid([
+      {title:'Anticoagulation & neuraxial timing', sub:'Pre-op hold, ASRA 2025 block intervals, urgent/emergent reversal', onClick:()=>go('Anticoagulation', 'ac', renderACUrgency)},
+      {title:'Local anesthetic — max dose', sub:'Weight-based max mg & mL · ± epi · mixing · tumescent/liposuction', onClick:()=>go('LA max dose', 'la', renderLARoot)}
+    ]));
+  }
+
+  // ============ LOCAL ANESTHETIC MAX DOSE ============
+  // Standard infiltration / peripheral nerve block maxima.
+  // Values are mg/kg with absolute single-dose caps (mg). Sources cross-checked across
+  // package inserts, Iowa Head & Neck protocols, StatPearls, and ASRA-aligned reviews.
+  // These are SYSTEMIC-TOXICITY ceilings; doses to avoid LOCAL toxicity may be lower,
+  // and true safe dose varies with injection site vascularity and patient factors.
+  const LA_AGENTS = {
+    lidocaine:      {name:'Lidocaine',      plain:4.5, epi:7,   capPlain:300, capEpi:500,  conc:[0.5,1,2], note:''},
+    mepivacaine:    {name:'Mepivacaine',    plain:4.5, epi:6.6, capPlain:400, capEpi:500,  conc:[1,1.5,2], note:'+epi cap ≈500 mg (400 mg if levonordefrin).'},
+    bupivacaine:    {name:'Bupivacaine',    plain:2,   epi:3,   capPlain:175, capEpi:225,  conc:[0.25,0.5,0.75], note:'Some texts cite 2.5 mg/kg plain. Disproportionately cardiotoxic — be conservative; 24-h cap 400 mg.'},
+    ropivacaine:    {name:'Ropivacaine',    plain:3,   epi:3.5, capPlain:225, capEpi:225,  conc:[0.2,0.5,0.75,1], note:'Cap ≈225 mg per single dose.'},
+    chloroprocaine: {name:'Chloroprocaine', plain:11,  epi:14,  capPlain:800, capEpi:1000, conc:[1,2,3], note:'Ester; very short half-life. Repeat doses still accumulate.'},
+    prilocaine:     {name:'Prilocaine',     plain:6,   epi:8,   capPlain:600, capEpi:600,  conc:[1,2,4], note:'Methemoglobinemia: hard 600 mg ceiling regardless of weight/epi. metHb can occur below max dose — avoid in anemia, G6PD deficiency, infants <6 mo, cardiopulmonary compromise.'}
+  };
+
+  function laConcLabel(c) { return (c % 1 === 0 ? c.toFixed(0) : c.toString()) + '%'; }
+
+  function renderLARoot() {
+    title('Local anesthetic — max dose', 'Pick a mode.');
+    stage.appendChild(optGrid([
+      {title:'Standard max-dose calculator', sub:'Infiltration / peripheral nerve block — single agent, ± epi', onClick:()=>go('Calculator', 'la-calc', renderLACalc)},
+      {title:'Mixing two agents', sub:'Are maxima additive? Combined toxicity budget', onClick:()=>go('Mixing', 'la-mix', renderLAMixing)},
+      {title:'Redosing during a case', sub:'Block at start, surgeon wants local at end — does the clock reset?', onClick:()=>go('Redosing', 'la-redose', renderLARedose)},
+      {title:'Tumescent / liposuction', sub:'Why the limit is ~10× higher — dilute lidocaine only', urgent:true, onClick:()=>go('Tumescent', 'la-tumescent', renderLATumescent)}
+    ]));
+    note('Maxima below are systemic-toxicity ceilings, not efficacy targets. Use the lowest effective dose. Site vascularity, hepatic/cardiac/renal impairment, extremes of age, and pregnancy all lower the real safe dose. Clinical judgment supersedes any calculator.');
+  }
+
+  function renderLACalc() {
+    title('LA max-dose calculator', 'Single agent, infiltration / PNB.');
+    if (_indexingMode) {
+      // Searchable surrogate content for the index build (no live DOM during indexing).
+      rec({tone:'info', label:'Weight-based maximum',
+        main:'Enter weight, agent, concentration, ± epinephrine → max mg and max mL',
+        detail:'Lidocaine 4.5 mg/kg plain (300 mg cap) / 7 mg/kg with epinephrine (500 mg). Mepivacaine 4.5 / 6.6 mg/kg. Bupivacaine 2 / 3 mg/kg (175 / 225 mg). Ropivacaine 3 / 3.5 mg/kg (≈225 mg). Chloroprocaine 11 / 14 mg/kg (800 / 1000 mg). Prilocaine 6 / 8 mg/kg, hard 600 mg methemoglobinemia ceiling.',
+        cite:'Package inserts; Iowa Head & Neck protocols; StatPearls.'});
+      return;
+    }
+
+    const wrap = document.createElement('div');
+    wrap.className = 'calc-wrap';
+    const agentOpts = Object.keys(LA_AGENTS).map(k => `<option value="${k}">${LA_AGENTS[k].name}</option>`).join('');
+    wrap.innerHTML = `
+      <div class="la-field">
+        <label for="la-weight">Patient weight (kg)</label>
+        <input class="la-input" id="la-weight" type="number" inputmode="decimal" min="0" step="0.5" placeholder="e.g. 70">
+      </div>
+      <div class="la-row2">
+        <div class="la-field">
+          <label for="la-agent">Agent</label>
+          <select class="la-select" id="la-agent">${agentOpts}</select>
+        </div>
+        <div class="la-field">
+          <label for="la-conc">Concentration</label>
+          <select class="la-select" id="la-conc"></select>
+        </div>
+      </div>
+      <div class="la-field">
+        <label class="la-toggle" for="la-epi">
+          <input type="checkbox" id="la-epi">
+          <span>With epinephrine</span>
+        </label>
+      </div>
+      <div class="la-field">
+        <label for="la-given">Already given this case (mg, optional)</label>
+        <input class="la-input" id="la-given" type="number" inputmode="decimal" min="0" step="1" placeholder="0">
+      </div>
+      <div class="la-result" id="la-result">
+        <div class="la-headline">— <span class="la-unit">enter weight</span></div>
+        <div class="la-sub"></div>
+      </div>
+    `;
+    stage.appendChild(wrap);
+
+    const $ = id => wrap.querySelector(id);
+    const weightEl = $('#la-weight'), agentEl = $('#la-agent'), concEl = $('#la-conc'),
+          epiEl = $('#la-epi'), givenEl = $('#la-given'), resultEl = $('#la-result');
+
+    function fillConc() {
+      const a = LA_AGENTS[agentEl.value];
+      concEl.innerHTML = a.conc.map(c => `<option value="${c}">${laConcLabel(c)} (${c*10} mg/mL)</option>`).join('');
+    }
+
+    function recompute() {
+      const a = LA_AGENTS[agentEl.value];
+      const wt = parseFloat(weightEl.value);
+      const conc = parseFloat(concEl.value);
+      const epi = epiEl.checked;
+      const given = parseFloat(givenEl.value) || 0;
+      const headEl = resultEl.querySelector('.la-headline');
+      const subEl = resultEl.querySelector('.la-sub');
+      resultEl.classList.remove('over');
+
+      if (!wt || wt <= 0) {
+        headEl.innerHTML = '— <span class="la-unit">enter weight</span>';
+        subEl.textContent = '';
+        return;
+      }
+      const perKg = epi ? a.epi : a.plain;
+      const cap = epi ? a.capEpi : a.capPlain;
+      const rawMg = perKg * wt;
+      const maxMg = Math.min(rawMg, cap);
+      const capped = rawMg > cap;
+      const mgPerMl = conc * 10;
+      const maxMl = maxMg / mgPerMl;
+
+      headEl.innerHTML = `${maxMl.toFixed(1)} <span class="la-unit">mL of ${laConcLabel(conc)} ${a.name.toLowerCase()}${epi ? ' + epi' : ''}</span>`;
+      let sub = `Max dose <strong>${maxMg.toFixed(0)} mg</strong> (${perKg} mg/kg × ${wt} kg = ${rawMg.toFixed(0)} mg`;
+      sub += capped ? `, capped at ${cap} mg absolute max).` : `).`;
+      sub += `<br>${mgPerMl} mg/mL → ${maxMl.toFixed(1)} mL.`;
+      if (a.name === 'Prilocaine') sub += `<br><strong>metHb ceiling 600 mg</strong> — applies regardless of weight.`;
+      subEl.innerHTML = sub;
+
+      if (given > 0) {
+        const remainMg = maxMg - given;
+        const remainMl = remainMg / mgPerMl;
+        const pct = Math.min(100, Math.max(0, (given / maxMg) * 100));
+        let barClass = '';
+        if (given >= maxMg) barClass = 'over';
+        else if (pct >= 75) barClass = 'warn';
+        const budget = document.createElement('div');
+        budget.className = 'la-budget';
+        budget.innerHTML = `
+          Given ${given.toFixed(0)} mg of ${maxMg.toFixed(0)} mg max (${pct.toFixed(0)}%).
+          <div class="la-budget-bar"><div class="${barClass}" style="width:${pct}%"></div></div>
+          ${remainMg > 0
+            ? `<strong>${remainMg.toFixed(0)} mg</strong> (${remainMl.toFixed(1)} mL) remaining.`
+            : `<strong style="color:var(--danger-fg)">Maximum reached/exceeded.</strong> Do not give more.`}
+        `;
+        // Remove any prior budget block, then append
+        const old = resultEl.querySelector('.la-budget');
+        if (old) old.remove();
+        resultEl.appendChild(budget);
+        if (given >= maxMg) resultEl.classList.add('over');
+      } else {
+        const old = resultEl.querySelector('.la-budget');
+        if (old) old.remove();
+      }
+    }
+
+    agentEl.addEventListener('change', () => { fillConc(); recompute(); });
+    [weightEl, concEl, givenEl].forEach(el => el.addEventListener('input', recompute));
+    epiEl.addEventListener('change', recompute);
+    fillConc();
+    recompute();
+
+    rec({tone:'info', label:'Per-agent maxima (single dose)',
+      main:'Plain / with epinephrine, mg/kg (absolute cap)',
+      detail:'<ul>'
+        + '<li>Lidocaine 4.5 / 7 mg/kg (300 / 500 mg)</li>'
+        + '<li>Mepivacaine 4.5 / 6.6 mg/kg (400 / 500 mg)</li>'
+        + '<li>Bupivacaine 2 / 3 mg/kg (175 / 225 mg) — 24-h cap 400 mg</li>'
+        + '<li>Ropivacaine 3 / 3.5 mg/kg (≈225 mg)</li>'
+        + '<li>Chloroprocaine 11 / 14 mg/kg (800 / 1000 mg)</li>'
+        + '<li>Prilocaine 6 / 8 mg/kg — <strong>hard 600 mg metHb ceiling</strong></li>'
+        + '</ul>The epinephrine columns raise the LA ceiling by slowing systemic absorption. The epinephrine dose itself can independently become limiting (esp. cardiac disease, MAOIs/TCAs) — this calculator does not compute an epinephrine cap.',
+      cite:'Package inserts; Iowa Head & Neck protocols (2017); StatPearls; ASRA-aligned reviews.'});
+    note('Avoid LA-with-epinephrine in end-arterial fields (digits, penis, nose tip, ear) per traditional teaching. Reduce amide doses ~30% in infants <6 mo and in hepatic/cardiac impairment.');
+  }
+
+  function renderLAMixing() {
+    title('Mixing two local anesthetics', 'Are the maxima additive?');
+    rec({tone:'warn', label:'Toxicity is additive — there is no separate budget per drug',
+      main:'Express each agent as a fraction of its own max; keep the sum ≤ 1',
+      detail:'All local anesthetics share the same Na-channel cardiac/CNS toxicity, so systemic effects sum regardless of which drug caused them. The accepted convention: (dose A ÷ max A) + (dose B ÷ max B) ≤ 1. Give half the max lidocaine and roughly half a budget remains for bupivacaine.<br><br>This is <strong>expert consensus, not trial-validated</strong>. If anything it may understate risk, because bupivacaine cardiotoxicity is disproportionately severe and harder to resuscitate — weight the budget toward caution when bupivacaine is in the mix.'});
+    rec({tone:'info', label:'Mixing for "fast onset + long duration" is weakly supported',
+      main:'Lidocaine + bupivacaine doesn\'t reliably deliver both',
+      detail:'Onset is not dependably faster and peak block can be blunted. The toxicity-budget question (above) is separate from — and more important than — the efficacy rationale for mixing.'});
+    note('No high-quality RCT defines a combined ceiling. The ≤1 summed-fraction rule is the conservative, mechanistically sound default — not a precise threshold. The standard calculator lets you log mg already given so the remaining budget is explicit.');
+  }
+
+  function renderLARedose() {
+    title('Redosing during a case', 'Block at start, local at the end.');
+    rec({tone:'warn', label:'A few hours in is NOT a clean reset — stay additive',
+      main:'Track cumulative dose against the single max for the whole case',
+      detail:'There is no validated "reset interval." Plasma levels accumulate with repeat dosing (package inserts explicitly warn of stepwise increases). Within roughly one to two elimination half-lives, treat the dose as still largely on the books — you do not get the full fresh maximum back.<br><br>Approx elimination half-lives: lidocaine / mepivacaine ~1.5–2 h; bupivacaine / ropivacaine ~2.5–3.5 h (longer in hepatic, cardiac, renal impairment, and neonates). A long-acting bupivacaine block at the start leaves more on the books at end-of-case than a lidocaine block would.'});
+    rec({tone:'info', label:'The only hard regulatory guardrail: 24-hour totals',
+      main:'Bupivacaine 400 mg/24h · mepivacaine 1000 mg/24h · prilocaine 600 mg/2h',
+      detail:'Beyond the single-dose max, package inserts cap cumulative daily dose. These are the defensible numbers to hold the line on across a long case. No source provides a validated formula for partial "budget recovery" over time, so this guide does not estimate one — when in doubt, treat the case total as additive.'});
+    note('For the surgeon\'s end-of-case local: subtract what you already gave from the single-dose max and give the remainder, rather than starting a fresh maximum. The standard calculator\'s "already given" field does exactly this.');
+  }
+
+  function renderLATumescent() {
+    title('Tumescent / liposuction lidocaine', 'A different ceiling entirely.');
+    if (_indexingMode) {
+      rec({tone:'warn', label:'Tumescent lidocaine max ~45 mg/kg (range 35–55)',
+        main:'Applies ONLY to dilute (~0.1%) subcutaneous lidocaine with epinephrine for liposuction',
+        detail:'Standard infiltration lidocaine max is 7 mg/kg with epi. Tumescent technique permits roughly 10× that because high dilution and epinephrine vasoconstriction slow absorption. ASDS liposuction guideline ceiling 55 mg/kg; Klein PK re-analysis argues 45 mg/kg is prudent; original Klein 1990 figure 35 mg/kg. Peak plasma level occurs 12–14 h post-infiltration.',
+        cite:'Klein 1990; Ostad 1996; ASDS liposuction guideline.'});
+      return;
+    }
+
+    rec({tone:'danger', label:'This number does NOT transfer to ordinary local anesthesia',
+      main:'~45 mg/kg applies only to dilute (~0.1%) subcutaneous lidocaine + epinephrine for liposuction',
+      detail:'The standard infiltration ceiling is 7 mg/kg (with epi). Tumescent technique permits roughly ten times that because the lidocaine is highly diluted (≈0.05–0.1%) with epinephrine, which dramatically slows systemic absorption. Using a tumescent number with a standard-concentration solution would be catastrophic.'});
+
+    const wrap = document.createElement('div');
+    wrap.className = 'calc-wrap';
+    wrap.innerHTML = `
+      <div class="la-field">
+        <label for="lat-weight">Patient weight (kg)</label>
+        <input class="la-input" id="lat-weight" type="number" inputmode="decimal" min="0" step="0.5" placeholder="e.g. 70">
+      </div>
+      <div class="la-field">
+        <label for="lat-dose">mg/kg ceiling</label>
+        <select class="la-select" id="lat-dose">
+          <option value="35">35 mg/kg — Klein 1990 (most conservative)</option>
+          <option value="45" selected>45 mg/kg — Klein PK re-analysis (prudent default)</option>
+          <option value="55">55 mg/kg — ASDS guideline upper limit</option>
+        </select>
+      </div>
+      <div class="la-result" id="lat-result">
+        <div class="la-headline">— <span class="la-unit">enter weight</span></div>
+        <div class="la-sub"></div>
+      </div>
+    `;
+    stage.appendChild(wrap);
+
+    const wtEl = wrap.querySelector('#lat-weight');
+    const doseEl = wrap.querySelector('#lat-dose');
+    const resEl = wrap.querySelector('#lat-result');
+
+    function recompute() {
+      const wt = parseFloat(wtEl.value);
+      const perKg = parseFloat(doseEl.value);
+      const headEl = resEl.querySelector('.la-headline');
+      const subEl = resEl.querySelector('.la-sub');
+      if (!wt || wt <= 0) {
+        headEl.innerHTML = '— <span class="la-unit">enter weight</span>';
+        subEl.textContent = '';
+        return;
+      }
+      const maxMg = perKg * wt;
+      // Volume at the classic Klein concentration of 0.1% (1 mg/mL).
+      const ml01 = maxMg / 1;
+      headEl.innerHTML = `${maxMg.toFixed(0)} <span class="la-unit">mg lidocaine max</span>`;
+      subEl.innerHTML = `${perKg} mg/kg × ${wt} kg.<br>At 0.1% (1 mg/mL): ${ml01.toFixed(0)} mL of tumescent solution. At 0.05%: ${(ml01*2).toFixed(0)} mL.`;
+    }
+    wtEl.addEventListener('input', recompute);
+    doseEl.addEventListener('change', recompute);
+    recompute();
+
+    rec({tone:'info', label:'Why it works — and when it doesn\'t',
+      main:'Dilution + epinephrine slow absorption; CYP inhibition speeds toxicity',
+      detail:'Peak plasma lidocaine occurs <strong>12–14 h after infiltration</strong>, so toxicity can present late, after discharge. The ceiling drops if epinephrine is omitted, or with CYP3A4/1A2 inhibitors (erythromycin, fluconazole, sertraline, ciprofloxacin), hepatic impairment, low serum protein, or if liposuction is cancelled after infiltration. General anesthesia / propofol also raise risk.',
+      cite:'Klein JA 1990; Ostad 1996 (55 mg/kg safe); Klein PK re-analysis (45 mg/kg prudent).'});
+    note('Liposuction-specific. The standard calculator does NOT use these numbers — it uses the 7 mg/kg infiltration ceiling. Keep the two modes mentally separate.');
   }
   // ============ ANTICOAGULATION ============
   function renderACUrgency() {
@@ -4554,7 +4904,8 @@
   registerStep('lab-cxr', 'CXR', renderTestCXR, ['Labs / testing']);
   registerStep('lab-pfts', 'PFTs', renderTestPFTs, ['Labs / testing']);
 
-  registerStep('ac-urgency', 'Anticoagulation — urgency', renderACUrgency, ['Anticoagulation']);
+  registerStep('reg-root', 'Anticoagulation / regional', renderRegionalRoot, []);
+  registerStep('ac-urgency', 'Anticoagulation — urgency', renderACUrgency, ['Anticoagulation / regional']);
   registerStep('ac-root', 'AC elective', renderACRoot, ['Anticoagulation']);
   registerStep('ac-pre', 'AC pre-op holding', renderACPre, ['Anticoagulation']);
   registerStep('ac-doac', 'DOAC pre-op', renderDOAC, ['Anticoagulation']);
@@ -4566,6 +4917,13 @@
   registerStep('ac-cath', 'Cath / EP procedures on AC', renderACCath, ['Anticoagulation']);
   registerStep('ac-resume', 'AC resume post-op', renderACResume, ['Anticoagulation']);
   registerStep('ac-antiplt', 'Antiplatelet', renderAntiplateletRoot, ['Anticoagulation']);
+
+  registerStep('la-root', 'Local anesthetic — max dose', renderLARoot, ['Anticoagulation / regional']);
+  registerStep('la-calc', 'LA max-dose calculator', renderLACalc, ['Anticoagulation / regional', 'Local anesthetic — max dose']);
+  registerStep('la-mix', 'Mixing local anesthetics', renderLAMixing, ['Anticoagulation / regional', 'Local anesthetic — max dose']);
+  registerStep('la-redose', 'LA redosing during a case', renderLARedose, ['Anticoagulation / regional', 'Local anesthetic — max dose']);
+  registerStep('la-tumescent', 'Tumescent / liposuction lidocaine', renderLATumescent, ['Anticoagulation / regional', 'Local anesthetic — max dose']);
+
 
   registerStep('dm-root', 'Diabetes & GLP-1', renderBGRoot, ['Diabetes & GLP-1']);
   registerStep('dm-glp1', 'GLP-1 agonists', renderGLP1, ['Diabetes & GLP-1']);
