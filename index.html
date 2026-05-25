@@ -544,7 +544,7 @@
   <div class="footer-note">
     <strong>Not a substitute for clinical judgment.</strong><br>
     All recommendations require verification against current guidelines and patient-specific factors. Sources cited inline.<br>
-    Built from: ASRA 2025 (Kopp), ACCP 2022 (Douketis), 2024 AHA/ACC NCS Guideline (Thompson), ESC 2022 NCS Guideline, ASA fasting 2023 (Joshi), 2024 multi-society GLP-1 guidance (Kindel) + ASA Nov 2024, ACR/AAHKS 2022, FDA andexanet withdrawal (Dec 2025), SAMBA 2024 (Rajan, glycemic), SAMBA 2021 (breast surgery position), CPOC 2023, ACG 2025 (cirrhosis, Mahmud), EASL 2025 (cirrhosis abdominal surgery), DAS 2025 (Ahmad, difficult airway), ESE/Endocrine Society 2024 (Beuschlein, GC-induced AI), AABB 2023 transfusion, UpToDate, and other source documents.
+    Built from: ASRA 2025 (Kopp), ACCP 2022 (Douketis), 2024 AHA/ACC NCS Guideline (Thompson), ESC 2022 NCS Guideline, ASA fasting 2023 (Joshi), 2024 multi-society GLP-1 guidance (Kindel) + ASA Nov 2024, ACR/AAHKS 2022, FDA andexanet withdrawal (Dec 2025), SAMBA 2024 (Rajan, glycemic), SAMBA 2021 (breast surgery position), 4th Consensus PONV (Gan 2020), SPAQI supplements (2021), Caprini RAM, CPOC 2023, ACG 2025 (cirrhosis, Mahmud), EASL 2025 (cirrhosis abdominal surgery), DAS 2025 (Ahmad, difficult airway), ESE/Endocrine Society 2024 (Beuschlein, GC-induced AI), AABB 2023 transfusion, UpToDate, and other source documents.
   </div>
 </div>
 
@@ -1527,7 +1527,7 @@
       {title:'Substance use', sub:'Buprenorphine, methadone, cannabis, MAOIs, lithium, alcohol', onClick:()=>go('Substances', 'sub', renderSubstanceRoot, true)},
       {title:'Implanted devices', sub:'CIED, SCS, intrathecal pumps, DBS, LVAD, VNS', onClick:()=>go('Devices', 'dev', renderDevicesRoot, true)},
       {title:'Labs / testing — do I need this?', sub:'ECG, echo, CBC, BMP, coags, T&S, CXR, PFTs', onClick:()=>go('Labs / testing', 'lt', renderLabsRoot, true)},
-      {title:'Risk assessment', sub:'ASA-PS, CFS, mFI-5, ARISCAT, STOP-Bang', onClick:()=>go('Risk', 'risk', renderRiskRoot, true)},
+      {title:'Risk assessment', sub:'ASA-PS, CFS, mFI-5, ARISCAT, STOP-Bang, VTE, PONV', onClick:()=>go('Risk', 'risk', renderRiskRoot, true)},
       {title:'Antibiotic prophylaxis', sub:'Cefazolin dosing, penicillin allergy, MRSA, procedure-specific', onClick:()=>go('Antibiotics', 'abx', renderAbxRoot, true)},
       {title:'Other meds & fasting', sub:'ACEi/ARB, steroids, biologics, NPO, breastfeeding, beta blockers, statins', onClick:()=>go('Other', 'other', renderOtherRoot, true)}
     ]));
@@ -4493,7 +4493,9 @@
       {title:'Clinical Frailty Scale (CFS)', onClick:()=>go('CFS','c',renderCFS)},
       {title:'mFI-5 (Modified Frailty Index)', onClick:()=>go('mFI-5','m',renderMFI5)},
       {title:'ARISCAT — postop pulmonary complications', onClick:()=>go('ARISCAT','r',renderARISCAT)},
-      {title:'STOP-Bang — OSA screening', onClick:()=>go('STOP-Bang','s',renderSTOPBang)}
+      {title:'STOP-Bang — OSA screening', onClick:()=>go('STOP-Bang','s',renderSTOPBang)},
+      {title:'VTE risk (Caprini)', sub:'Score → prophylaxis', onClick:()=>go('VTE','v',renderVTE)},
+      {title:'PONV risk & prophylaxis', sub:'Apfel; 4th Consensus 2020', onClick:()=>go('PONV','p',renderPONV)}
     ]));
   }
 
@@ -4698,7 +4700,10 @@
       {title:'Breastfeeding', onClick:()=>go('BF','f',renderBF)},
       {title:'Pregnancy testing', onClick:()=>go('Preg','p',renderPregTest)},
       {title:'Beta blockers', onClick:()=>go('Beta','t',renderBeta)},
-      {title:'Statins', onClick:()=>go('Statins','x',renderStatins)}
+      {title:'Statins', onClick:()=>go('Statins','x',renderStatins)},
+      {title:'Herbals / supplements', sub:'SPAQI 2021', onClick:()=>go('Herbals','h',renderHerbals)},
+      {title:'Anti-Parkinson meds', onClick:()=>go('Parkinsons','k',renderParkinsons)},
+      {title:'Estrogen / OCP / HRT', sub:'VTE balance', onClick:()=>go('Estrogen','e',renderEstrogen)}
     ]));
   }
 
@@ -4852,6 +4857,115 @@
       detail:'<ul><li>Continue usual dose morning of surgery</li><li>For patients NOT on statin who are eligible: consider initiating for vascular/cardiac surgery — short-term mortality benefit (some data)</li></ul>',
       cite:'2024 AHA/ACC.'});
   }
+
+  // ============ VTE PROPHYLAXIS ============
+  function renderVTE() {
+    title('VTE risk — Caprini');
+    rec({tone:'info', label:'Caprini score — add the points',
+      main:'Sum weighted risk factors → tier → prophylaxis. Validated across general, vascular, plastic, and other surgical populations.',
+      detail:'<strong>1 point each:</strong> age 41–60 · minor surgery · BMI &gt;25 · swollen legs · varicose veins · pregnancy/postpartum · OCP or HRT · sepsis (&lt;1 mo) · serious lung disease incl. pneumonia (&lt;1 mo) · abnormal PFTs / COPD · acute MI · CHF (&lt;1 mo) · IBD · medical patient at bed rest<br><br><strong>2 points each:</strong> age 61–74 · arthroscopic surgery · major open surgery &gt;45 min · laparoscopic surgery &gt;45 min · malignancy (present or prior) · confined to bed &gt;72 h · immobilizing plaster cast · central venous access<br><br><strong>3 points each:</strong> age ≥75 · history of VTE · family history of thrombosis · factor V Leiden · prothrombin 20210A · lupus anticoagulant · elevated homocysteine · HIT · elevated anticardiolipin antibodies · other thrombophilia<br><br><strong>5 points each:</strong> stroke (&lt;1 mo) · elective major lower-extremity arthroplasty · hip/pelvis/leg fracture · acute spinal cord injury / paralysis (&lt;1 mo) · multiple trauma (&lt;1 mo)',
+      cite:'Caprini Risk Assessment Model.'});
+    rec({tone:'info', label:'Tier → DVT incidence → prophylaxis',
+      main:'0–1 low · 2 moderate · 3–4 higher · ≥5 highest',
+      detail:'<ul><li><strong>0–1 (Low, ~2%):</strong> early ambulation only</li><li><strong>2 (Moderate, 10–20%):</strong> SCDs <strong>or</strong> UFH 5000 U SQ BID</li><li><strong>3–4 (Higher, 20–40%):</strong> SCDs <strong>+</strong> pharmacologic — UFH 5000 U SQ TID or enoxaparin (see dosing)</li><li><strong>≥5 (Highest, 40–80%):</strong> SCDs <strong>plus</strong> pharmacologic; enoxaparin preferred where epidural-compatible</li></ul>',
+      cite:'Caprini RAM; CHEST/ACCP.'});
+    rec({tone:'info', label:'Enoxaparin prophylaxis dosing (non-pregnant)',
+      main:'Adjust for weight and renal function',
+      detail:'<ul><li>Wt &lt;150 kg, CrCl &gt;30: <strong>enoxaparin 40 mg SQ daily</strong></li><li>Wt &lt;150 kg, CrCl 10–29: <strong>enoxaparin 30 mg SQ daily</strong></li><li>Wt &gt;150 kg, CrCl &gt;30: <strong>enoxaparin 30 mg SQ BID</strong></li></ul>Monitor anti-Xa (draw 4 h after 4th dose) in obese (&gt;150 kg actual), pregnant, or CrCl &lt;30. Target prophylaxis anti-Xa ~0.2–0.5 U/mL.',
+      cite:'Caprini RAM dosing guide.'});
+    rec({tone:'warn', label:'Neuraxial / epidural timing',
+      main:'Coordinate prophylaxis with block placement and catheter removal',
+      detail:'<ul><li>Prophylactic enoxaparin (40 mg qd): <strong>hold 12 h</strong> before neuraxial placement or catheter removal; restart <strong>≥4 h</strong> after catheter removal</li><li>D/C enoxaparin <strong>10–12 h</strong> before removing an epidural catheter; restart <strong>24 h</strong> after removal</li></ul>These are <strong>prophylactic-dose</strong> intervals. Therapeutic-dose LMWH and DOACs have longer holds — see the Anticoagulation / regional section for the full table.',
+      cite:'ASRA 6th ed. (2024).',
+      related:[
+        {label:'AC pre-op holding (full timing table)', render:renderACPre},
+        {label:'LMWH pre-op', render:renderLMWHPre}
+      ]});
+    rec({tone:'info', label:'How current guidelines use it',
+      main:'ESC 2022: prophylaxis for Caprini 5–8 (moderate) and ≥9 (high); mechanical-only for low risk',
+      detail:'ESC stratifies as moderate (5–8) and high (≥9). For low-VTE-risk non-orthopedic patients, mechanical prophylaxis (IPC / GCS) is preferred over pharmacologic or none. Start during hospital stay until 12 h before surgery; continue post-op per bleeding-risk reassessment — usually until full mobilization or discharge (~up to 10 days). Cancer surgery (major abdominal/pelvic): consider extended LMWH 3–4 weeks.<br><br><strong>Note:</strong> the institutional Caprini form tiers (0–1 / 2 / 3–4 / ≥5) and the ESC point-tiers (5–8 / ≥9) are two cut-point conventions on the same additive score — reconcile to your local protocol.',
+      cite:'ESC 2022 NCS; ASH 2019.'});
+  }
+
+  // ============ PONV ============
+  function renderPONV() {
+    title('PONV risk & prophylaxis');
+    rec({tone:'info', label:'Apfel simplified risk score',
+      main:'1 point each: female sex · nonsmoker · history of PONV / motion sickness · expected postop opioids',
+      detail:'Predicted PONV incidence by number of factors present:<ul><li>0 factors ≈ 10%</li><li>1 ≈ 20%</li><li>2 ≈ 40%</li><li>3 ≈ 60%</li><li>4 ≈ 80%</li></ul>0–1 = low · 2 = medium · ≥3 = high. (Koivuranta adds surgery &gt;60 min as a 5th factor.)',
+      cite:'Apfel; 4th Consensus (Gan 2020).'});
+    rec({tone:'success', label:'Reduce baseline risk first',
+      main:'Anesthetic technique changes lower PONV before any drug is given',
+      detail:'<ul><li>Propofol TIVA; avoid volatiles and N₂O where practical</li><li>Minimize peri-op opioids — multimodal/regional analgesia, IV acetaminophen, NSAIDs, blocks</li><li>Adequate hydration (liberal fluids)</li><li>Avoid high-dose neostigmine</li></ul>',
+      cite:'4th Consensus (Gan 2020).'});
+    rec({tone:'info', label:'Prophylaxis — give ≥2 agents from different classes',
+      main:'Current guidance favors liberal multimodal prophylaxis rather than strict risk-count gating',
+      detail:'Combine agents acting on <strong>different receptors</strong> (e.g. 5-HT₃ antagonist + dexamethasone ± a dopamine antagonist). Higher-risk patients warrant 3–4 interventions including agents effective after PACU discharge.<br><br><strong>Antiemetic doses & timing (adults):</strong><ul><li>Ondansetron 4 mg IV (8 mg PO/ODT) — end of surgery</li><li>Dexamethasone 4–8 mg IV — at induction</li><li>Aprepitant 40 mg PO — at induction (long-acting, 48–72 h)</li><li>Amisulpride 5 mg IV — at induction</li><li>Haloperidol 0.5 to &lt;2 mg IM/IV</li><li>Droperidol 0.625 mg IV — end of surgery (QT/black-box)</li><li>Palonosetron 0.075 mg IV; granisetron 0.35–3 mg IV</li><li>Scopolamine transdermal — prior evening or 2 h pre-op</li><li>Metoclopramide 10 mg; promethazine 6.25 mg</li></ul>',
+      cite:'4th Consensus (Gan 2020), Table 4.'});
+    rec({tone:'warn', label:'Rescue treatment',
+      main:'If PONV occurs, treat with an agent from a DIFFERENT class than what was given for prophylaxis',
+      detail:'Repeating the <strong>same class</strong> within 6 h confers no additional benefit. If a 5-HT₃ antagonist was used for prophylaxis, rescue with dexamethasone, a dopamine antagonist, or an NK-1 antagonist instead.',
+      cite:'4th Consensus (Gan 2020).'});
+    rec({tone:'info', label:'Non-pharmacologic',
+      main:'P6 (Neiguan) acupoint stimulation reduces PONV with efficacy similar to a single antiemetic',
+      detail:'Can be combined with drug prophylaxis. Reasonable adjunct in patients where minimizing antiemetic side effects matters.',
+      cite:'4th Consensus (Gan 2020).'});
+  }
+
+  // ============ HERBALS / SUPPLEMENTS ============
+  function renderHerbals() {
+    title('Herbals & supplements');
+    rec({tone:'info', label:'General principle (SPAQI 2021)',
+      main:'Ask specifically — patients rarely volunteer supplement use. Without demonstrated benefit, there is little downside to holding before surgery.',
+      detail:'SPAQI made continue/hold/discontinue recommendations for 83 supplements via modified Delphi. The pre-op visit (typically ≥2 weeks out) is the moment to ask about supplements <em>and</em> cannabinoids and to instruct on timing. Default for most herbals is to hold, but it is <strong>not</strong> a blanket "stop everything 14 days" rule — several are continued, and a few warrant active discontinuation.',
+      cite:'SPAQI Consensus, Mayo Clin Proc 2021.'});
+    rec({tone:'warn', label:'Hold ~1–2 weeks — bleeding / hemostasis risk',
+      main:'Garlic, ginkgo, ginseng (American), turmeric, vitamin E, fish oil*',
+      detail:'The classic antiplatelet/anticoagulant offenders. SPAQI: <strong>garlic, ginkgo, ginseng — hold 2 weeks</strong>. Vitamin E, turmeric — hold. <br><br>*<strong>Fish oil / omega-3 is a notable exception</strong>: SPAQI recommends <strong>continue</strong> (prior bleeding concerns not borne out; intake &gt;3 g/day decreases platelet aggregation but clinical bleeding not demonstrated). This is where current guidance diverges from older "stop all herbals" lists.',
+      cite:'SPAQI 2021, Table 2.'});
+    rec({tone:'danger', label:'Discontinue — cardiovascular / sympathomimetic / hepatotoxic',
+      main:'Ephedra (ma huang), DMAA, Garcinia cambogia, and similar',
+      detail:'<ul><li><strong>Ephedra / DMAA:</strong> sympathomimetic — arrhythmia, hypertension, stroke risk. Discontinue.</li><li><strong>Garcinia cambogia:</strong> reported hepatotoxicity. Discontinue.</li><li><strong>Kava, valerian:</strong> potentiate sedatives/anesthetics — relevant to emergence.</li><li><strong>St. John\'s wort:</strong> CYP enzyme induction (alters many drug levels incl. midazolam, anticoagulants); serotonergic. Discontinue ≥5 days; flag interactions.</li></ul>',
+      cite:'SPAQI 2021; OpenAnesthesia 2025.'});
+    rec({tone:'info', label:'Generally fine to continue',
+      main:'Fish oil/omega-3, green tea extract (beverage), most vitamins at usual doses',
+      detail:'When unsure of a specific product, default to holding herbals with antiplatelet effects ~2 weeks and checking the SPAQI table for the named supplement. Document what was held and when.',
+      cite:'SPAQI 2021.'});
+  }
+
+  // ============ ANTI-PARKINSON MEDS ============
+  function renderParkinsons() {
+    title('Anti-Parkinson medications');
+    rec({tone:'danger', label:'Do NOT interrupt levodopa',
+      main:'Continue levodopa/carbidopa — give the morning dose; missed doses → rigidity, aspiration risk, even neuroleptic malignant syndrome-like crisis',
+      detail:'Short half-life — even a few missed doses cause marked "off" rigidity that compromises ventilation/swallow and slows recovery. Give the usual dose with a sip of water on the morning of surgery and resume ASAP post-op (NG/OG if needed for prolonged NPO).',
+      cite:'Jaffe 5e App. F (2014) — verify against current neuro-anesthesia guidance.'});
+    rec({tone:'warn', label:'Avoid dopamine-antagonist antiemetics',
+      main:'Do NOT give metoclopramide, prochlorperazine, promethazine, droperidol, haloperidol — they worsen parkinsonism',
+      detail:'For PONV in a Parkinson patient, use a <strong>5-HT₃ antagonist (ondansetron)</strong> ± dexamethasone instead. Avoid centrally-acting dopamine blockers entirely.'});
+    rec({tone:'info', label:'Other agents — hold rules',
+      main:'Selegiline (MAO-B): stop ~3 days pre-op · entacapone/tolcapone, dopamine agonists: hold morning of surgery, resume when taking PO',
+      detail:'<ul><li><strong>Selegiline / rasagiline (MAO-B):</strong> hold ~3 d; MAO-B selectivity is dose-dependent — at higher doses, treat as a nonselective MAOI for anesthetic-drug interactions (avoid meperidine; caution with indirect sympathomimetics and serotonergics).</li><li><strong>Entacapone, tolcapone (COMT):</strong> hold morning of surgery; resume when stable on PO.</li><li><strong>Dopamine agonists (ropinirole, pramipexole, bromocriptine, pergolide):</strong> give morning of surgery to avoid precipitating NMS; resume when taking PO.</li><li><strong>Anticholinergics:</strong> parenteral diphenhydramine/benztropine can cover symptoms if NPO.</li></ul>',
+      cite:'Jaffe 5e App. F (2014).'});
+  }
+
+  // ============ ESTROGEN / OCP / HRT ============
+  function renderEstrogen() {
+    title('Estrogen — OCP / HRT / SERM');
+    rec({tone:'warn', label:'Balance VTE risk against the reason for the drug',
+      main:'Estrogen-containing contraceptives, HRT, and SERMs all raise VTE risk — weigh against bleeding/contraception/oncologic considerations',
+      detail:'No single mandate to stop. The decision turns on the surgery\'s VTE risk, the patient\'s baseline thrombotic risk, and the consequence of stopping (unintended pregnancy, menopausal symptoms, breast-cancer therapy).',
+      cite:'Jaffe 5e App. F (2014) — verify against current ob/perioperative guidance.'});
+    rec({tone:'info', label:'If continued → prophylax',
+      main:'Continuing estrogen through surgery is reasonable for many — pair with VTE prophylaxis',
+      detail:'For higher-VTE-risk surgery, either stop the estrogen well in advance <strong>or</strong> continue it and ensure mechanical + pharmacologic VTE prophylaxis. Estrogen is a 1-point Caprini factor (OCP/HRT) and feeds the overall score.',
+      related:[{label:'VTE risk (Caprini)', render:renderVTE}]});
+    rec({tone:'info', label:'SERMs (tamoxifen, raloxifene)',
+      main:'Same VTE-balance logic; coordinate with the oncologist before holding',
+      detail:'Do not unilaterally stop breast-cancer therapy for surgery — discuss with the treating oncologist and base the hold/continue decision on VTE risk vs. oncologic need.',
+      cite:'Jaffe 5e App. F (2014).'});
+  }
+
   // ============ STEP REGISTRATION ============
   // Register every renderable step with breadcrumb parents.
   // This populates STEP_REGISTRY, which buildSearchIndex() walks on first openSearch().
@@ -5050,6 +5164,11 @@
   registerStep('oth-preg', 'Pregnancy testing', renderPregTest, ['Other']);
   registerStep('oth-beta', 'Beta blockers', renderBeta, ['Other']);
   registerStep('oth-statins', 'Statins', renderStatins, ['Other']);
+  registerStep('risk-vte', 'VTE risk (Caprini)', renderVTE, ['Risk']);
+  registerStep('risk-ponv', 'PONV risk & prophylaxis', renderPONV, ['Risk']);
+  registerStep('oth-herbals', 'Herbals / supplements', renderHerbals, ['Other']);
+  registerStep('oth-parkinsons', 'Anti-Parkinson meds', renderParkinsons, ['Other']);
+  registerStep('oth-estrogen', 'Estrogen / OCP / HRT', renderEstrogen, ['Other']);
 
   // ============ INITIAL RENDER ============
   beat('init');
