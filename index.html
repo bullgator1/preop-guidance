@@ -12392,7 +12392,7 @@ const PROCEDURES = [
     snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (preop cardiac evaluation)", mortality: "~1 in 33 admissions >45 yr suffer perioperative death/MI/stroke" },
     flags: [
       "**The 2024 AHA/ACC stepwise approach is the spine: acute condition → calculated risk → risk modifiers → functional capacity → test only if it changes management.** Active **acute coronary syndrome, unstable arrhythmia, or decompensated heart failure** in an elective case → stop and get cardiology/guideline-directed therapy first; emergency surgery proceeds regardless, with optimization in parallel.",
-      "**Quantify MACE with a validated tool — RCRI or NSQIP/ACS — and treat >1% predicted MACE as 'elevated risk.'** RCRI's six predictors: **high-risk surgery, ischemic heart disease, history of CHF, cerebrovascular disease, insulin-treated diabetes, creatinine >2.0 mg/dL** (rising score → rising risk). NSQIP/ACS adds surgery type and functional status.",
+      "**Quantify MACE with a validated tool — RCRI or NSQIP/ACS — and treat >1% predicted MACE as 'elevated risk.'** RCRI's six predictors: **high-risk surgery, ischemic heart disease, history of CHF, cerebrovascular disease, insulin-treated diabetes, creatinine >2.0 mg/dL** (score 0 ≈0.4–0.5% / 1 ≈1% / 2 ≈6% / ≥3 ≥11% MACE). NSQIP/ACS adds surgery type and functional status.",
       "**Functional capacity decides who needs more: poor = METs <4 or DASI ≤34** (can't climb two flights of stairs). Good capacity → proceed; poor/unknown plus elevated risk → escalate (biomarker → cardiac test) **only if a result will change timing, technique, or the decision to operate.**",
       "**Risk modifiers force a multidisciplinary pause even at low calculated risk:** severe valvular disease, severe pulmonary HTN, high-risk congenital heart disease, prior coronary stent/CABG, **stroke within 3 months**, a CIED, or frailty. **Don't order tests reflexively** — the guideline is explicitly anti-routine-testing."
     ],
@@ -12439,7 +12439,7 @@ const PROCEDURES = [
         "Risk modifiers (severe valve disease, severe PH, prior stent/CABG, stroke <3 mo, CIED, frailty) trigger a multidisciplinary discussion even when the calculated risk is low."
       ]
     },
-    source: "OpenAnesthesia: 'Preoperative Cardiac Risk Stratification and Evaluation' (Hussein & Mohamed, 2025-10-16), anchored to the 2024 AHA/ACC/ACS Perioperative Cardiovascular Management for Noncardiac Surgery guideline (Thompson et al, Circulation 2024); RCRI per Lee et al. Cross-cutting reference (not a Jaffe procedure). See the Perioperative Medication Management, Aortic Stenosis, Pulmonary Hypertension, CIED, and Geriatric cards."
+    source: "OpenAnesthesia: 'Preoperative Cardiac Risk Stratification and Evaluation' (Hussein & Mohamed, 2025-10-16), anchored to the 2024 AHA/ACC/ACS Perioperative Cardiovascular Management for Noncardiac Surgery guideline (Thompson et al, Circulation 2024); RCRI per Lee et al (RCRI criteria + risk percentages verified from the article's Tables 1–2, PDF extraction R47). Cross-cutting reference (not a Jaffe procedure). See the Perioperative Medication Management, Aortic Stenosis, Pulmonary Hypertension, CIED, and Geriatric cards."
   },
   {
     id: "anesthesia-essentials-aortic-stenosis",
@@ -12458,14 +12458,15 @@ const PROCEDURES = [
       summary: "Reference card for the patient with aortic stenosis presenting for noncardiac surgery — severity grading, the lesion-specific hemodynamic goals, the high-risk induction, and when to fix the valve first. Reference content (not a Jaffe procedure). The Valve Surgery entry covers operative AVR/repair on CPB.",
       steps: [
         "Define severity from the echo (jet velocity, mean gradient, valve area) and whether symptomatic (angina/syncope/dyspnea); severe symptomatic AS may need valve intervention before elective surgery.",
-        "Hold the hemodynamic goals: full preload, maintained SVR/coronary perfusion pressure, normal-to-slightly-slow HR, sinus rhythm preserved.",
+        "Hold the hemodynamic goals: full preload, maintained SVR/coronary perfusion pressure, normal heart rate (60–90 bpm), sinus rhythm preserved. Treat bradycardia with ephedrine/epinephrine/pacing (anticholinergics can be ineffective); temporize tachycardia with a short-acting beta-blocker.",
         "Scale monitoring to severity: arterial line for severe AS, central access for pressor delivery, consider TEE; PA catheter only if concomitant severe pulmonary HTN.",
         "Treat hypotension instantly with phenylephrine/vasopressin; treat new AF aggressively (cardiovert if unstable — a stiff LV tolerates loss of atrial kick poorly); avoid spinal."
       ]
     },
     physiology: [
       "Calcific degeneration (aging/inflammation/lipid), a congenital bicuspid valve (presents younger), or rheumatic disease narrows the valve → pressure overload → concentric LVH and diastolic dysfunction → eventual ↓EF and ↓stroke volume.",
-      "The stiff, hypertrophied LV is preload-dependent, rate-sensitive, and exquisitely dependent on coronary perfusion pressure and on the atrial contribution to filling."
+      "The stiff, hypertrophied LV is preload-dependent, rate-sensitive, and exquisitely dependent on coronary perfusion pressure and on the atrial contribution to filling.",
+      "Severity ladder (von Homeyer): mild = jet velocity 2.6–2.9 m/s / mean gradient <20 mmHg / AVA 1.5 cm²; moderate = 3.0–4.0 m/s / 20–40 mmHg / 1.0–1.5 cm²; severe = >4.0 m/s / >40 mmHg / <1.0 cm². Neuraxial (especially single-shot spinal) is relatively contraindicated in severe AS."
     ],
     comorbid: [
       "Most prevalent valve lesion in developed countries; critical-AS prevalence rises with age (1–2% at 75–76 yr, ~6% at 85–86 yr; up to 10% by the eighth decade). Bicuspid valve (~0.5–2%) presents earlier (most bicuspid AVR patients are under 70).",
@@ -12496,7 +12497,7 @@ const PROCEDURES = [
         "Losing sinus rhythm (new AF) removes the atrial kick a stiff LV depends on — cardiovert if unstable."
       ]
     },
-    source: "OpenAnesthesia: 'Aortic Stenosis: Etiology, Pathophysiology, and Clinical Presentation' (Lam & Disque, 2023-06-13) and 'Aortic Stenosis: Hemodynamic Management, Comorbidities, and Treatment' (Nam & Harvey, 2023-06-13); severity grading per the ACC/AHA valvular guideline (Otto et al, Circulation 2021). Cross-cutting reference (not a Jaffe procedure). The Valve Surgery and Transcatheter Valve entries cover operative AVR/TAVI; severe valve disease is a risk modifier in the Cardiac Risk Stratification card."
+    source: "OpenAnesthesia: 'Aortic Stenosis: Etiology, Pathophysiology, and Clinical Presentation' (Lam & Disque, 2023-06-13) and 'Aortic Stenosis: Hemodynamic Management, Comorbidities, and Treatment' (Nam & Harvey, 2023-06-13); severity grading + the 60–90 bpm HR goal and severity ladder verified from the articles' Tables 1 (PDF extraction R47), grading adapted from von Homeyer (Anesth Analg 2012); ACC/AHA valvular guideline (Otto et al, Circulation 2021). Cross-cutting reference (not a Jaffe procedure). The Valve Surgery and Transcatheter Valve entries cover operative AVR/TAVI; severe valve disease is a risk modifier in the Cardiac Risk Stratification card. See the companion Aortic Insufficiency, Mitral Regurgitation, and Mitral Stenosis cards."
   },
   {
     id: "anesthesia-essentials-cied",
@@ -12651,7 +12652,7 @@ const PROCEDURES = [
         "Avoid NMBA where possible; if used, reduced incremental rocuronium reversed with sugammadex (not neostigmine); quantitative NMB monitoring from baseline; regional preferred but avoid respiratory-muscle paralysis (high spinal, phrenic-blocking blocks); short-acting agents to limit emergence depression."
       ],
       post: [
-        "Predict ventilation need (Leventhal: duration >6 yr, pulmonary disease, pyridostigmine >750 mg/d, VC <2.9 L); strict extubation criteria; opioid-sparing analgesia; ICU/step-down; distinguish myasthenic from cholinergic crisis (edrophonium improves the myasthenic crisis)."
+        "Predict ventilation need — classic Leventhal 1980 four-factor score (disease duration >6 yr, coexisting pulmonary disease, pyridostigmine >750 mg/d, VC <2.9 L); the OA summary's broader predictor table also lists BMI >28, MG onset >2 yr, bulbar/respiratory symptoms, prior myasthenic crisis, nAChR antibody >100 nmol/mL, decremental response >18–20%, intraoperative blood loss >1000 mL, and lung resection. Strict extubation criteria; opioid-sparing analgesia; ICU/step-down; distinguish myasthenic from cholinergic crisis (edrophonium improves the myasthenic crisis)."
       ]
     },
     recall: {
@@ -12666,7 +12667,7 @@ const PROCEDURES = [
         "Neonatal MG (transient, from placental anti-AChR transfer) affects 10–20% of infants of MG mothers — manage with anticholinesterase and expect resolution."
       ]
     },
-    source: "OpenAnesthesia: 'Myasthenia Gravis' (Miller & Basak, 2024-03-08); postoperative-ventilation predictors per Leventhal et al (Anesthesiology 1980). Cross-cutting reference (not a Jaffe procedure). See the Neuromuscular Blockade, Myotonic Dystrophy, and Pregnancy & Neurologic Disorders cards; the Thymectomy entry covers surgical thymectomy."
+    source: "OpenAnesthesia: 'Myasthenia Gravis' (Miller & Basak, 2024-03-08); postoperative-ventilation predictors per Leventhal et al (Anesthesiology 1980); the broader predictor table (BMI/antibody titer/decremental response/blood loss/lung resection) recovered from the article's Table 1 (PDF extraction R47). Cross-cutting reference (not a Jaffe procedure). See the Neuromuscular Blockade, Myotonic Dystrophy, and Pregnancy & Neurologic Disorders cards; the Thymectomy entry covers surgical thymectomy."
   },
   {
     id: "anesthesia-essentials-hyperthyroidism",
@@ -12723,6 +12724,281 @@ const PROCEDURES = [
       ]
     },
     source: "OpenAnesthesia: 'Hyperthyroidism' (Villasenor & Masters, 2025-05-30). Cross-cutting reference (not a Jaffe procedure). The Thyroidectomy & Parathyroidectomy entry covers thyroid surgery (airway/RLN/hypocalcemia and storm-vs-MH in the operative context); see also the Hypercalcemia and Adrenal/Steroid cards."
+  },
+  {
+    id: "anesthesia-essentials-buprenorphine-methadone",
+    name: "Buprenorphine & Methadone (Perioperative)",
+    section: "Anesthesia Essentials",
+    page: "OA 2023–2025",
+    tags: ["Buprenorphine","Methadone","OUD","Chronic pain","QTc/torsades","Partial agonist","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (chronic-pain / OUD pharmacology)", mortality: "Methadone: QTc/torsades + delayed respiratory depression" },
+    flags: [
+      "**Continue buprenorphine through surgery — do NOT routinely stop it.** It is a **partial mu agonist with very high receptor affinity and slow dissociation** (t½ 24–70 h), so it blocks displacement by full agonists; the modern approach continues buprenorphine and adds **full agonists at the unoccupied receptors** (often effective at lower-than-expected doses). **Reversing buprenorphine-related respiratory depression needs a HIGH naloxone dose — IV bolus 2–3 mg then infusion ~4 mg/h** (the ceiling effect and tight binding defeat standard naloxone dosing).",
+      "**Methadone carries a black-box QTc-prolongation/torsades risk and a treacherous pharmacokinetic trap: its peak respiratory depression occurs LATER and lasts LONGER than its peak analgesia** — the setup for iatrogenic overdose during initiation/titration. It is a **mu agonist + NMDA antagonist + serotonin/norepinephrine-reuptake inhibitor** (the NMDA/SNRI actions help neuropathic pain). Check a baseline ECG; QTc 450–500 ms → weigh risk, **>500 ms → reduce or stop**; watch other QT-prolonging drugs.",
+      "**Methadone-clinic (OUD) patients: verify the dose and timing with the clinic, continue the daily methadone, and treat acute surgical pain with ADDITIONAL short-acting full agonists — never a partial agonist** (buprenorphine/nalbuphine would displace methadone and precipitate withdrawal). Document name/number/dose/time in the record; wean the added short-acting opioids before discharge (extra discharge opioids can violate clinic policy).",
+      "**Methadone's redistribution kinetics are dose-dependent — small boluses act short, large doses act long.** A 5–10 mg dose behaves like a short-acting opioid (3–4 h, terminated by redistribution); ~20 mg parallels the long elimination half-life (~36 h). Intraoperative methadone (0.2 mg/kg or a fixed 20 mg after induction, titrate 3–5 mg ≥20 min apart) gives durable postoperative analgesia with opioid-sparing."
+    ],
+    technique: {
+      summary: "Reference card for the perioperative management of patients on buprenorphine or methadone — for chronic pain or opioid use disorder. Covers the continue-vs-stop decision, reversal, the QTc/respiratory-depression hazards, and OUD-clinic coordination. Reference content (not a Jaffe procedure). See the Opioids, Multimodal Analgesia, and Substance Use cards.",
+      steps: [
+        "Identify the agent, indication (chronic pain vs OUD), dose, route, and last dose; for methadone-clinic patients, contact the clinic to verify dose/timing and document it.",
+        "Buprenorphine: continue perioperatively; plan multimodal/regional analgesia and full-agonist titration on top; counsel that reversal needs high-dose naloxone (2–3 mg + infusion).",
+        "Methadone: continue the daily dose; baseline ECG for QTc; avoid additive QT-prolonging drugs; treat acute pain with short-acting full agonists (never a partial agonist in a methadone patient).",
+        "Consider intraoperative methadone (0.2 mg/kg or 20 mg after induction) for opioid-sparing durable analgesia; titrate 3–5 mg with ≥20 min between doses; monitor for delayed respiratory depression."
+      ]
+    },
+    physiology: [
+      "Buprenorphine: partial mu agonist, delta/kappa antagonist; high affinity + low intrinsic activity + slow dissociation give a respiratory-depression ceiling but make it hard to displace/reverse; CYP3A4-metabolized (interaction-prone); poor oral bioavailability (sublingual/buccal/transdermal/parenteral routes).",
+      "Methadone: mu agonist + NMDA-receptor antagonist + serotonin/norepinephrine-reuptake inhibitor; longest clinical opioid half-life (elimination 24–36 h) with a short redistribution half-life, so analgesic duration is dose-dependent; blocks the hERG channel → QTc prolongation/torsades."
+    ],
+    comorbid: [
+      "Opioid use disorder (buprenorphine-naloxone or methadone maintenance), chronic noncancer or cancer pain, and the associated psychiatric/social context; methadone patients may have structural heart disease/arrhythmia history relevant to the QTc risk.",
+      "Drug interactions: CYP3A4 modulators alter buprenorphine; QT-prolonging drugs compound methadone's torsades risk; morphine/PPIs blunt some co-prescribed antiplatelet activation (see the Medication Management card)."
+    ],
+    phases: {
+      pre: [
+        "Reconcile the agent/dose/indication/last dose; for OUD, verify with the prescriber or methadone clinic and document; baseline ECG (QTc) for methadone; plan a multimodal, opioid-sparing strategy and continue the maintenance drug."
+      ],
+      intra: [
+        "Buprenorphine: titrate full agonists to effect at the unoccupied receptors; regional/multimodal adjuncts. Methadone: if used intraoperatively, 0.2 mg/kg or 20 mg after induction; avoid additive QT-prolonging agents; anticipate that buprenorphine reversal will need high-dose naloxone."
+      ],
+      post: [
+        "Watch methadone for delayed/prolonged respiratory depression (peaks after analgesia) and QTc/torsades; continue the maintenance agent; for OUD, use short-acting full agonists for breakthrough (no partial agonists) and wean before discharge to avoid relapse and clinic-policy conflicts."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Stop or continue buprenorphine before surgery?” → continue; add full agonists at the unoccupied receptors; reversal needs high-dose naloxone (2–3 mg + ~4 mg/h infusion).",
+        "“Two black-box hazards of methadone?” → QTc prolongation/torsades, and respiratory depression that peaks later and lasts longer than analgesia.",
+        "“Methadone-clinic patient with acute surgical pain — what NOT to give?” → a partial agonist (buprenorphine/nalbuphine) — it precipitates withdrawal; use short-acting full agonists instead."
+      ],
+      pearls: [
+        "Methadone is a mu agonist PLUS an NMDA antagonist and SNRI — the extra mechanisms help neuropathic pain.",
+        "Small methadone doses (5–10 mg) act short via redistribution; ~20 mg parallels the long elimination half-life.",
+        "Buprenorphine's high affinity and slow dissociation are why standard naloxone doses fail — escalate the dose and run an infusion."
+      ]
+    },
+    source: "OpenAnesthesia: 'Buprenorphine' (Catabona & Shah, 2025-11-04) and 'Chronic Pain: Methadone' (Venugopal & Shah, 2023-03-14); perioperative OUD management per Ward et al (Anesth Analg 2018); intraoperative methadone per Murphy & Szokol (Anesthesiology 2019); methadone QTc guidance per the 2009 FDA expert panel. Cross-cutting reference (not a Jaffe procedure). See the Opioids, Multimodal Analgesia, Substance Use, and Perioperative Medication Management cards."
+  },
+  {
+    id: "anesthesia-essentials-aortic-insufficiency",
+    name: "Aortic Insufficiency / Regurgitation (Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2023",
+    tags: ["Aortic regurgitation","Full fast forward","Reduce afterload","Avoid bradycardia","Avoid IABP","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting valve disease)", mortality: "Acute AI poorly tolerated; chronic AI well-tolerated for years" },
+    flags: [
+      "**The plan is 'full, fast, and forward': maintain preload and contractility, keep the heart rate UP (80–100 bpm), and REDUCE afterload to drive forward flow.** **Bradycardia is the enemy** — it lengthens diastole and the regurgitant time; treat it promptly with ephedrine, glycopyrrolate, or low-dose epinephrine. The widened pulse pressure and low diastolic pressure are the signature.",
+      "**Avoid beta-blockers and NEVER use an intra-aortic balloon pump in significant AI.** Beta-blockade (rate reduction + negative inotropy) worsens regurgitation; the IABP's diastolic augmentation drives more blood backward and is **contraindicated**; LV assist devices are of limited use (recirculation). Use **caution with pure vasoconstrictors (phenylephrine)** — they raise afterload and regurgitant fraction; a mixed agent (ephedrine) is often better.",
+      "**Acute AI (endocarditis, aortic dissection, prosthetic failure) is poorly tolerated and a surgical emergency** — the unprepared LV fails fast into pulmonary edema and instability; medical therapy (afterload reduction, inotrope, raise HR) is only a bridge to urgent valve repair/replacement.",
+      "**These patients are ischemia-prone** from low diastolic coronary perfusion pressure plus high LV wall tension — even without coronary disease. Pre-induction arterial line for significant AI, consider a PA catheter; general, regional, or neuraxial are all acceptable, but a neuraxial sympathectomy can drop preload/CO."
+    ],
+    technique: {
+      summary: "Reference card for the patient with aortic insufficiency/regurgitation (AI/AR) presenting for noncardiac surgery — the 'full, fast, forward' hemodynamic goals, the acute-AI emergency, and the device/drug contraindications. Reference content (not a Jaffe procedure). The Valve Surgery entry covers operative aortic valve repair/replacement.",
+      steps: [
+        "Define chronic vs acute and severity (AHA stages A–D); acute severe AI is a surgical emergency, chronic AI is often tolerated for years.",
+        "Hold the goals: HR 80–100 bpm, full preload, maintained contractility (low-dose epinephrine/inodilators), reduced afterload (vasodilators for hypertension).",
+        "Avoid bradycardia (ephedrine/glycopyrrolate/low-dose epinephrine), beta-blockers, and the IABP; use phenylephrine cautiously (ephedrine preferred).",
+        "Pre-induction arterial line for significant AI ± PA catheter; watch for subendocardial ischemia from low diastolic coronary perfusion."
+      ]
+    },
+    physiology: [
+      "Failure of leaflet coaptation in diastole regurgitates part of the stroke volume back into the LV → increased LV end-diastolic volume and wall stress → eccentric hypertrophy and dilation; chronically the LV stays compliant with normal filling pressure until late systolic dysfunction develops.",
+      "Low aortic diastolic pressure + a widened pulse pressure reduce coronary perfusion pressure; the dilated, high-wall-tension LV raises myocardial oxygen demand — together an ischemia setup independent of coronary disease."
+    ],
+    comorbid: [
+      "Chronic AI: bicuspid aortic valve and aortic root/annular dilation (high-income countries), rheumatic disease (elsewhere), senile calcification, hypertension, myxomatous degeneration, aortitis (e.g., syphilis, rheumatologic). Bicuspid valve (0.5–3%): 13–30% develop moderate-to-severe AI and up to 40% an aortopathy.",
+      "Acute AI: infective endocarditis, aortic dissection, prosthetic leaflet dysfunction/dehiscence — each demands cardiothoracic consultation."
+    ],
+    phases: {
+      pre: [
+        "Review the echo (severity/AHA stage, LV size and function, root dimensions) and symptoms (exertional dyspnea, angina, orthopnea/PND); treat hypertension in chronic AI; pre-induction arterial line for significant disease; for acute AI, urgent surgical/cardiology involvement."
+      ],
+      intra: [
+        "Keep HR 80–100 and sinus; maintain preload and contractility; reduce afterload with adequate depth/analgesia ± vasodilators; avoid bradycardia, beta-blockers, and the IABP; prefer ephedrine over phenylephrine; a neuraxial block's venodilation can cut preload — titrate."
+      ],
+      post: [
+        "Continue forward-flow goals into recovery; avoid bradycardia and hypertension; vigilant for ischemia and heart failure; adequate analgesia."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Hemodynamic goals for aortic regurgitation?” → 'full, fast, forward' — HR 80–100 bpm, maintain preload/contractility, reduce afterload; avoid bradycardia.",
+        "“Which mechanical support device is contraindicated in AI?” → the intra-aortic balloon pump (diastolic augmentation worsens regurgitation).",
+        "“Pressor choice in AI — phenylephrine or ephedrine?” → ephedrine (phenylephrine raises afterload and regurgitant fraction)."
+      ],
+      pearls: [
+        "Acute AI (endocarditis/dissection) is a poorly-tolerated surgical emergency; chronic AI is often silent for years.",
+        "Beta-blockers are generally avoided — slowing the heart lengthens diastolic regurgitant time.",
+        "Low diastolic pressure + high wall tension make the AI patient ischemia-prone even with normal coronaries."
+      ]
+    },
+    source: "OpenAnesthesia: 'Aortic Insufficiency: Etiology, Pathophysiology, and Clinical Presentation' (Bradley & Ma, 2023-01-04) and 'Aortic Insufficiency: Hemodynamic Management, Medical and Surgical Management' (Tsai & Bodmer, 2023-01-03); staging/indications per the ACC/AHA valvular guideline (Otto et al, Circulation 2021); hemodynamic goals per Mittnacht et al (Semin Cardiothorac Vasc Anesth 2008). Cross-cutting reference (not a Jaffe procedure). Companion to the Aortic Stenosis, Mitral Regurgitation, and Mitral Stenosis cards; the Valve Surgery entry covers operative AVR."
+  },
+  {
+    id: "anesthesia-essentials-mitral-regurgitation",
+    name: "Mitral Regurgitation (Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2026",
+    tags: ["Mitral regurgitation","Full fast forward","Reduce afterload","Inodilators","TEER/MitraClip","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting valve disease)", mortality: "Acute MR = hemodynamic emergency; chronic MR well-tolerated" },
+    flags: [
+      "**'Full, fast, forward' again: relative TACHYCARDIA, reduced afterload, and euvolemia.** **Bradycardia worsens MR** — a longer diastole overfills and dilates the LV, distending the mitral annulus and widening the regurgitant orifice. **Inodilators (milrinone, dobutamine) are the friend drug** — inotropy plus the afterload reduction that drives forward flow. Increases in afterload raise the regurgitant fraction and drop cardiac output.",
+      "**Acute MR (papillary-muscle rupture after MI, chordal rupture, endocarditis) is a hemodynamic emergency** — flash pulmonary edema and cardiogenic shock from an abrupt LA-pressure rise. Medical therapy is only a **bridge**: inotrope + afterload-reducing vasodilator/inodilator, positive-pressure ventilation, cautious diuresis, and **IABP/Impella/ECMO** to stabilize for **urgent cardiothoracic surgery**.",
+      "**MR is the second most common valve lesion (after AS); distinguish primary from secondary — it changes management.** Primary (degenerative/myxomatous prolapse, rheumatic, endocarditis) → surgical repair preferred over replacement. Secondary/functional (ischemic or dilated cardiomyopathy, annular dilation) → **guideline-directed medical therapy first** (beta-blocker, ACEi/ARB or ARNI, aldosterone antagonist, SGLT2 inhibitor, ± biventricular pacing).",
+      "**Chronic MR breeds atrial fibrillation and pulmonary hypertension over time** — watch the rhythm and the right heart. For high or prohibitive surgical risk, **transcatheter edge-to-edge repair (TEER/MitraClip)** is an option (symptomatic primary, or secondary despite GDMT); minimally invasive right-thoracotomy repair needs lung isolation and risks hypoxemia."
+    ],
+    technique: {
+      summary: "Reference card for the patient with mitral regurgitation (MR) presenting for noncardiac surgery — the 'full, fast, forward' goals, the acute-MR emergency, the primary-vs-secondary management split, and the transcatheter options. Reference content (not a Jaffe procedure). The Valve Surgery entry covers operative mitral repair/replacement.",
+      steps: [
+        "Classify: acute vs chronic, primary (leaflet) vs secondary (functional); Carpentier type 1 (normal motion)/2 (excess motion-prolapse)/3 (restricted motion).",
+        "Hold the goals: relative tachycardia (avoid bradycardia), reduced afterload, euvolemia, maintained contractility; inodilators (milrinone/dobutamine) preferred.",
+        "Acute MR: stabilize with inotrope + afterload reduction + PPV ± mechanical support (IABP/Impella/ECMO) as a bridge to urgent surgery.",
+        "Monitoring: arterial line; PA catheter if reduced LV function, pulmonary HTN, or complex surgery; for TEER/TMVR, pre-induction arterial line and large-bore access (chamber-perforation risk)."
+      ]
+    },
+    physiology: [
+      "Leaflet non-coaptation in systole regurgitates stroke volume from LV into LA; acute MR (no LA/LV adaptation) → sharp LA-pressure rise, pulmonary edema, low forward output; chronic MR → LA/LV dilation that accommodates volume at near-normal pressures until decompensation.",
+      "Regurgitant volume tracks the orifice size (ventricular size), the diastolic filling time, and the LV-to-LA pressure gradient — so reducing afterload, keeping the heart rate up, and avoiding LV overdistension all reduce the regurgitant fraction."
+    ],
+    comorbid: [
+      "Primary: myxomatous degeneration/prolapse (leading Western cause), rheumatic disease, infective endocarditis, radiation. Secondary: ischemic or dilated cardiomyopathy, atrial functional MR from LA dilation. Affects ~10% of the population; mild MR detectable in up to 20% of older adults.",
+      "Chronic-MR sequelae: atrial fibrillation, pulmonary hypertension, and progressive LV dysfunction; acute MR is usually post-MI papillary-muscle rupture, chordal rupture, or endocarditis."
+    ],
+    phases: {
+      pre: [
+        "Review the echo (mechanism/Carpentier type, severity, LV size/EF, PA pressures) and symptoms; for secondary MR optimize GDMT; for severe primary or symptomatic disease involve the heart-valve team; pre-induction arterial line for significant disease."
+      ],
+      intra: [
+        "Keep the rate relatively fast and the afterload low; euvolemia; inodilators for contractility + afterload reduction; avoid bradycardia, hypertension, and LV overdistension; right-thoracotomy minimally invasive repair needs lung isolation."
+      ],
+      post: [
+        "Continue forward-flow goals; watch for AF, pulmonary HTN, and (acute MR) ongoing pulmonary edema/shock; adequate analgesia to avoid hypertensive afterload spikes."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Hemodynamic goals for mitral regurgitation?” → 'full, fast, forward' — relative tachycardia, reduced afterload, euvolemia.",
+        "“Why is bradycardia bad in MR?” → longer diastole overfills/dilates the LV, distends the annulus, and widens the regurgitant orifice.",
+        "“Primary vs secondary MR — does management differ?” → yes; primary severe → surgical repair; secondary/functional → guideline-directed medical therapy first."
+      ],
+      pearls: [
+        "Inodilators (milrinone/dobutamine) are the friend: inotropy plus afterload reduction.",
+        "Acute MR (papillary-muscle rupture, endocarditis) = emergency — bridge with afterload reduction + mechanical support to urgent surgery.",
+        "TEER/MitraClip is the transcatheter option for prohibitive surgical risk (symptomatic primary, or secondary despite GDMT)."
+      ]
+    },
+    source: "OpenAnesthesia: 'Mitral Regurgitation Part 1: Etiology, Epidemiology, Pathophysiology, and Clinical Presentation' (Gulamani & Hollander, 2026-04-09), 'Part 2: Associated Comorbidities and Medical Management' (Lin & Sankova, 2026-04-09), and 'Part 3: Surgical Management and Hemodynamic Considerations' (Bodmer & Madhok, 2026-04-09); hemodynamic goals per Mittnacht et al (Semin Cardiothorac Vasc Anesth 2008); indications per the ACC/AHA valvular guideline (Otto et al, Circulation 2021). Cross-cutting reference (not a Jaffe procedure). Companion to the Aortic Stenosis, Aortic Insufficiency, and Mitral Stenosis cards; the Valve Surgery entry covers operative mitral surgery."
+  },
+  {
+    id: "anesthesia-essentials-mitral-stenosis",
+    name: "Mitral Stenosis (Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2025",
+    tags: ["Mitral stenosis","Avoid tachycardia","Maintain sinus","Rheumatic","Pulmonary HTN","VKA not DOAC","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting valve disease)", mortality: ">40% develop AF; pulmonary HTN / RV failure are the threats" },
+    flags: [
+      "**Tachycardia is the enemy — the stenotic valve needs diastolic filling time.** Keep a **low-normal heart rate, preserve SINUS rhythm**, and treat new **AF with rapid ventricular response aggressively** (it shortens diastole, raises LA pressure, and drops the already-fixed cardiac output — cardiovert if unstable). This is the mirror image of the regurgitant lesions: here you want it **full, SLOW, and in sinus**.",
+      "**Maintain preload — cardiac output is fixed and preload-dependent — but don't overload (pulmonary edema), and protect the right ventricle.** MS drives LA pressure → pulmonary venous → pulmonary arterial hypertension → RV dysfunction, so **avoid everything that raises PVR** (hypoxia, hypercarbia, acidosis, hypothermia, high airway pressure). Keep afterload normal and contractility supported.",
+      "**Over 40% develop atrial fibrillation with left-atrial thrombus and embolic risk — and rheumatic MS + AF is anticoagulated with a VITAMIN K ANTAGONIST, not a DOAC.** The INVICTUS trial showed warfarin beat rivaroxaban (fewer events/deaths) in rheumatic MS with AF. Rate control with beta-blockers, calcium-channel blockers, or ivabradine lengthens diastolic filling.",
+      "**Rheumatic disease (post-streptococcal) is the commonest cause** (congenital MS rare; degenerative annular calcification in the elderly). Definitive options: **percutaneous mitral balloon commissurotomy** (PMBC — needs no commissural calcification, no MR, no LA thrombus), surgical commissurotomy, or MV replacement for calcified valves. Consider carcinoid and atrial myxoma in the differential of MS-like symptoms."
+    ],
+    technique: {
+      summary: "Reference card for the patient with mitral stenosis (MS) presenting for noncardiac surgery — the 'full, slow, sinus' hemodynamic goals, the RV/pulmonary-HTN threat, AF/anticoagulation, and the definitive treatment options. Reference content (not a Jaffe procedure). The Valve Surgery entry covers operative mitral surgery.",
+      steps: [
+        "Define severity and rhythm; the goals are low-normal HR, sinus rhythm, adequate preload/euvolemia, maintained contractility, normal afterload, and protected RV/PVR.",
+        "Avoid and aggressively treat tachycardia/AF-RVR (it collapses the fixed cardiac output); rate control with beta-blocker/CCB/ivabradine; cardiovert unstable AF.",
+        "Avoid raising PVR (hypoxia/hypercarbia/acidosis/hypothermia/high airway pressure); support the right heart; anticoagulate rheumatic MS + AF with a vitamin K antagonist (not a DOAC).",
+        "Know the definitive options (PMBC vs surgical commissurotomy vs MVR) and the MS-mimics (carcinoid, atrial myxoma)."
+      ]
+    },
+    physiology: [
+      "A narrowed mitral orifice (rheumatic leaflet fusion, congenital, or degenerative annular calcification) impairs LA emptying → reduced LV filling and a fixed, low cardiac output; tachycardia and AF shorten the diastolic filling time and worsen it.",
+      "Chronically: MS → ↑LA pressure → ↑pulmonary venous pressure → pulmonary arterial hypertension → RV dysfunction; LA dilation predisposes to AF and left-atrial-appendage thrombus."
+    ],
+    comorbid: [
+      "Rheumatic heart disease (most common), congenital MS (rare), degenerative mitral annular calcification (elderly, technically difficult MVR); >40% develop AF with embolic risk.",
+      "Downstream pulmonary hypertension and RV dysfunction; differential of MS-physiology includes carcinoid and atrial myxoma."
+    ],
+    phases: {
+      pre: [
+        "Review the echo (valve area/gradient, LA size, PA pressures, RV function) and rhythm/anticoagulation; rate-control and anticoagulate (VKA) rheumatic MS + AF; diurese volume overload while keeping preload adequate; involve cardiology for severe/symptomatic disease."
+      ],
+      intra: [
+        "Keep HR low-normal and sinus; treat AF-RVR aggressively (cardiovert if unstable); maintain preload without overload; avoid PVR-raising insults; support contractility/RV; phenylephrine for hypotension to preserve afterload without tachycardia."
+      ],
+      post: [
+        "Continue rate/rhythm control; watch for pulmonary edema, AF, RV failure, and embolic events; restart anticoagulation per the bleed/thrombosis balance; adequate analgesia to avoid tachycardia."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Hemodynamic goals for mitral stenosis?” → 'full, slow, sinus' — low-normal HR, preserve sinus rhythm, adequate preload, protect the RV/PVR.",
+        "“Anticoagulant for rheumatic MS with AF — DOAC or warfarin?” → vitamin K antagonist (INVICTUS: warfarin beat rivaroxaban in rheumatic MS+AF).",
+        "“Why is tachycardia dangerous in MS?” → it shortens diastolic filling across the stenotic valve, raising LA pressure and dropping the fixed cardiac output."
+      ],
+      pearls: [
+        "MS is the one valve lesion where you want the heart slow — the opposite of the regurgitant goals.",
+        ">40% of MS patients develop AF; the left-atrial-appendage thrombus drives embolic risk.",
+        "PMBC needs a non-calcified commissure with no MR and no LA thrombus; calcified valves go to replacement."
+      ]
+    },
+    source: "OpenAnesthesia: 'Mitral Stenosis: Hemodynamic Management, Comorbidities, and Treatment' (Dongmo & Deshpande, 2025-10-15); anticoagulation per the 2023 ACC/AHA/ACCP/HRS AF guideline and INVICTUS (Connolly et al, NEJM 2022); valvular guidance per ACC/AHA (Nishimura/Otto). Cross-cutting reference (not a Jaffe procedure). Companion to the Aortic Stenosis, Aortic Insufficiency, and Mitral Regurgitation cards; the Valve Surgery entry covers operative mitral surgery."
+  },
+  {
+    id: "anesthesia-essentials-heart-transplant-recipient",
+    name: "Heart Transplant Recipient (Denervated Heart, Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2026",
+    tags: ["Heart transplant","Denervated heart","Direct-acting agents only","Preload-dependent","Silent ischemia","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (post-transplant comorbidity)", mortality: "Allograft vasculopathy, rejection, infection; defer elective surgery 6–12 mo" },
+    flags: [
+      "**The transplanted heart is DENERVATED — only DIRECT-acting drugs work.** Effective: **phenylephrine, norepinephrine, epinephrine, vasopressin** (pressors) and **isoproterenol/epinephrine** (chronotropes). Ineffective: **ephedrine (indirect), atropine and glycopyrrolate (no vagal tone to block)**. **Adenosine causes a profound, prolonged bradycardia** (reduce the dose); vasodilators (nitroglycerin/hydralazine) can cause **profound hypotension** because there is no reflex tachycardia.",
+      "**The denervated heart is Starling-dependent and preload-critical — avoid hypovolemia.** There is **no reflex tachycardia** to defend against blood loss or vasodilation, so cardiac output falls with preload; keep the patient full. Resting heart rate runs high (≈90–130 bpm) from the loss of vagal tone, and baroreceptor reflexes are gone (Valsalva and carotid massage are ineffective).",
+      "**Allograft vasculopathy makes ischemia SILENT.** The denervated heart feels no anginal pain, so myocardial infarction presents without chest pain — keep a high index of suspicion, monitor the ECG (expect **dual P waves** from native + donor atria and **right bundle branch block** from biopsies), and treat unexplained instability as possible ischemia.",
+      "**Chronic immunosuppression shapes the whole plan: stress-dose steroids, strict asepsis, and calcineurin-inhibitor nephrotoxicity.** Steroids (adrenal suppression) → perioperative stress dose; immunosuppression → meticulous sterile technique and infection vigilance; calcineurin inhibitors → renal impairment and drug interactions. **Defer elective surgery in the early period (6–12 months).**"
+    ],
+    technique: {
+      summary: "Reference card for the heart transplant recipient presenting for NONCARDIAC surgery — the denervated-heart physiology and pharmacology, silent ischemia from allograft vasculopathy, and the immunosuppression considerations. Reference content (not a Jaffe procedure; the transplant operation itself is parked cardiac surgery). See the Vasopressors/Inotropes and Adrenal/Steroid cards.",
+      steps: [
+        "Recognize the denervated physiology: high resting HR, no reflex tachycardia, lost baroreflexes, retained Starling response (preload-critical).",
+        "Use only direct-acting agents (phenylephrine/norepinephrine/epinephrine/vasopressin; isoproterenol/epinephrine for chronotropy); avoid relying on ephedrine, atropine, or glycopyrrolate; reduce adenosine dose.",
+        "Maintain euvolemia and adequate preload; anticipate exaggerated hypotension from vasodilators and neuraxial sympathectomy; have epicardial-pacing/isoproterenol readiness for bradycardia.",
+        "Manage immunosuppression: stress-dose steroids, strict asepsis, account for calcineurin-inhibitor renal effects/interactions; treat unexplained instability as possible silent ischemia; defer elective surgery 6–12 months post-transplant."
+      ]
+    },
+    physiology: [
+      "Surgical denervation removes both sympathetic and parasympathetic input: resting HR rises (loss of vagal tone), there is no rapid reflex heart-rate response to hypovolemia/hypotension, and baroreceptor-mediated reflexes are absent — so the heart depends on circulating catecholamines and on preload (Starling) rather than on autonomic reflexes.",
+      "Cardiac allograft vasculopathy is a diffuse, accelerated coronary disease; because the graft is denervated, ischemia/infarction is typically painless. ECG often shows two P waves (native + donor atrium) and RBBB from repeated endomyocardial biopsies."
+    ],
+    comorbid: [
+      "End-stage heart failure history; current immunosuppression (calcineurin inhibitors → renal dysfunction, hypertension, interactions; chronic steroids → adrenal suppression); allograft vasculopathy, rejection risk, and infection susceptibility.",
+      "Frequent arrhythmias (denervation bradyarrhythmias, atrial dysrhythmias), tricuspid regurgitation (biopsy-related), and chronic kidney injury."
+    ],
+    phases: {
+      pre: [
+        "Defer elective surgery in the first 6–12 months; review graft function, rejection/vasculopathy status, immunosuppression and renal function; plan stress-dose steroids; baseline ECG (dual P waves/RBBB); strict asepsis."
+      ],
+      intra: [
+        "Maintain euvolemia/preload; use direct-acting pressors/chronotropes only (phenylephrine/norepinephrine/epinephrine/vasopressin/isoproterenol); expect ephedrine/atropine/glycopyrrolate to fail and vasodilators/neuraxial to cause exaggerated hypotension; reduce adenosine dose; have pacing/isoproterenol for bradycardia."
+      ],
+      post: [
+        "Treat unexplained hemodynamic instability as possible silent ischemia; continue immunosuppression and steroid cover; vigilant infection control and renal protection; monitor for arrhythmia."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Why don't atropine and ephedrine work in a transplanted heart?” → it's denervated — no vagus to block (atropine/glycopyrrolate) and no neuronal stores for indirect release (ephedrine); use direct-acting agents.",
+        "“How does ischemia present in a transplant recipient?” → silently — the denervated heart has no anginal pain (allograft vasculopathy).",
+        "“Resting heart rate of a transplanted heart and why?” → high (≈90–130 bpm) from loss of vagal tone; no reflex tachycardia to hypovolemia."
+      ],
+      pearls: [
+        "Starling-dependent and preload-critical — keep the recipient full; vasodilators and neuraxial cause exaggerated hypotension.",
+        "Direct-acting only: phenylephrine, norepinephrine, epinephrine, vasopressin, isoproterenol; reduce the adenosine dose (profound/prolonged effect).",
+        "Stress-dose steroids, strict asepsis, calcineurin-inhibitor renal effects; defer elective surgery 6–12 months post-transplant."
+      ]
+    },
+    source: "OpenAnesthesia: 'Orthotopic Heart Transplantation' (Saraf & Nisar, 2026-02-12; the 'Anesthetic Considerations After Heart Transplantation' section); ISHLT recipient-care guidelines (Velleca et al, J Heart Lung Transplant 2022). Cross-cutting reference for the post-transplant patient at NONCARDIAC surgery (the transplant operation itself is parked cardiac surgery). See the Vasopressors/Inotropes and Adrenal/Steroid cards."
   }
 ];
 
@@ -13099,7 +13375,7 @@ function renderNav(filter="", navId="nav"){
 }
 
 /* Build stamp — bump on each delivery so "am I on the latest?" is a one-glance check. */
-const BUILD_VERSION = "v1.0 beta · 2026-06-05"  /* internal build R46 (v1.0 beta; OA Tier-1/2 cardiac + neuromuscular + endocrine batch — 6 Anesthesia Essentials cards: cardiac risk stratification, aortic stenosis (noncardiac), CIEDs, adult pulmonary HTN, myasthenia gravis/LEMS, hyperthyroidism/storm; 3 dropped articles confirmed already-folded) */;
+const BUILD_VERSION = "v1.0 beta · 2026-06-05"  /* internal build R47 (v1.0 beta; OA valvular suite + bup/methadone + PDF-table verification — 5 new Anesthesia Essentials cards: buprenorphine/methadone, aortic insufficiency, mitral regurgitation, mitral stenosis, heart-transplant recipient; 3 R46 cards upgraded from recovered PDF tables (RCRI %, AS 60-90 bpm/grading, MG predictors)) */;
 
 /* Default landing: quiet prompt that defers to the sidebar (the real landing).
    The full explainer lives in the How-to-use panel, opened from the corner button. */
