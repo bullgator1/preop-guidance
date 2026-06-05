@@ -12382,6 +12382,347 @@ const PROCEDURES = [
       "**Fixation done, wound managed = past the acute bleeding window, but not done watching:** the runway to emergence is short, but the **12–72 h fat-embolism window and the hourly compartment-syndrome checks start now** — tell PACU/ICU what to watch and keep the limb at heart level."
     ],
     source: "OpenAnesthesia: 'Extremity Trauma Initial Management' (Ng & Nathwani, 2026-04-03; pelvic/long-bone hemorrhage, tourniquet field pressures, damage-control resuscitation, open-fracture antibiotics, bilateral-femur/fat management) and 'Extremity Trauma Perioperative Considerations' (Ng & Nathwani, 2026-04-13; timing of surgery, anesthetic-technique choice, intra/postoperative management); 'Fat Embolism' (Brownstead & Tran, 2023-04-25). Operative-sequence / case-flow per these OA sources + Surgical Recall 8e (Blackbourne 2018). Built from OA (extremity-trauma anesthesia is cross-referenced but not a standalone Jaffe 5e procedure). See the Pneumatic Tourniquet, TXA in Trauma, Compartment Syndrome, and Rhabdomyolysis cards, the Trauma Surgery entry, and the Hip entry (bone-cement / fat embolism in arthroplasty)."
+  },
+  {
+    id: "anesthesia-essentials-cardiac-risk-stratification",
+    name: "Preoperative Cardiac Risk Stratification (RCRI / METs / 2024 AHA-ACC)",
+    section: "Anesthesia Essentials",
+    page: "OA 2025",
+    tags: ["Preoperative","RCRI","METs/DASI","MACE","2024 AHA/ACC","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (preop cardiac evaluation)", mortality: "~1 in 33 admissions >45 yr suffer perioperative death/MI/stroke" },
+    flags: [
+      "**The 2024 AHA/ACC stepwise approach is the spine: acute condition → calculated risk → risk modifiers → functional capacity → test only if it changes management.** Active **acute coronary syndrome, unstable arrhythmia, or decompensated heart failure** in an elective case → stop and get cardiology/guideline-directed therapy first; emergency surgery proceeds regardless, with optimization in parallel.",
+      "**Quantify MACE with a validated tool — RCRI or NSQIP/ACS — and treat >1% predicted MACE as 'elevated risk.'** RCRI's six predictors: **high-risk surgery, ischemic heart disease, history of CHF, cerebrovascular disease, insulin-treated diabetes, creatinine >2.0 mg/dL** (rising score → rising risk). NSQIP/ACS adds surgery type and functional status.",
+      "**Functional capacity decides who needs more: poor = METs <4 or DASI ≤34** (can't climb two flights of stairs). Good capacity → proceed; poor/unknown plus elevated risk → escalate (biomarker → cardiac test) **only if a result will change timing, technique, or the decision to operate.**",
+      "**Risk modifiers force a multidisciplinary pause even at low calculated risk:** severe valvular disease, severe pulmonary HTN, high-risk congenital heart disease, prior coronary stent/CABG, **stroke within 3 months**, a CIED, or frailty. **Don't order tests reflexively** — the guideline is explicitly anti-routine-testing."
+    ],
+    technique: {
+      summary: "Reference card for the 2024 AHA/ACC stepwise preoperative cardiac risk assessment before noncardiac surgery — risk indices (RCRI, NSQIP/ACS), functional capacity (METs/DASI), frailty, biomarkers, and the indications for ECG/echo/stress testing. Reference content (not a Jaffe procedure).",
+      steps: [
+        "Step 1 — screen for an acute cardiac condition (ACS, unstable arrhythmia, decompensated HF): elective → defer for cardiology/GDMT; emergency → proceed with parallel optimization.",
+        "Step 2 — calculate MACE with RCRI or NSQIP/ACS; >1% = elevated risk (class 2a to use a validated tool in known CVD).",
+        "Step 3 — check risk modifiers (severe valve disease, severe PH, high-risk CHD, prior stent/CABG, stroke <3 mo, CIED, frailty) — any present → multidisciplinary discussion on timing and testing.",
+        "Step 4 — assess functional capacity (METs <4 / DASI ≤34 = poor); good → proceed; poor/unknown + elevated → test only if it changes management.",
+        "Step 5 — escalate only as needed: biomarkers (BNP/NT-proBNP class 2a; troponin class 2b) → stress test / coronary CTA / echo → multidisciplinary risk-benefit; postop troponin surveillance if proceeding after abnormal testing."
+      ]
+    },
+    physiology: [
+      "About 45% of surgical patients over 45 carry cardiovascular risk factors; roughly 1 in 33 in-hospital admissions over 45 suffers perioperative death, MI, or ischemic stroke. Vascular, thoracic, and solid-organ-transplant surgery carry the highest event rates.",
+      "The framework exists to find the patient whose myocardial oxygen supply-demand balance or pump reserve will fail under surgical stress — and to avoid testing that won't change what you do."
+    ],
+    comorbid: [
+      "Known CAD/prior stent or CABG, CHF (especially HFrEF), valvular disease, pulmonary HTN, arrhythmia, cerebrovascular disease, insulin-treated diabetes, CKD, and frailty all push toward elevated risk and risk-modifier status.",
+      "Frailty is an independent predictor (prevalence ~10% at ≥65 yr, >25% at ≥85 yr, ~2× in women) — assess with a validated tool (Fried phenotype 0–5, Edmonton, Clinical Frailty Scale) in all patients ≥65 (class 2a)."
+    ],
+    phases: {
+      pre: [
+        "Work the stepwise algorithm in order; document the calculated MACE, functional capacity, any risk modifiers, and the explicit decision (proceed / optimize / test / defer).",
+        "12-lead ECG for coexisting CVD undergoing elevated-risk surgery or new ECG changes (baseline); echo (class 1) for moderate/severe valve disease, new dyspnea, or suspected new/worsening ventricular dysfunction.",
+        "BNP/NT-proBNP (class 2a) or troponin (class 2b) to supplement risk in known CVD / age ≥65 / age ≥45 with symptoms facing elevated-risk surgery — but an elevated biomarker has no proven management that improves outcome; it informs, it doesn't mandate."
+      ],
+      intra: [
+        "Match invasive monitoring and technique to the risk tier, not to a single test result — the assessment guides vigilance (arterial line, ischemia monitoring) more than it dictates a specific drug."
+      ],
+      post: [
+        "Consider postoperative troponin surveillance when proceeding after abnormal testing or in high-risk patients (myocardial injury after noncardiac surgery is often silent); continue guideline-directed medical therapy."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“RCRI's six predictors?” → high-risk surgery, ischemic heart disease, CHF, cerebrovascular disease, insulin-treated diabetes, creatinine >2.0 mg/dL.",
+        "“What MACE threshold defines 'elevated risk'?” → >1% by a validated tool (RCRI or NSQIP/ACS).",
+        "“What defines poor functional capacity?” → METs <4 or DASI ≤34 (can't climb two flights of stairs)."
+      ],
+      pearls: [
+        "The three acute conditions that stop an elective case: acute coronary syndrome, unstable arrhythmia, decompensated heart failure.",
+        "Order a test only if the result will change timing, technique, or the decision to operate — the 2024 guideline is explicitly anti-reflexive-testing.",
+        "Risk modifiers (severe valve disease, severe PH, prior stent/CABG, stroke <3 mo, CIED, frailty) trigger a multidisciplinary discussion even when the calculated risk is low."
+      ]
+    },
+    source: "OpenAnesthesia: 'Preoperative Cardiac Risk Stratification and Evaluation' (Hussein & Mohamed, 2025-10-16), anchored to the 2024 AHA/ACC/ACS Perioperative Cardiovascular Management for Noncardiac Surgery guideline (Thompson et al, Circulation 2024); RCRI per Lee et al. Cross-cutting reference (not a Jaffe procedure). See the Perioperative Medication Management, Aortic Stenosis, Pulmonary Hypertension, CIED, and Geriatric cards."
+  },
+  {
+    id: "anesthesia-essentials-aortic-stenosis",
+    name: "Aortic Stenosis (Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2023",
+    tags: ["Aortic stenosis","Fixed obstruction","Maintain SVR","Sinus rhythm","Severe AS","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting valve disease)", mortality: "Severe symptomatic AS ~25%/yr; survival 2–3 yr after symptom onset" },
+    flags: [
+      "**Severe AS is a fixed obstruction that can't compensate — the plan is 'full, slow-normal, tight, and in sinus.'** Maintain **preload, afterload (SVR/coronary perfusion pressure), and normal sinus rhythm**; avoid tachycardia (less diastolic filling/coronary time), bradycardia (fixed SV → CO falls), hypotension, and loss of atrial kick (up to ~40% of LV filling). Phenylephrine is the workhorse pressor.",
+      "**The hypertrophied, pressure-loaded LV lives on coronary perfusion pressure — a drop spirals to ischemia → failure → arrest, and CPR is ineffective across a fixed valve.** Treat hypotension immediately and pre-emptively; have phenylephrine drawn up and pads on for severe AS, and induce with agents/doses that protect SVR.",
+      "**Severity is echo-defined; symptoms change everything.** Severe AS = jet velocity ≥4 m/s, mean gradient ≥40 mmHg, valve area ≤1.0 cm² (very severe ≥5 m/s / ≥60 mmHg). The **classic triad of angina, syncope, and dyspnea marks symptomatic disease** — annual mortality of severe symptomatic AS ~25%, average survival 2–3 yr after symptom onset.",
+      "**Single-shot spinal (abrupt sympathectomy → ↓SVR) is the dangerous technique in severe AS** — a slow, titrated epidural or a carefully managed GA with invasive BP monitoring is safer. Know whether the patient is a candidate for valve intervention (TAVI/SAVR/balloon valvuloplasty) before elective noncardiac surgery — severe symptomatic AS may warrant fixing the valve first."
+    ],
+    technique: {
+      summary: "Reference card for the patient with aortic stenosis presenting for noncardiac surgery — severity grading, the lesion-specific hemodynamic goals, the high-risk induction, and when to fix the valve first. Reference content (not a Jaffe procedure). The Valve Surgery entry covers operative AVR/repair on CPB.",
+      steps: [
+        "Define severity from the echo (jet velocity, mean gradient, valve area) and whether symptomatic (angina/syncope/dyspnea); severe symptomatic AS may need valve intervention before elective surgery.",
+        "Hold the hemodynamic goals: full preload, maintained SVR/coronary perfusion pressure, normal-to-slightly-slow HR, sinus rhythm preserved.",
+        "Scale monitoring to severity: arterial line for severe AS, central access for pressor delivery, consider TEE; PA catheter only if concomitant severe pulmonary HTN.",
+        "Treat hypotension instantly with phenylephrine/vasopressin; treat new AF aggressively (cardiovert if unstable — a stiff LV tolerates loss of atrial kick poorly); avoid spinal."
+      ]
+    },
+    physiology: [
+      "Calcific degeneration (aging/inflammation/lipid), a congenital bicuspid valve (presents younger), or rheumatic disease narrows the valve → pressure overload → concentric LVH and diastolic dysfunction → eventual ↓EF and ↓stroke volume.",
+      "The stiff, hypertrophied LV is preload-dependent, rate-sensitive, and exquisitely dependent on coronary perfusion pressure and on the atrial contribution to filling."
+    ],
+    comorbid: [
+      "Most prevalent valve lesion in developed countries; critical-AS prevalence rises with age (1–2% at 75–76 yr, ~6% at 85–86 yr; up to 10% by the eighth decade). Bicuspid valve (~0.5–2%) presents earlier (most bicuspid AVR patients are under 70).",
+      "Common associations: hypertension, CKD, hypercholesterolemia, LV systolic dysfunction, and atrial fibrillation; increased risk of sudden death from ventricular arrhythmias."
+    ],
+    phases: {
+      pre: [
+        "Review the most recent echo (severity, EF, concomitant lesions/PH); ask about exertional angina, syncope, dyspnea; for severe symptomatic AS, discuss valve-intervention timing with cardiology/surgery.",
+        "Continue cardiovascular optimization; correct hypovolemia; plan invasive monitoring before induction for severe disease."
+      ],
+      intra: [
+        "Maintain preload/SVR/sinus/slow-normal HR; meticulous BP support on induction (the highest-risk moment), phenylephrine/vasopressin ready, pads on.",
+        "Avoid spinal; if neuraxial, use a slow titrated epidural; treat new arrhythmia aggressively; minimize myocardial depression and tachycardia."
+      ],
+      post: [
+        "Continue tight hemodynamic control into PACU/ICU; watch for ischemia, heart failure, and arrhythmia; adequate analgesia to avoid tachycardia."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Hemodynamic goals for severe AS?” → full, slow-normal HR, maintain SVR/coronary perfusion, preserve sinus rhythm.",
+        "“Echo cutoffs for severe AS?” → jet velocity ≥4 m/s, mean gradient ≥40 mmHg, valve area ≤1.0 cm².",
+        "“Which anesthetic technique is dangerous in severe AS?” → single-shot spinal (abrupt ↓SVR)."
+      ],
+      pearls: [
+        "The classic triad — angina, syncope, dyspnea — marks symptomatic severe AS (annual mortality ~25%, survival 2–3 yr after symptom onset).",
+        "Phenylephrine is the friend; treat hypotension before it spirals — CPR is ineffective across a fixed valve.",
+        "Losing sinus rhythm (new AF) removes the atrial kick a stiff LV depends on — cardiovert if unstable."
+      ]
+    },
+    source: "OpenAnesthesia: 'Aortic Stenosis: Etiology, Pathophysiology, and Clinical Presentation' (Lam & Disque, 2023-06-13) and 'Aortic Stenosis: Hemodynamic Management, Comorbidities, and Treatment' (Nam & Harvey, 2023-06-13); severity grading per the ACC/AHA valvular guideline (Otto et al, Circulation 2021). Cross-cutting reference (not a Jaffe procedure). The Valve Surgery and Transcatheter Valve entries cover operative AVR/TAVI; severe valve disease is a risk modifier in the Cardiac Risk Stratification card."
+  },
+  {
+    id: "anesthesia-essentials-cied",
+    name: "Cardiac Implantable Electronic Devices (Pacemakers & ICDs)",
+    section: "Anesthesia Essentials",
+    page: "OA 2023–2025",
+    tags: ["CIED","Pacemaker","ICD","Magnet","EMI","Reprogramming","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (existing device, noncardiac surgery)", mortality: "Device-related; risk is EMI-driven inhibition or inappropriate shock" },
+    flags: [
+      "**EMI from monopolar electrocautery is the core hazard — and the umbilicus is the dividing line.** Surgery **above the umbilicus** risks clinically significant EMI; **below the umbilicus is minimal risk.** EMI can inhibit a pacemaker (→ bradycardia/asystole in a pacer-dependent patient) or be misread by an **ICD as VT/VF → inappropriate shock.** Bipolar cautery and the harmonic scalpel are low-risk; if monopolar is used, site the grounding pad so current doesn't cross the generator and use short bursts.",
+      "**A magnet does NOT do the same thing to a pacemaker and an ICD — know the difference cold.** Magnet over most **pacemakers → asynchronous pacing** (defeats EMI inhibition). Magnet over an **ICD → suspends shock therapy only; it does NOT change the pacing mode and does NOT make pacing asynchronous.** So a **pacer-dependent patient with an ICD facing above-umbilicus EMI must be reprogrammed** — a magnet alone leaves them vulnerable to inhibition.",
+      "**Whenever ICD shock therapy is off (magnet or reprogramming), external defibrillation pads must be on the patient and immediately available.** Interrogate the device **within 3–6 months preop** (verify type, battery ≥3 months, pacer-dependence, programming). **Leadless pacemakers generally have no magnet response**; subcutaneous ICDs can't pace long-term and are more EMI-susceptible (treat surgery above the groin as at-risk).",
+      "**Restore everything and re-interrogate.** Remove the magnet / reprogram to baseline before leaving the OR (pads stay until done). **Re-interrogate within ~1 month** routinely, and **immediately** after external cardioversion/defibrillation, transcutaneous pacing, major blood loss/electrolyte shifts, or any emergency case done without preop interrogation."
+    ],
+    technique: {
+      summary: "Reference card for the patient with an existing pacemaker or ICD presenting for noncardiac surgery — the EMI risk, the magnet-vs-reprogramming decision, and pre/intra/postoperative management per the 2020 ASA practice advisory. Reference content (not a Jaffe procedure). The Pacemaker/ICD Insertion entry covers implanting the device.",
+      steps: [
+        "Identify the device (chart, device card, chest film, manufacturer hotline) and get an interrogation report within 3–6 months: type, indication, battery, underlying rhythm, pacer-dependence, magnet response.",
+        "Decide the EMI plan by surgery site (above vs below umbilicus), monopolar vs bipolar, position (can a magnet stay off the field?), pacer-dependence, and prior shocks.",
+        "Pacemaker: magnet → asynchronous pacing (or reprogram) for above-umbilicus EMI if pacer-dependent. ICD: disable shock therapy (magnet or reprogram), and reprogram to asynchronous pacing if pacer-dependent.",
+        "Pads on whenever shocks are off; minimize and short-burst monopolar, grounding pad away from the generator; transcutaneous pacing available.",
+        "Restore settings / remove magnet and re-interrogate at end; immediate interrogation after defibrillation, transcutaneous pacing, or an emergency case."
+      ]
+    },
+    physiology: [
+      "A pacer-dependent patient has no reliable intrinsic rhythm; EMI-induced inhibition can cause severe bradycardia or asystole. An ICD continuously senses for VT/VF and delivers antitachycardia pacing then defibrillation — EMI mimicking VT/VF triggers an inappropriate shock.",
+      "A magnet closes a reed switch: pacemakers respond by pacing asynchronously at a set rate; ICDs respond by suspending tachytherapy only — the pacing behavior of an ICD is unchanged by a magnet."
+    ],
+    comorbid: [
+      "Typically structural/ischemic heart disease, heart failure (CRT/biventricular devices, EF <35%), conduction disease, and prior VT/VF or arrest; ICD primary-prevention patients usually have HFrEF post-MI or dilated cardiomyopathy, secondary prevention = prior VF arrest/unstable VT.",
+      "Often anticoagulated (pocket-hematoma risk at implant); the underlying rhythm disease itself makes the patient intolerant of EMI-induced inhibition."
+    ],
+    phases: {
+      pre: [
+        "Interrogate within 3–6 months; document type, battery (≥3 mo), pacer-dependence, magnet response, and last therapies; engage the EP/CIED team; recognize leadless (no magnet response) and subcutaneous (can't pace) device behaviors.",
+        "Form the explicit EMI plan (magnet vs reprogram) and confirm pads / transcutaneous pacing availability."
+      ],
+      intra: [
+        "Standard ASA monitors ± invasive as indicated; pads on; minimize EMI (bipolar/harmonic, short monopolar bursts, grounding pad sited away from the generator).",
+        "If a pacer-dependent patient shows EMI inhibition/bradycardia, stop cautery, verify the ECG, pace externally if needed; manage an inappropriate ICD shock by stopping EMI and reassessing."
+      ],
+      post: [
+        "Reprogram to baseline / remove magnet (pads stay until done); re-interrogate within ~1 month routinely and immediately after cardioversion/defibrillation, transcutaneous pacing, major blood loss/electrolyte shifts, or an emergency case without preop interrogation."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Magnet on a pacemaker vs an ICD?” → pacemaker → asynchronous pacing; ICD → suspends shocks only (pacing mode unchanged).",
+        "“Pacer-dependent patient with an ICD, above-umbilicus surgery — magnet or reprogram?” → reprogram (a magnet won't make the pacing asynchronous, so inhibition risk remains).",
+        "“Where's the EMI dividing line?” → above the umbilicus = risk; below = minimal."
+      ],
+      pearls: [
+        "Interrogate within 3–6 months; ensure ≥3 months of battery before an elective case.",
+        "Whenever shock therapy is off, external defibrillation pads must be on and ready.",
+        "Leadless pacemakers usually don't respond to a magnet; subcutaneous ICDs can't pace long-term and are more EMI-susceptible (above-groin surgery = at-risk)."
+      ]
+    },
+    source: "OpenAnesthesia: 'Cardiac Implantable Electronic Devices: Pacemakers' (Brar & Anca, 2023-08-02) and 'Cardiac Implantable Electronic Devices: Internal Cardioverter-Defibrillators' (Azmy & Tanabe, 2025-08-20); anchored to the 2020 ASA practice advisory on perioperative management of CIEDs and the HRS/ASA 2011 consensus statement. Cross-cutting reference (not a Jaffe procedure). See the Pacemaker/ICD Insertion entry (implant) and the Cardiac Risk Stratification card (a CIED is a risk modifier)."
+  },
+  {
+    id: "anesthesia-essentials-pulmonary-hypertension",
+    name: "Pulmonary Hypertension & RV Failure (Adult)",
+    section: "Anesthesia Essentials",
+    page: "OA 2026",
+    tags: ["Pulmonary hypertension","RV failure","Lower PVR","iNO","Avoid N2O","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting disease)", mortality: "High perioperative morbidity/mortality from RV failure" },
+    flags: [
+      "**The whole anesthetic protects the right ventricle — keep PVR down and RV coronary perfusion up.** Avoid everything that raises PVR: **hypoxia, hypercarbia, acidosis, pain, hypothermia, and high PEEP** (keep PEEP <8 cmH₂O). Maintain **preload, sinus rhythm, and SVR** — the pressure-loaded RV depends on systemic diastolic pressure for its own coronary supply.",
+      "**Induction and emergence are the killing zones — systemic hypotension → RV ischemia → decompensation → arrest.** Preoxygenate, choose agents that hold hemodynamics, blunt the sympathetic surge, and plan a smooth emergence with good analgesia and normocarbia. **Avoid nitrous oxide** (raises PVR, worsens hypoxemia) and excessive volatile.",
+      "**Have pulmonary vasodilators and RV support ready as rescue: iNO, inhaled epoprostenol, an inotrope (milrinone or dobutamine), and vasopressin/norepinephrine** — **vasopressin raises SVR without raising PVR, the pressor of choice.** **Never interrupt chronic PH therapy** (endothelin antagonists, PDE-5 inhibitors, prostacyclin analogs); an epoprostenol infusion must not be paused even briefly (half-life is minutes).",
+      "**PH is high-risk surgery in its own right.** 2022 ESC/ERS definition: **mPAP ≥20 mmHg with PVR ≥2 WU** by right heart catheterization; pre- vs postcapillary split on PAWP/LVEDP >15 mmHg. Optimize toward euvolemia preop, monitor invasively (arterial line, CVP, often PA catheter, consider TEE for the RV), and recover where there is PH expertise."
+    ],
+    technique: {
+      summary: "Reference card for the adult with pulmonary hypertension presenting for noncardiac surgery — the PVR-lowering, RV-protective plan, the rescue pulmonary vasodilators, and the avoid-list. Reference content (not a Jaffe procedure). The Pediatric PH & PH Crisis card covers children; the Congenital Cardiac entry carries intraoperative PH-crisis notes.",
+      steps: [
+        "Confirm diagnosis/severity (RHC mPAP ≥20 + PVR ≥2 WU; WHO group; pre- vs postcapillary), RV function (echo: RV/LV basal ratio >1.0, septal flattening, TAPSE/PASP <0.55), and functional class.",
+        "Continue all chronic PH meds without interruption; optimize volume toward euvolemia; treat reversible aggravators.",
+        "Monitor: ASA + arterial line + CVP, often PA catheter (trends in PAP/CVP/CO/SvO₂), consider TEE for RV assessment.",
+        "Ventilate to avoid ↑PVR (normoxia, normocarbia, no acidosis, low tidal volume without overdistention, PEEP <8); keep iNO/inhaled epoprostenol, milrinone/dobutamine, and vasopressin/norepinephrine available."
+      ]
+    },
+    physiology: [
+      "Elevated PVR loads the RV → RV hypertrophy/dilation → eventual uncoupling and right heart failure → ↓CO → death; the stiff, pressure-loaded RV depends on sinus rhythm and on systemic diastolic pressure for its coronary supply.",
+      "WHO groups: 1 pulmonary arterial hypertension; 2 left heart disease (postcapillary); 3 lung disease/hypoxia; 4 chronic thromboembolic (CTEPH); 5 multifactorial. PAH pathobiology = ↓prostacyclin/NO plus ↑endothelin-1 — the basis for the three drug classes."
+    ],
+    comorbid: [
+      "Left heart disease (group 2, the commonest), COPD/ILD (group 3), CTEPH (group 4), connective-tissue disease / HIV / portal hypertension / congenital shunts (group 1); RV dysfunction also accompanies significant mitral or tricuspid regurgitation.",
+      "Limited physiologic reserve; arrhythmia is poorly tolerated (loss of atrial kick); progressive disease with poor long-term prognosis."
+    ],
+    phases: {
+      pre: [
+        "Assess severity, RV function, and functional class; continue PH therapy; optimize volume; ensure iNO/inhaled prostacyclin and inotrope/pressor availability and a monitored recovery bed.",
+        "Group-1 PAH may be on a calcium-channel blocker only if vasoreactive (positive acute vasoreactivity test: mPAP falls ≥10 mmHg to a value ≤40 mmHg); group-specific therapy otherwise."
+      ],
+      intra: [
+        "Hold the hemodynamic goals (preload, sinus, SVR, RV contractility); avoid ↑PVR triggers; avoid N₂O and excessive volatile; balanced technique blunting sympathetic responses.",
+        "Rescue an acute RV crisis: 100% O₂, hyperventilate to lower PVR, deepen, vasoconstrictor to hold coronary perfusion, inotrope, iNO/inhaled epoprostenol, correct acidosis, rewarm — be ready for mechanical support."
+      ],
+      post: [
+        "Smooth emergence with normocarbia/normoxia and good analgesia (the sympathetic surge raises RV afterload); recover with PH expertise; resume PH meds without interruption; watch for RV failure and arrhythmia."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Updated 2022 ESC/ERS definition of PH?” → mPAP ≥20 mmHg with PVR ≥2 WU on right heart catheterization.",
+        "“Pressor of choice in PH/RV failure and why?” → vasopressin (raises SVR/coronary perfusion without raising PVR); norepinephrine also used.",
+        "“Which anesthetic gas to avoid in PH?” → nitrous oxide (raises PVR, worsens hypoxemia)."
+      ],
+      pearls: [
+        "Everything that raises PVR is the enemy: hypoxia, hypercarbia, acidosis, hypothermia, pain, high PEEP.",
+        "Never interrupt chronic PH therapy — epoprostenol's half-life is minutes; its infusion can't be paused.",
+        "The RV lives on coronary perfusion pressure and the atrial kick — hold SVR and sinus rhythm."
+      ]
+    },
+    source: "OpenAnesthesia: 'Pulmonary Hypertension in Adults' (Patel & Richter, 2026-03-06); definitions/classification per the 2022 ESC/ERS guidelines (Humbert/Kovacs, Eur Heart J 2022) and the 2022 ISHLT perioperative consensus. Cross-cutting reference (not a Jaffe procedure). See the Pediatric Pulmonary Hypertension & PH Crisis and Vasopressors/Inotropes cards; severe PH is a risk modifier in the Cardiac Risk Stratification card."
+  },
+  {
+    id: "anesthesia-essentials-myasthenia-gravis",
+    name: "Myasthenia Gravis & Lambert-Eaton Syndrome",
+    section: "Anesthesia Essentials",
+    page: "OA 2024",
+    tags: ["Myasthenia gravis","NDMR-sensitive","Sux-resistant","Sugammadex","Myasthenic crisis","LEMS","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (neuromuscular disease)", mortality: "Driven by postoperative respiratory failure / crisis" },
+    flags: [
+      "**The NMBA paradox: MG patients are exquisitely SENSITIVE to nondepolarizers (rocuronium) and RESISTANT to succinylcholine** (need a larger dose, prone to phase II block). **Avoid NMBAs entirely if you can** — inhalational and IV agents alone often suffice; if blockade is needed, give small, incremental rocuronium and **reverse with sugammadex, not neostigmine** (an anticholinesterase can tip a treated MG patient into cholinergic crisis).",
+      "**Respiratory failure is the dominant risk — and it's predictable.** The Leventhal predictors of postoperative ventilation: **disease duration >6 yr, coexisting pulmonary disease, pyridostigmine >750 mg/d, and vital capacity <2.9 L**; bulbar weakness adds aspiration risk. **Avoid premedicant opioids/benzodiazepines/barbiturates**, prefer short-acting agents, use strict extubation criteria, and plan ICU/step-down.",
+      "**Continue the MG meds through the morning of surgery — anticholinesterase (pyridostigmine) and daily steroids** (stress-dose if on ≥5 mg prednisone for >3 wk within 6 months). Schedule elective surgery in **remission and in the morning** (peak strength). **Distinguish myasthenic crisis** (under-treatment/stress, improves with edrophonium) from **cholinergic crisis** (over-treatment, muscarinic signs: salivation, lacrimation, diarrhea) — both cause postop respiratory failure but the treatment is opposite.",
+      "**LEMS is the mirror image — and a red flag for occult malignancy.** Weakness **improves** with repeated use (vs worsens in MG); **~60% have an underlying cancer, usually small-cell lung.** Unlike MG, LEMS patients are **sensitive to BOTH depolarizing and nondepolarizing NMBAs.** Regional is attractive in both diseases, but avoid high spinal or phrenic-blocking interscalene blocks that paralyze respiratory muscles."
+    ],
+    technique: {
+      summary: "Reference card for myasthenia gravis (and Lambert-Eaton myasthenic syndrome) — the NMBA sensitivities, the postoperative respiratory-failure predictors, the crisis differential, and the perioperative medication plan. Reference content (not a Jaffe procedure). See the Neuromuscular Blockade and Myotonic Dystrophy cards.",
+      steps: [
+        "Recognize MG: autoimmune loss of postsynaptic ACh receptors (~85% anti-AChR positive; also MuSK/LRP4); ocular → generalized within ~3 yr; ~75% have a thymic abnormality (15% thymoma).",
+        "Preop: optimize and operate in remission and in the morning; assess bulbar/respiratory status, crisis history, and meds; continue anticholinesterase and steroids; avoid sedating premedication.",
+        "Induction/maintenance: prefer no NMBA (inhalational ± propofol); if needed, small incremental rocuronium reversed by sugammadex; don't rely on succinylcholine (resistant, phase II risk); quantitative TOF from baseline (MG shows baseline fade).",
+        "Emergence/postop: short-acting agents; strict extubation criteria (VC <8 mL/kg, tachypnea, or respiratory acidosis = reintubation triggers); opioid-sparing/regional analgesia; ICU/step-down; recognize myasthenic vs cholinergic crisis."
+      ]
+    },
+    physiology: [
+      "Antibody-mediated reduction of functional postsynaptic nAChRs lowers the motor end-plate potential → fatigable weakness; fewer receptors means less margin for competitive nondepolarizing blockade (hypersensitivity) and a blunted/atypical response to succinylcholine (resistance, phase II block).",
+      "Generalized MG weakens respiratory and bulbar muscles → aspiration and postoperative respiratory failure; inhalational agents themselves produce dose-dependent relaxation in MG."
+    ],
+    comorbid: [
+      "Thymic hyperplasia/thymoma (~75% have thymic abnormality), secondary autoimmune disease, and the respiratory/bulbar weakness that drives the airway risk; steroid/immunosuppression effects.",
+      "LEMS: presynaptic voltage-gated Ca²⁺-channel antibodies → reduced ACh release; proximal-leg weakness that improves with exercise, autonomic dysfunction, ~60% paraneoplastic (small-cell lung cancer)."
+    ],
+    phases: {
+      pre: [
+        "Operate in remission and in the morning; neurology consult; assess bulbar/respiratory reserve and crisis history; continue anticholinesterase and daily steroids (stress-dose if indicated); avoid opioid/benzodiazepine/barbiturate premedication."
+      ],
+      intra: [
+        "Avoid NMBA where possible; if used, reduced incremental rocuronium reversed with sugammadex (not neostigmine); quantitative NMB monitoring from baseline; regional preferred but avoid respiratory-muscle paralysis (high spinal, phrenic-blocking blocks); short-acting agents to limit emergence depression."
+      ],
+      post: [
+        "Predict ventilation need (Leventhal: duration >6 yr, pulmonary disease, pyridostigmine >750 mg/d, VC <2.9 L); strict extubation criteria; opioid-sparing analgesia; ICU/step-down; distinguish myasthenic from cholinergic crisis (edrophonium improves the myasthenic crisis)."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“MG response to succinylcholine vs nondepolarizers?” → resistant to succinylcholine (phase II risk), sensitive to nondepolarizers — reverse with sugammadex, not neostigmine.",
+        "“Predictors of postop ventilation in MG (Leventhal)?” → disease >6 yr, pulmonary disease, pyridostigmine >750 mg/d, VC <2.9 L.",
+        "“MG vs LEMS — weakness with repeated use?” → worsens in MG, improves in LEMS (and LEMS is ~60% paraneoplastic, small-cell lung cancer)."
+      ],
+      pearls: [
+        "Continue pyridostigmine and steroids through the morning of surgery; operate in remission and schedule early.",
+        "LEMS patients are sensitive to BOTH depolarizing and nondepolarizing NMBAs (unlike MG).",
+        "Neonatal MG (transient, from placental anti-AChR transfer) affects 10–20% of infants of MG mothers — manage with anticholinesterase and expect resolution."
+      ]
+    },
+    source: "OpenAnesthesia: 'Myasthenia Gravis' (Miller & Basak, 2024-03-08); postoperative-ventilation predictors per Leventhal et al (Anesthesiology 1980). Cross-cutting reference (not a Jaffe procedure). See the Neuromuscular Blockade, Myotonic Dystrophy, and Pregnancy & Neurologic Disorders cards; the Thymectomy entry covers surgical thymectomy."
+  },
+  {
+    id: "anesthesia-essentials-hyperthyroidism",
+    name: "Hyperthyroidism & Thyroid Storm",
+    section: "Anesthesia Essentials",
+    page: "OA 2025",
+    tags: ["Hyperthyroidism","Thyrotoxicosis","Euthyroid first","Thyroid storm","Avoid ketamine/ephedrine","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting endocrine disease)", mortality: "Thyroid storm ~20%" },
+    flags: [
+      "**Render the patient euthyroid before elective surgery — uncontrolled thyrotoxicosis risks intraoperative thyroid storm.** Optimize with **antithyroid drugs (methimazole/PTU), beta-blockers (propranolol — also blocks peripheral T4→T3 conversion), and inorganic iodine.** **Start the antithyroid drug BEFORE iodide** (iodine first can worsen thyrotoxicosis). Continue these through the morning of surgery.",
+      "**Blunt the hyperadrenergic state and avoid sympathomimetics — no ketamine, no ephedrine.** Aim anesthetic depth to prevent exaggerated sympathetic responses; treat refractory tachycardia/hypertension with beta-blockers or calcium-channel blockers; have a low threshold for an arterial line in uncontrolled disease (AF, decreased SVR, possible high-output failure, catecholamine sensitivity).",
+      "**Thyroid storm mimics malignant hyperthermia and carries ~20% mortality** — tachycardia, fever, CNS disturbance, and GI symptoms after a trigger (surgery/illness/trauma). **Treat:** antithyroid drug (PTU/methimazole — no IV form), beta-blockade, IV fluids, active cooling/antipyretics, steroids (empiric adrenal cover plus blocking T4→T3), then iodine after the antithyroid drug — and defer nonemergent surgery until stabilized.",
+      "**A large goiter is an airway problem** — it can compress or deviate the trachea, and external size doesn't predict difficulty. Review imaging, plan for a difficult intubation, and watch for postop tracheomalacia. The raised metabolic rate means rapid desaturation — preoxygenate well."
+    ],
+    technique: {
+      summary: "Reference card for the patient with hyperthyroidism/thyrotoxicosis presenting for any surgery — achieving a euthyroid state, controlling the hyperadrenergic response, the airway, and recognizing/treating thyroid storm. Reference content (not a Jaffe procedure). The Thyroidectomy & Parathyroidectomy entry covers thyroid surgery itself.",
+      steps: [
+        "Identify the cause (Graves' — commonest, autoimmune; toxic multinodular goiter; toxic adenoma; thyroiditis; amiodarone/iodinated-contrast-induced) and control status (subclinical / overt / thyrotoxic).",
+        "Optimize to euthyroid for elective surgery: antithyroid drug + beta-blocker (propranolol) ± iodine (antithyroid drug before iodide); continue through the day of surgery.",
+        "Intraoperative: depth adequate to blunt sympathetic responses, avoid ketamine/ephedrine, all volatiles acceptable; beta-blocker/CCB for refractory tachycardia/HTN; invasive BP monitoring if uncontrolled; assess the goiter/airway.",
+        "Postoperative: monitor for arrhythmia (AF) and thyroid storm; for thyroid surgery specifically, watch RLN injury, neck hematoma, and hypocalcemia (see the Thyroidectomy entry)."
+      ]
+    },
+    physiology: [
+      "Excess thyroid hormone upregulates beta-adrenergic receptors → hypermetabolism, tachycardia/AF, increased contractility and cardiac output (high-output failure in severe cases), systolic hypertension with widened pulse pressure and decreased SVR, and rapid desaturation from the raised BMR.",
+      "A large or substernal goiter mechanically narrows or deviates the trachea; long-standing compression risks tracheomalacia after removal."
+    ],
+    comorbid: [
+      "Graves' (with proptosis/pretibial myxedema), toxic multinodular goiter (iodine-deficient regions), toxic adenoma, thyroiditis, and drug-induced (amiodarone, iodinated contrast); atrial fibrillation with embolic risk, high-output heart failure, and catecholamine sensitivity.",
+      "More common in women and over-60s; affects ~2.5% of adults; even subclinical disease carries perioperative arrhythmia risk."
+    ],
+    phases: {
+      pre: [
+        "Achieve a euthyroid state for elective cases (antithyroid drug + propranolol ± iodine, antithyroid drug first); continue meds through the day of surgery; assess the airway/goiter (imaging); defer elective surgery in uncontrolled thyrotoxicosis."
+      ],
+      intra: [
+        "Depth to blunt sympathetic responses; avoid ketamine/ephedrine; all volatiles acceptable; beta-blocker/CCB for refractory tachycardia/HTN; invasive monitoring if uncontrolled; plan the goiter airway.",
+        "Recognize intraoperative thyroid storm (mimics MH — tachycardia, fever, hypermetabolism, instability) and treat (antithyroid drug, beta-blockade, fluids, cooling, steroids, iodine after the antithyroid drug)."
+      ],
+      post: [
+        "Watch for postoperative arrhythmia and thyroid storm (can present hours after the trigger); supportive ICU care with invasive monitoring if urgent surgery was needed before control."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Why propranolol specifically in hyperthyroidism?” → beta-blockade AND inhibits peripheral T4→T3 conversion.",
+        "“Order of antithyroid drug vs iodine?” → antithyroid drug FIRST, then iodine (iodine alone can worsen thyrotoxicosis).",
+        "“Two sympathomimetics to avoid?” → ketamine and ephedrine."
+      ],
+      pearls: [
+        "Thyroid storm mimics malignant hyperthermia and carries ~20% mortality — treat hard and defer nonemergent surgery until stabilized.",
+        "Render the patient euthyroid before elective surgery; continue antithyroid drugs and beta-blockers through the morning of surgery.",
+        "A goiter's external size doesn't predict airway difficulty — review imaging and anticipate tracheomalacia after removal."
+      ]
+    },
+    source: "OpenAnesthesia: 'Hyperthyroidism' (Villasenor & Masters, 2025-05-30). Cross-cutting reference (not a Jaffe procedure). The Thyroidectomy & Parathyroidectomy entry covers thyroid surgery (airway/RLN/hypocalcemia and storm-vs-MH in the operative context); see also the Hypercalcemia and Adrenal/Steroid cards."
   }
 ];
 
@@ -12758,7 +13099,7 @@ function renderNav(filter="", navId="nav"){
 }
 
 /* Build stamp — bump on each delivery so "am I on the latest?" is a one-glance check. */
-const BUILD_VERSION = "v1.0 beta · 2026-06-05"  /* internal build R45 (v1.0 beta; OA vasoactive + extremity-trauma batch — 3 Anesthesia Essentials cards + 1 Orthopedic Trauma procedure w/ caseFlow + 1 in-place cross-ref) */;
+const BUILD_VERSION = "v1.0 beta · 2026-06-05"  /* internal build R46 (v1.0 beta; OA Tier-1/2 cardiac + neuromuscular + endocrine batch — 6 Anesthesia Essentials cards: cardiac risk stratification, aortic stenosis (noncardiac), CIEDs, adult pulmonary HTN, myasthenia gravis/LEMS, hyperthyroidism/storm; 3 dropped articles confirmed already-folded) */;
 
 /* Default landing: quiet prompt that defers to the sidebar (the real landing).
    The full explainer lives in the How-to-use panel, opened from the corner button. */
