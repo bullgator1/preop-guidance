@@ -9,6 +9,11 @@
 <meta name="apple-mobile-web-app-title" content="Preop Guide">
 <meta name="application-name" content="Preop Guide">
 <meta name="theme-color" content="#185fa5">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" href="favicon.ico" sizes="any">
 <title>Preop Guidance</title>
 <style>
   :root {
@@ -5180,6 +5185,16 @@
     console.error(e);
   }
 })();
+</script>
+<script>
+/* Register the offline service worker (network-first; see sw.js).
+   Relative path so it resolves under /preop-guidance/ on GitHub Pages and at
+   the root on Netlify. Required for installable-PWA behaviour + OR offline use. */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch((e) => console.error('SW registration failed:', e));
+  });
+}
 </script>
 </body>
 </html>

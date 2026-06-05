@@ -23,7 +23,9 @@ const CACHE = 'preop-guide-v1';   // bump to v2, v3… only if you ever want to 
 
 /* Minimal shell so the first offline open works. allSettled => a missing file
    never breaks install. Paths are relative, so they resolve under /preop-guidance/. */
-const SHELL = ['./', './index.html', './manifest.json'];
+const SHELL = ['./', './index.html', './manifest.json',
+  './apple-touch-icon.png', './icon-192.png', './icon-512.png',
+  './icon-512-maskable.png', './favicon-32.png', './favicon-16.png', './favicon.ico'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
