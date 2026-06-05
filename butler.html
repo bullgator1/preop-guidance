@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Git Butler">
+<meta name="theme-color" content="#0d1117">
+<title>Preop Guide · Git Butler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#11161d; --panel2:#161c24; --line:#222c38;
+    --ink:#e6edf3; --mut:#8b98a8; --faint:#5b6675;
+    --info:#4aa3df; --ok:#3fb27f; --warn:#e0a13c; --bad:#e05c5c;
+    --accent:#4aa3df;
+    --sans:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:16px; line-height:1.45; -webkit-font-smoothing:antialiased;}
+  body{padding:
+    calc(env(safe-area-inset-top) + 12px)
+    calc(env(safe-area-inset-right) + 14px)
+    calc(env(safe-area-inset-bottom) + 24px)
+    calc(env(safe-area-inset-left) + 14px);
+    max-width:560px; margin:0 auto;}
+  h1{font-size:1.05rem; font-weight:700; letter-spacing:.2px; margin:0;}
+  .sub{font-family:var(--mono); font-size:.72rem; color:var(--faint); margin-top:2px;}
+  header{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px;}
+  .iconbtn{background:var(--panel2); border:1px solid var(--line); color:var(--ink);
+    width:42px; height:42px; border-radius:11px; font-size:1.15rem; display:grid; place-items:center;
+    cursor:pointer; transition:transform .12s, background .12s;}
+  .iconbtn:active{transform:scale(.92); background:#1d2530;}
+  .iconbtn.spin{animation:spin .9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .tabs{display:flex; gap:6px; background:var(--panel); border:1px solid var(--line);
+    border-radius:13px; padding:5px; margin-bottom:14px;}
+  .tab{flex:1; text-align:center; padding:9px 4px; border-radius:9px; font-size:.85rem; font-weight:600;
+    color:var(--mut); cursor:pointer; user-select:none; transition:.14s;}
+  .tab[aria-selected="true"]{background:var(--accent); color:#06121c;}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:14px; margin-bottom:12px;}
+  .card h2{font-size:.7rem; text-transform:uppercase; letter-spacing:.12em; color:var(--mut);
+    margin:0 0 10px; font-weight:600; font-family:var(--mono);}
+  .row{display:flex; align-items:baseline; justify-content:space-between; gap:10px; padding:7px 0;
+    border-bottom:1px solid var(--line);}
+  .row:last-child{border-bottom:none;}
+  .k{color:var(--mut); font-size:.82rem;}
+  .v{font-family:var(--mono); font-size:.82rem; text-align:right; word-break:break-word;}
+  .badge{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono);
+    font-size:.72rem; font-weight:600; padding:4px 9px; border-radius:999px; border:1px solid;}
+  .b-ok{color:var(--ok); border-color:#1e3a2c; background:#0f1b15;}
+  .b-warn{color:var(--warn); border-color:#3a3020; background:#1b1610;}
+  .b-bad{color:var(--bad); border-color:#3a2020; background:#1b1010;}
+  .b-info{color:var(--info); border-color:#1d2e3a; background:#0f161b;}
+  .b-mut{color:var(--faint); border-color:var(--line); background:var(--panel2);}
+  .dot{width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 6px currentColor;}
+  .commitmsg{font-size:.95rem; font-weight:500; line-height:1.3; margin:2px 0 8px;}
+  .meta{font-family:var(--mono); font-size:.74rem; color:var(--faint);}
+  .meta a{color:var(--info); text-decoration:none;}
+  label{display:block; font-size:.74rem; color:var(--mut); margin:12px 0 5px; font-weight:500;}
+  label:first-of-type{margin-top:0;}
+  input,textarea,select{width:100%; background:var(--panel2); border:1px solid var(--line);
+    color:var(--ink); border-radius:10px; padding:11px 12px; font-family:var(--mono);
+    font-size:.85rem; outline:none;}
+  input:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical; min-height:90px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .btn{display:block; width:100%; text-align:center; border:none; border-radius:12px;
+    padding:14px; font-size:.95rem; font-weight:700; cursor:pointer; font-family:var(--sans);
+    transition:transform .1s, opacity .15s;}
+  .btn:active{transform:scale(.985);}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  .btn-primary{background:var(--accent); color:#06121c;}
+  .btn-go{background:var(--ok); color:#062014;}
+  .btn-ghost{background:var(--panel2); color:var(--ink); border:1px solid var(--line);}
+  .btn-bad{background:transparent; color:var(--bad); border:1px solid #3a2020;}
+  .filezone{border:1.5px dashed var(--line); border-radius:12px; padding:18px 14px; text-align:center;
+    color:var(--mut); font-size:.85rem; cursor:pointer; transition:.15s;}
+  .filezone.has{border-color:var(--ok); color:var(--ink); border-style:solid; background:#0f1b15;}
+  .fileinfo{font-family:var(--mono); font-size:.78rem; margin-top:6px;}
+  .hint{font-size:.74rem; color:var(--faint); line-height:1.4; margin-top:8px;}
+  .hint b{color:var(--mut);}
+  .toast{position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom) + 18px); transform:translateX(-50%) translateY(20px);
+    background:#1b232d; border:1px solid var(--line); color:var(--ink); padding:11px 16px; border-radius:11px;
+    font-size:.84rem; max-width:90vw; opacity:0; pointer-events:none; transition:.25s; z-index:50; box-shadow:0 8px 30px #0008;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .toast.err{border-color:#5a2a2a;}
+  .modal{position:fixed; inset:0; background:#000a; display:none; align-items:flex-end; justify-content:center; z-index:60;}
+  .modal.show{display:flex;}
+  .sheet{background:var(--panel); border:1px solid var(--line); border-radius:18px 18px 0 0;
+    width:100%; max-width:560px; padding:18px 16px calc(env(safe-area-inset-bottom) + 18px); animation:up .22s ease;}
+  @keyframes up{from{transform:translateY(40px); opacity:.6;}}
+  .sheet h3{margin:0 0 12px; font-size:1rem;}
+  .review{background:var(--panel2); border:1px solid var(--line); border-radius:11px; padding:12px; margin-bottom:14px;}
+  .empty{color:var(--faint); font-size:.84rem; padding:8px 0; text-align:center; font-family:var(--mono);}
+  .pulse{display:inline-block; width:8px;height:8px;border-radius:50%;background:var(--mut);
+    animation:pl 1s infinite ease-in-out;}
+  @keyframes pl{0%,100%{opacity:.3}50%{opacity:1}}
+  .warnbar{font-size:.72rem; color:var(--warn); background:#1b1610; border:1px solid #3a3020;
+    border-radius:9px; padding:8px 10px; margin-bottom:12px; font-family:var(--mono); line-height:1.4;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Git Butler</h1>
+    <div class="sub" id="repoLabel">not configured</div>
+  </div>
+  <button class="iconbtn" id="refreshBtn" title="Refresh">⟳</button>
+</header>
+
+<div class="warnbar" id="memWarn" style="display:none">
+  Preview mode — settings won't be saved here. Host this file (or open it in Safari) to make the butler remember your repo &amp; token.
+</div>
+
+<div class="tabs" role="tablist">
+  <div class="tab" data-tab="status" role="tab" aria-selected="true">Status</div>
+  <div class="tab" data-tab="push" role="tab" aria-selected="false">Push</div>
+  <div class="tab" data-tab="settings" role="tab" aria-selected="false">Settings</div>
+</div>
+
+<!-- ============ STATUS ============ -->
+<section id="tab-status">
+  <div id="needsConfig" class="card" style="display:none">
+    <div class="empty">Add your repo &amp; token in <b style="color:var(--accent)">Settings</b> to wake the butler.</div>
+  </div>
+
+  <div id="statusBody" style="display:none">
+    <div class="card">
+      <h2>Latest commit · <span id="branchLbl"></span></h2>
+      <div id="commitArea"><div class="empty"><span class="pulse"></span> loading…</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Live site</h2>
+      <div class="row">
+        <span class="k">GitHub Pages</span>
+        <span class="v" id="pagesBadge"><span class="badge b-mut">—</span></span>
+      </div>
+      <div class="row" id="pagesCurrentRow" style="display:none">
+        <span class="k">In sync</span>
+        <span class="v" id="pagesCurrent"></span>
+      </div>
+      <div class="row" id="netlifyRow" style="display:none">
+        <span class="k">Netlify</span>
+        <span class="v" id="netlifyBadge"><span class="badge b-mut">—</span></span>
+      </div>
+      <div class="row" id="netlifyCurrentRow" style="display:none">
+        <span class="k">In sync</span>
+        <span class="v" id="netlifyCurrent"></span>
+      </div>
+      <div class="row">
+        <span class="k">Open</span>
+        <span class="v"><a id="liveLink" href="#" target="_blank" rel="noopener" style="color:var(--info);text-decoration:none">—</a></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Recent history</h2>
+      <div id="historyArea"><div class="empty">—</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUSH ============ -->
+<section id="tab-push" style="display:none">
+  <div class="card">
+    <h2>Tracked file</h2>
+    <div class="row"><span class="k">Path</span><span class="v" id="pushPath">—</span></div>
+    <div class="row"><span class="k">Current size</span><span class="v" id="curSize">—</span></div>
+  </div>
+
+  <div class="card">
+    <h2>New version</h2>
+    <label>Pick the file from your phone</label>
+    <div class="filezone" id="fileZone">
+      Tap to choose <b id="fzName">index.html</b><br>from Files / Downloads
+      <div class="fileinfo" id="fileInfo"></div>
+    </div>
+    <input type="file" id="fileInput" accept=".html,.htm,text/html" style="display:none">
+
+    <label style="margin-top:14px">…or paste contents</label>
+    <textarea id="pasteArea" placeholder="(optional) paste the full file here instead"></textarea>
+
+    <label>Commit message</label>
+    <input id="commitMsg" placeholder="Update index.html">
+
+    <button class="btn btn-go" id="commitBtn" style="margin-top:14px" disabled>Review &amp; commit</button>
+    <div class="hint">The butler never commits on its own — you review the change and tap commit. It writes <b>only</b> to the tracked path on the tracked branch.</div>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section id="tab-settings" style="display:none">
+  <div class="card">
+    <h2>Repository</h2>
+    <label>Owner / org</label>
+    <input id="cfgOwner" placeholder="your-github-username" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <label>Repo name</label>
+    <input id="cfgRepo" placeholder="preop-guide" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="grid2">
+      <div><label>Branch</label><input id="cfgBranch" placeholder="main" autocapitalize="off"></div>
+      <div><label>Tracked file</label><input id="cfgPath" placeholder="index.html" autocapitalize="off"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>GitHub token</h2>
+    <label>Fine-grained personal access token</label>
+    <input id="cfgToken" type="password" placeholder="github_pat_…" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="hint">Make a <b>fine-grained</b> token scoped to <b>only this repo</b>, with <b>Contents: Read &amp; write</b> and <b>Pages: Read</b>. github.com → Settings → Developer settings → Fine-grained tokens. Kept in this browser only; never sent anywhere but GitHub.</div>
+  </div>
+
+  <div class="card">
+    <h2>Netlify <span style="color:var(--faint);text-transform:none;letter-spacing:0">(optional)</span></h2>
+    <label>Site ID (API ID)</label>
+    <input id="cfgNetSite" placeholder="from Netlify → Site config → General" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <label>Netlify token</label>
+    <input id="cfgNetToken" type="password" placeholder="(optional) personal access token" autocapitalize="off" autocorrect="off" spellcheck="false">
+  </div>
+
+  <button class="btn btn-primary" id="saveCfg">Save</button>
+  <button class="btn btn-bad" id="clearCfg" style="margin-top:10px">Clear stored token &amp; config</button>
+</section>
+
+<!-- confirm sheet -->
+<div class="modal" id="confirmModal">
+  <div class="sheet">
+    <h3>Commit this change?</h3>
+    <div class="review" id="reviewBox"></div>
+    <button class="btn btn-go" id="doCommit">Commit to GitHub</button>
+    <button class="btn btn-ghost" id="cancelCommit" style="margin-top:10px">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ---------- defensive storage: localStorage when hosted, in-memory in sandbox ---------- */
+const mem = {};
+let memOnly = false;
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ memOnly=true; return (k in mem)?mem[k]:null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){ memOnly=true; mem[k]=v; } },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){ delete mem[k]; } }
+};
+// probe so we can warn the user up front
+(function(){ try{ const t='__b'; localStorage.setItem(t,'1'); localStorage.removeItem(t);}catch(e){ memOnly=true; } })();
+
+/* ---------- config ---------- */
+const CK = 'butler:cfg:v1';
+let cfg = { owner:'', repo:'', branch:'main', path:'index.html', token:'', netSite:'', netToken:'' };
+function loadCfg(){
+  const raw = store.get(CK);
+  if(raw){ try{ cfg = Object.assign(cfg, JSON.parse(raw)); }catch(e){} }
+}
+function saveCfg(){ store.set(CK, JSON.stringify(cfg)); }
+function configured(){ return cfg.owner && cfg.repo && cfg.token; }
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+function toast(msg, isErr){
+  const t=$('#toast'); t.textContent=msg; t.className='toast show'+(isErr?' err':'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast', isErr?4200:2400);
+}
+function esc(s){ return (s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function kb(n){ if(n==null) return '—'; return n<1024 ? n+' B' : (n/1024).toFixed(1)+' KB'; }
+function ago(iso){
+  const s=(Date.now()-new Date(iso).getTime())/1000;
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+function badge(cls, dot, text){ return `<span class="badge ${cls}"><span class="dot"></span>${esc(text)}</span>`; }
+function toB64Utf8(str){
+  const bytes=new TextEncoder().encode(str); let bin='';
+  const chunk=0x8000;
+  for(let i=0;i<bytes.length;i+=chunk){ bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+chunk)); }
+  return btoa(bin);
+}
+
+/* ---------- GitHub API ---------- */
+async function gh(path, {method='GET', body=null}={}){
+  const res = await fetch('https://api.github.com'+path, {
+    method,
+    headers:{
+      'Accept':'application/vnd.github+json',
+      'Authorization':'Bearer '+cfg.token,
+      'X-GitHub-Api-Version':'2022-11-28',
+      ...(body?{'Content-Type':'application/json'}:{})
+    },
+    body: body?JSON.stringify(body):undefined
+  });
+  const txt = await res.text();
+  let data; try{ data=JSON.parse(txt); }catch(e){ data=txt; }
+  if(!res.ok){ const m=(data&&data.message)||('HTTP '+res.status); const err=new Error(m); err.status=res.status; throw err; }
+  return data;
+}
+
+/* ---------- status load ---------- */
+let latestSha = null;
+
+async function loadStatus(){
+  if(!configured()){ showNeedsConfig(); return; }
+  $('#needsConfig').style.display='none';
+  $('#statusBody').style.display='block';
+  $('#branchLbl').textContent = cfg.branch;
+  spin(true);
+  try{
+    const commits = await gh(`/repos/${cfg.owner}/${cfg.repo}/commits?sha=${encodeURIComponent(cfg.branch)}&per_page=6`);
+    latestSha = commits[0] ? commits[0].sha : null;
+    renderCommit(commits[0]);
+    renderHistory(commits.slice(1));
+    loadPages();        // independent, may 404
+    loadFile();         // tracked file size
+    if(cfg.netSite && cfg.netToken) loadNetlify(); else hideNetlify();
+    toast('Up to date');
+  }catch(e){
+    $('#commitArea').innerHTML = `<div class="empty" style="color:var(--bad)">${esc(e.message)}</div>`;
+    toast(e.status===401?'Bad/expired token':e.message, true);
+  }finally{ spin(false); }
+}
+
+function renderCommit(c){
+  if(!c){ $('#commitArea').innerHTML='<div class="empty">no commits</div>'; return; }
+  const who = c.commit.author.name || (c.author&&c.author.login) || '?';
+  const url = c.html_url;
+  $('#commitArea').innerHTML =
+    `<div class="commitmsg">${esc(c.commit.message.split('\n')[0])}</div>`+
+    `<div class="meta">${esc(who)} · ${ago(c.commit.author.date)} · `+
+    `<a href="${url}" target="_blank" rel="noopener">${c.sha.slice(0,7)}</a></div>`;
+}
+
+function renderHistory(list){
+  const el=$('#historyArea');
+  if(!list.length){ el.innerHTML='<div class="empty">no earlier commits</div>'; return; }
+  el.innerHTML = list.map(c=>{
+    return `<div class="row"><span class="k" style="flex:1">${esc(c.commit.message.split('\n')[0])}</span>`+
+           `<span class="meta">${ago(c.commit.author.date)}</span></div>`;
+  }).join('');
+}
+
+async function loadPages(){
+  const pb=$('#pagesBadge'), pc=$('#pagesCurrent'), pcr=$('#pagesCurrentRow'), link=$('#liveLink');
+  try{
+    let pageUrl=null;
+    try{ const info=await gh(`/repos/${cfg.owner}/${cfg.repo}/pages`); pageUrl=info.html_url; }catch(e){}
+    const b=await gh(`/repos/${cfg.owner}/${cfg.repo}/pages/builds/latest`);
+    const st=b.status;
+    if(st==='built') pb.innerHTML=badge('b-ok','','built');
+    else if(st==='building') pb.innerHTML=badge('b-info','','building…');
+    else if(st==='errored') pb.innerHTML=badge('b-bad','','errored');
+    else pb.innerHTML=badge('b-mut','',st||'—');
+    pcr.style.display='flex';
+    if(b.commit && latestSha){
+      const ok = b.commit===latestSha;
+      pc.innerHTML = ok ? badge('b-ok','','current') : badge('b-warn','','behind '+b.commit.slice(0,7));
+    } else { pc.innerHTML = badge('b-mut','','—'); }
+    if(pageUrl){ link.textContent=pageUrl.replace(/^https?:\/\//,''); link.href=pageUrl; }
+  }catch(e){
+    if(e.status===404){ pb.innerHTML=badge('b-mut','','not enabled'); pcr.style.display='none'; }
+    else { pb.innerHTML=badge('b-bad','','err'); pcr.style.display='none'; }
+  }
+}
+
+async function loadNetlify(){
+  const nb=$('#netlifyBadge'), nc=$('#netlifyCurrent');
+  $('#netlifyRow').style.display='flex';
+  try{
+    const res=await fetch(`https://api.netlify.com/api/v1/sites/${encodeURIComponent(cfg.netSite)}/deploys?per_page=1`,
+      {headers:{'Authorization':'Bearer '+cfg.netToken}});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const d=(await res.json())[0];
+    if(!d){ nb.innerHTML=badge('b-mut','','no deploys'); return; }
+    const st=d.state;
+    if(st==='ready') nb.innerHTML=badge('b-ok','','published');
+    else if(st==='building'||st==='enqueued') nb.innerHTML=badge('b-info','',st);
+    else if(st==='error') nb.innerHTML=badge('b-bad','','error');
+    else nb.innerHTML=badge('b-mut','',st);
+    $('#netlifyCurrentRow').style.display='flex';
+    if(d.commit_ref && latestSha){
+      const ok=latestSha.startsWith(d.commit_ref)||d.commit_ref.startsWith(latestSha.slice(0,7));
+      nc.innerHTML = ok?badge('b-ok','','current'):badge('b-warn','','behind '+d.commit_ref.slice(0,7));
+    } else nc.innerHTML=badge('b-mut','','—');
+  }catch(e){ nb.innerHTML=badge('b-bad','','err'); $('#netlifyCurrentRow').style.display='none'; }
+}
+function hideNetlify(){ $('#netlifyRow').style.display='none'; $('#netlifyCurrentRow').style.display='none'; }
+
+async function loadFile(){
+  try{
+    const f=await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}`);
+    $('#curSize').textContent = kb(f.size);
+  }catch(e){ $('#curSize').textContent = e.status===404?'new file':'—'; }
+}
+
+function showNeedsConfig(){
+  $('#needsConfig').style.display='block';
+  $('#statusBody').style.display='none';
+}
+function spin(on){ $('#refreshBtn').classList.toggle('spin', on); }
+
+/* ---------- push ---------- */
+let pendingContent=null, pendingFromFile=false, curFileSize=null;
+
+function refreshPushView(){
+  $('#pushPath').textContent = cfg.path || '—';
+  $('#fzName').textContent = cfg.path || 'index.html';
+  if(configured()){
+    gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}`)
+      .then(f=>{ curFileSize=f.size; $('#curSize').textContent=kb(f.size); })
+      .catch(e=>{ curFileSize=null; $('#curSize').textContent=e.status===404?'new file':'—'; });
+  }
+}
+
+function evalPush(){
+  const paste=$('#pasteArea').value;
+  if(paste.trim().length){ pendingContent=paste; pendingFromFile=false; }
+  $('#commitBtn').disabled = !(configured() && pendingContent && pendingContent.length);
+}
+
+$('#fileZone').onclick = ()=> $('#fileInput').click();
+$('#fileInput').onchange = e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload = ()=>{
+    pendingContent=r.result; pendingFromFile=true;
+    $('#pasteArea').value='';
+    $('#fileZone').classList.add('has');
+    $('#fileZone').innerHTML = `✓ <b>${esc(f.name)}</b><div class="fileinfo">${kb(f.size)} · ready to commit</div>`;
+    evalPush();
+  };
+  r.readAsText(f);
+};
+$('#pasteArea').oninput = evalPush;
+
+$('#commitBtn').onclick = ()=>{
+  if(!pendingContent) return;
+  const looksHtml = !/\.html?$/.test(cfg.path) || /<html|<!doctype/i.test(pendingContent);
+  const newSize = new TextEncoder().encode(pendingContent).length;
+  $('#reviewBox').innerHTML =
+    `<div class="row"><span class="k">Repo</span><span class="v">${esc(cfg.owner)}/${esc(cfg.repo)}</span></div>`+
+    `<div class="row"><span class="k">Branch</span><span class="v">${esc(cfg.branch)}</span></div>`+
+    `<div class="row"><span class="k">File</span><span class="v">${esc(cfg.path)}</span></div>`+
+    `<div class="row"><span class="k">Size</span><span class="v">${kb(curFileSize)} → ${kb(newSize)}</span></div>`+
+    `<div class="row"><span class="k">Source</span><span class="v">${pendingFromFile?'uploaded file':'pasted text'}</span></div>`+
+    (looksHtml?'':`<div class="row"><span class="k" style="color:var(--warn)">⚠ check</span><span class="v" style="color:var(--warn)">doesn't look like HTML</span></div>`);
+  $('#confirmModal').classList.add('show');
+};
+$('#cancelCommit').onclick = ()=> $('#confirmModal').classList.remove('show');
+
+$('#doCommit').onclick = async ()=>{
+  const btn=$('#doCommit'); btn.disabled=true; btn.textContent='Committing…';
+  try{
+    let sha=null;
+    try{ const f=await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}`); sha=f.sha; }catch(e){ if(e.status!==404) throw e; }
+    const msg=$('#commitMsg').value.trim() || ('Update '+cfg.path);
+    const body={ message:msg, content:toB64Utf8(pendingContent), branch:cfg.branch };
+    if(sha) body.sha=sha;
+    await gh(`/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`, {method:'PUT', body});
+    $('#confirmModal').classList.remove('show');
+    pendingContent=null; pendingFromFile=false;
+    $('#pasteArea').value=''; $('#commitMsg').value='';
+    $('#fileZone').classList.remove('has');
+    $('#fileZone').innerHTML = `Tap to choose <b>${esc(cfg.path||'index.html')}</b><br>from Files / Downloads<div class="fileinfo" id="fileInfo"></div>`;
+    $('#commitBtn').disabled=true;
+    toast('Committed ✓ — Pages will rebuild shortly');
+    switchTab('status'); loadStatus();
+  }catch(e){
+    toast(e.status===409?'Conflict — refresh & retry':(e.message||'Commit failed'), true);
+  }finally{ btn.disabled=false; btn.textContent='Commit to GitHub'; }
+};
+
+/* ---------- settings ---------- */
+function fillSettings(){
+  $('#cfgOwner').value=cfg.owner; $('#cfgRepo').value=cfg.repo;
+  $('#cfgBranch').value=cfg.branch; $('#cfgPath').value=cfg.path;
+  $('#cfgToken').value=cfg.token; $('#cfgNetSite').value=cfg.netSite; $('#cfgNetToken').value=cfg.netToken;
+}
+$('#saveCfg').onclick = ()=>{
+  cfg.owner=$('#cfgOwner').value.trim(); cfg.repo=$('#cfgRepo').value.trim();
+  cfg.branch=$('#cfgBranch').value.trim()||'main'; cfg.path=$('#cfgPath').value.trim()||'index.html';
+  cfg.token=$('#cfgToken').value.trim(); cfg.netSite=$('#cfgNetSite').value.trim(); cfg.netToken=$('#cfgNetToken').value.trim();
+  saveCfg(); updateRepoLabel(); refreshPushView();
+  toast('Saved'); switchTab('status'); loadStatus();
+};
+$('#clearCfg').onclick = ()=>{
+  if(!confirm('Clear stored repo + token from this device?')) return;
+  store.del(CK); cfg={owner:'',repo:'',branch:'main',path:'index.html',token:'',netSite:'',netToken:''};
+  fillSettings(); updateRepoLabel(); showNeedsConfig(); toast('Cleared');
+};
+
+/* ---------- tabs ---------- */
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.tab===name));
+  ['status','push','settings'].forEach(n=>{ $('#tab-'+n).style.display = n===name?'block':'none'; });
+  if(name==='push') refreshPushView();
+}
+document.querySelectorAll('.tab').forEach(t=> t.onclick=()=>switchTab(t.dataset.tab));
+$('#refreshBtn').onclick = loadStatus;
+
+function updateRepoLabel(){
+  $('#repoLabel').textContent = configured() ? `${cfg.owner}/${cfg.repo} · ${cfg.branch}` : 'not configured';
+}
+
+/* ---------- boot ---------- */
+loadCfg();
+fillSettings();
+updateRepoLabel();
+if(memOnly) $('#memWarn').style.display='block';
+if(configured()) loadStatus(); else { switchTab('settings'); showNeedsConfig(); }
+</script>
+</body>
+</html>
