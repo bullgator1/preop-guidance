@@ -9670,6 +9670,7 @@ const PROCEDURES = [
       "**Continue through the morning of surgery: beta-blockers, calcium-channel blockers, statins** (abrupt beta-blocker withdrawal is dangerous). **Hold ACEi/ARB ≥24 h** in most electives (less intraop hypotension, no MACE difference — STOP-or-NOT) — but **continuing is reasonable in HFrEF**, and held or not, be ready for **refractory hypotension** (have **vasopressin**).",
       "**Aspirin:** continue uninterrupted if **prior coronary/cerebrovascular stent, revascularization, or MI <1 yr**; interrupt ~7 d for stable CAD with no revascularization facing high-bleed surgery; **continue for carotid/vascular surgery and CABG**; resume <24 h. Don't stop dual antiplatelet within **12 months of a stent/MI/stroke** without a specialist.",
       "**P2Y12 hold times: clopidogrel 5 d, ticagrelor 3–5 d, prasugrel 7 d.** For **neuraxial or deep blocks** (ASRA): clopidogrel/prasugrel **7–10 d**, ticagrelor **5 d**; **superficial blocks can proceed** on antiplatelets.",
+      "**Elective noncardiac surgery timing after PCI (2024 AHA/ACC): ≥30 days after a bare-metal stent; ≥6 months after a drug-eluting stent for chronic coronary disease; ≥12 months after a DES for ACS; ≥14 days after balloon angioplasty without a stent.** Time-sensitive surgery may proceed at **3 months** by multidisciplinary decision; **surgery within 30 days of PCI is Class 3 (harm)** (MACE ~10.5% at <30 d vs ~2.8% at 3 mo; MI 7.2% vs 0.5%). **Routine bridging with IV antiplatelets is not recommended** (no proven benefit; reserve for very-high-thrombotic-risk patients after multidisciplinary discussion). Continue aspirin 75–100 mg through surgery whenever possible.",
       "**Anticoagulants:** DOACs **hold ~2 d**, usually **no bridge**; **warfarin hold 5 d**, bridge with LMWH only for high VTE risk (**CHA₂DS₂-VASc ≥7**, severe thrombophilia, certain mechanical valves). **Hold loop diuretics; continue K-sparing.** Substitute IV/transdermal forms if NPO."
     ],
     technique: {
@@ -9712,10 +9713,10 @@ const PROCEDURES = [
       pearls: [
         "Holding ACEi/ARB trades less intraoperative hypotension for more postoperative hypertension, with no difference in major cardiac events (Stop-or-Not: intraop hypotension 41% held vs 54% continued; SPACE: postop SBP >180 in 24% held vs 12% continued).",
         "Superficial and peripheral nerve blocks can usually proceed on antiplatelet therapy; the strict ASRA windows are for neuraxial and deep, non-compressible blocks.",
-        "A drug-eluting stent within 12 months is a stop sign — don't interrupt dual antiplatelet therapy without cardiology."
+        "Stent timing for elective surgery: ≥30 d (bare-metal) / ≥6 mo (DES for chronic CAD) / ≥12 mo (DES for ACS); <30 d after PCI is harm. A drug-eluting stent within those windows is a stop sign — don't interrupt dual antiplatelet therapy without cardiology."
       ]
     },
-    source: "OpenAnesthesia: 'Continuing vs. Stopping Cardiovascular Medications, Antiplatelet Agents, and Anticoagulants Before Noncardiac Surgery' (Selzer & Chatterjee, 2025-10-22), 'Angiotensin-Converting Enzyme Inhibitors' (Schnaak & Miller, 2025-09-09), 'Angiotensin Receptor Blockers' (Kitsios & DiCarlo, 2025-12-23), and 'Antiplatelet Agents' (Amolenda & Ballard, 2025-05-14); RAAS physiology and the Stop-or-Not / SPACE trial figures per 'Renin-Angiotensin-Aldosterone System' (Hanna & Chatterjee, 2025-04-14); anchored to the 2024 AHA/ACC perioperative cardiovascular guideline and ASRA. Cross-cutting reference (not a Jaffe procedure). See the coagulopathy/massive-transfusion and blood-management cards. Herbal-supplement holds per 'Herbal Supplements and Anesthesia' (Yuan & Stanley, 2025-07-09)."
+    source: "OpenAnesthesia: 'Continuing vs. Stopping Cardiovascular Medications, Antiplatelet Agents, and Anticoagulants Before Noncardiac Surgery' (Selzer & Chatterjee, 2025-10-22), 'Angiotensin-Converting Enzyme Inhibitors' (Schnaak & Miller, 2025-09-09), 'Angiotensin Receptor Blockers' (Kitsios & DiCarlo, 2025-12-23), and 'Antiplatelet Agents' (Amolenda & Ballard, 2025-05-14), and 'Preoperative Management of Patients with Coronary Artery Stents' (Hussein & Mohamed, 2026-02-18; the PCI-to-surgery timing ladder, added R48); RAAS physiology and the Stop-or-Not / SPACE trial figures per 'Renin-Angiotensin-Aldosterone System' (Hanna & Chatterjee, 2025-04-14); anchored to the 2024 AHA/ACC perioperative cardiovascular guideline and ASRA. Cross-cutting reference (not a Jaffe procedure). See the coagulopathy/massive-transfusion and blood-management cards. Herbal-supplement holds per 'Herbal Supplements and Anesthesia' (Yuan & Stanley, 2025-07-09)."
   },
   {
     id: "anesthesia-essentials-bronchospasm-asthma",
@@ -12999,6 +13000,171 @@ const PROCEDURES = [
       ]
     },
     source: "OpenAnesthesia: 'Orthotopic Heart Transplantation' (Saraf & Nisar, 2026-02-12; the 'Anesthetic Considerations After Heart Transplantation' section); ISHLT recipient-care guidelines (Velleca et al, J Heart Lung Transplant 2022). Cross-cutting reference for the post-transplant patient at NONCARDIAC surgery (the transplant operation itself is parked cardiac surgery). See the Vasopressors/Inotropes and Adrenal/Steroid cards."
+  },
+  {
+    id: "anesthesia-essentials-heart-failure",
+    name: "Heart Failure (Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2026",
+    tags: ["Heart failure","HFrEF/HFpEF","NYHA","GDMT","Decompensation = high risk","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting disease)", mortality: "Decompensation <6 mo = high risk; HF at major vascular surgery ~12× mortality" },
+    flags: [
+      "**Recent decompensation is the red flag — a heart-failure exacerbation within the past 6 months predicts adverse perioperative outcomes, and HF present at major vascular surgery carries ~12× the perioperative mortality.** Optimize before elective surgery whenever feasible (relieve congestion, restore functional capacity); **poor functional capacity (<4 METs)** marks higher risk. Worsening symptoms warrant fresh workup before proceeding.",
+      "**The intraoperative goals are a balancing act, not a single target: rate control in sinus (avoid tachycardia), adequate preload WITHOUT fluid overload, adequate perfusion pressure without excessive afterload, maintained contractility (inotropy if needed), and minimized myocardial work.** Fluid overload or instability tips into **pulmonary edema → pulmonary HTN → RV dysfunction**; vasodilators/inodilators help there. Use invasive arterial monitoring liberally; dynamic indices (SPV/PPV/SVV) beat CVP for fluid responsiveness.",
+      "**Emergence and block-resolution are danger points — restored sympathetic tone and shifting blood volume can precipitate decompensation.** Circulation time is prolonged in HF, so IV agents are **slow to take effect** (titrate patiently, don't stack doses). Continue GDMT through the perioperative period when hemodynamically possible — stopping beta-blockade in particular worsens outcomes.",
+      "**Know the classification, because it sets the risk and the plan: NYHA functional class (I–IV, an independent mortality predictor), ACC/AHA stages A–D, and the LVEF split — HFrEF ≤40%, HFmrEF 41–49%, HFpEF ≥50%.** Diastolic (HFpEF) failure is a stiff, poorly-relaxing ventricle that needs sinus rhythm and careful preload; systolic (HFrEF) failure needs afterload reduction and inotropic support. Advanced (stage D) patients may carry CIEDs, LVADs, or be transplant candidates — plan device management."
+    ],
+    technique: {
+      summary: "Reference card for the patient with heart failure presenting for noncardiac surgery — classification, the balancing-act intraoperative goals, the decompensation/emergence danger points, and GDMT continuation. Reference content (not a Jaffe procedure). See the Heart Transplant Recipient, CIED, Pulmonary Hypertension, and Vasopressors/Inotropes cards.",
+      steps: [
+        "Classify and risk-stratify: NYHA I–IV, ACC/AHA stage A–D, LVEF category (HFrEF ≤40 / HFmrEF 41–49 / HFpEF ≥50); flag decompensation within 6 months and <4 METs.",
+        "Optimize before elective surgery (decongest, optimize GDMT — ARNI, beta-blocker, MRA, SGLT2 inhibitor); continue GDMT perioperatively when hemodynamics allow.",
+        "Hold the intraoperative goals: sinus/rate control, preload without overload, perfusion pressure without excess afterload, contractility (inotrope if needed), minimize myocardial work; arterial line ± dynamic monitoring/TEE.",
+        "Anticipate prolonged circulation time (slow IV onset), emergence/block-resolution decompensation, and CIED/LVAD management in advanced HF; recover in an HF-capable setting."
+      ]
+    },
+    physiology: [
+      "HF is impaired ventricular filling or ejection from any structural/functional cause; systolic (HFrEF) lowers EF/stroke volume/stroke work, while diastolic (HFpEF) is a stiff ventricle that can't accept adequate diastolic volume (symptoms even at rest). Leading causes: ischemic heart disease/MI, hypertension, and valvular disease.",
+      "The failing ventricle has little reserve: fluid overload or hemodynamic swings cause pulmonary edema, pulmonary HTN, and RV dysfunction; coronary perfusion still depends on diastolic pressure, so afterload reduction must not sacrifice diastolic BP."
+    ],
+    comorbid: [
+      "Ischemic heart disease, hypertension, valvular disease, atrial fibrillation, CKD, diabetes; advanced HF often brings CIEDs (ICD/CRT), mechanical circulatory support (LVAD/Impella/IABP/ECMO), or transplant candidacy.",
+      "Acute HF/cardiogenic shock is a hemodynamic emergency (pulmonary edema, hypotension, elevated lactate/BNP, end-organ dysfunction) — defer elective surgery and treat the reversible precipitant."
+    ],
+    phases: {
+      pre: [
+        "Thorough history/exam + recent cardiac imaging; document NYHA/stage/LVEF, last decompensation, and functional capacity; optimize and continue GDMT; note device/MCS status and last medication doses; for acute/decompensated HF defer elective surgery."
+      ],
+      intra: [
+        "Local/regional/neuraxial/general all acceptable (regional and general show comparable outcomes for major surgery) — pick what best holds hemodynamics; sinus + rate control, preload without overload, perfusion pressure without excess afterload, judicious inotropes/vasopressors; arterial line liberally, dynamic indices over CVP, TEE to diagnose hypotension; titrate IV agents slowly (prolonged circulation time); reprogram CIEDs as needed."
+      ],
+      post: [
+        "Watch for cardiogenic shock, pulmonary edema, ischemia, arrhythmia, renal/hepatic injury; manage emergence/block-resolution decompensation; continue inotropes if needed and restart GDMT when appropriate; recover in an HF-capable, monitored setting."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“LVEF cutoffs for HFrEF / HFmrEF / HFpEF?” → ≤40% / 41–49% / ≥50%.",
+        "“What recent history most raises perioperative risk in an HF patient?” → a decompensation within the last 6 months (and <4 METs functional capacity).",
+        "“Continue or stop GDMT perioperatively?” → continue when hemodynamically possible — stopping beta-blockade worsens outcomes."
+      ],
+      pearls: [
+        "HF at major vascular surgery carries roughly a 12-fold higher perioperative mortality — optimize first.",
+        "Circulation time is prolonged in HF, so IV agents act slowly — titrate patiently rather than re-dosing.",
+        "Emergence and neuraxial-block resolution are decompensation danger points (returning sympathetic tone + volume shifts)."
+      ]
+    },
+    source: "OpenAnesthesia: 'Heart Failure' (Datta, 2026-02-26); classification/GDMT per the 2022 AHA/ACC/HFSA heart-failure guideline (Heidenreich et al, Circulation 2022); perioperative considerations per Singh & Mehta (J Cardiac Crit Care 2025). Cross-cutting reference (not a Jaffe procedure). See the Heart Transplant Recipient, CIED, Pulmonary Hypertension, Cardiac Risk Stratification, and Vasopressors/Inotropes cards."
+  },
+  {
+    id: "anesthesia-essentials-hocm",
+    name: "Hypertrophic Cardiomyopathy / HOCM (Noncardiac Surgery)",
+    section: "Anesthesia Essentials",
+    page: "OA 2023",
+    tags: ["HOCM","Dynamic LVOTO","Full slow tight","Phenylephrine","Avoid inotropes","Maintain sinus","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (coexisting cardiomyopathy)", mortality: "Risk of sudden cardiac death; hemodynamic collapse from dynamic LVOTO" },
+    flags: [
+      "**The enemy is dynamic left-ventricular-outflow-tract obstruction, and everything that empties or speeds the ventricle makes it worse: ↑heart rate, ↑contractility, and ↓preload or ↓afterload all WORSEN the obstruction.** The goals are essentially 'full, slow, and tight' — **euvolemia/generous preload, low-normal HR, NO inotropes, and a HIGH afterload (maintain SVR).** **Phenylephrine is the pressor of choice** (raises afterload, slows the heart, no inotropy); avoid epinephrine, norepinephrine, and ephedrine.",
+      "**Maintain sinus rhythm — the hypertrophied, stiff ventricle depends on the atrial kick — and treat AF aggressively (cardiovert if unstable).** Sympathetic surges (light anesthesia, intubation, surgical stimulus, pain, hypovolemia, blood loss) can trigger **hemodynamic collapse**; keep depth adequate and volume full. Continue home beta-blockers, calcium-channel blockers, and disopyramide through surgery and keep the patient hydrated.",
+      "**Treat hypotension with volume and an alpha-agonist, NOT with inotropes — and use diuretics cautiously** (a small, underfilled ventricle accentuates obstruction). Fluid-load to ensure preload at induction; if neuraxial is used, a **slow titrated epidural** is preferred over a single-shot spinal (which drops preload and afterload abruptly).",
+      "**The hemodynamic goals mirror aortic stenosis — but the obstruction here is DYNAMIC, not fixed.** Systolic anterior motion (SAM) of the mitral valve adds mitral regurgitation; the murmur **increases** with Valsalva/standing and **decreases** with squatting/beta-blockade (opposite of AS). LVOT gradient >50 mmHg (rest or provoked) or SAM marks severe/surgical disease — these patients may have an ICD for sudden-death risk (plan device management)."
+    ],
+    technique: {
+      summary: "Reference card for the patient with hypertrophic (obstructive) cardiomyopathy presenting for noncardiac surgery — the dynamic-LVOTO hemodynamic goals, the pressor choice, and the collapse triggers. Reference content (not a Jaffe procedure). The Valve Surgery entry covers operative septal myectomy.",
+      steps: [
+        "Assess severity (LVOT gradient at rest/provoked, SAM/MR, LV function, symptoms, family/sudden-death history, ICD); continue beta-blocker/CCB/disopyramide and keep hydrated.",
+        "Hold the goals: euvolemia/generous preload, low-normal HR, NO added inotropy, HIGH afterload (SVR); phenylephrine the pressor; maintain sinus rhythm.",
+        "Smooth induction with adequate depth and preload to avoid the sympathetic-surge collapse; cautious diuretics; slow titrated epidural over single-shot spinal if neuraxial.",
+        "Treat hypotension with volume + alpha-agonist (not inotropes); cardiovert unstable AF; arterial line ± CVP, TEE for high-risk major surgery; manage any ICD."
+      ]
+    },
+    physiology: [
+      "Autosomal-dominant LV hypertrophy; asymmetric septal hypertrophy narrows the LVOT, and systolic anterior motion of the mitral valve produces dynamic subaortic obstruction plus mitral regurgitation. The obstruction is load-dependent — it worsens with a smaller, faster, more vigorously contracting ventricle and with low afterload.",
+      "The thick, non-compliant ventricle has impaired diastolic filling and depends on the atrial contribution; it tolerates tachycardia, hypovolemia, and vasodilation poorly, and carries a risk of ventricular arrhythmia and sudden cardiac death."
+    ],
+    comorbid: [
+      "Prevalence ~0.2–0.5% (often undiagnosed); presents with chest pain, dyspnea on exertion, palpitations, presyncope/syncope. SAM-related mitral regurgitation, diastolic dysfunction, atrial fibrillation, and sudden-death risk (many carry an ICD).",
+      "Outpatient therapy: beta-blockers, calcium-channel blockers, disopyramide; advanced obstruction managed by alcohol septal ablation or surgical septal myectomy (LVOT gradient >50 mmHg or SAM physiology)."
+    ],
+    phases: {
+      pre: [
+        "Assess gradient/SAM/MR, LV function, symptoms, arrhythmia and sudden-death/family history, current drugs, and ICD; continue beta-blocker/CCB/disopyramide; ensure good hydration; baseline ECG; echo for gradients and SAM."
+      ],
+      intra: [
+        "Generous preload (fluid-load at induction, cautious diuretics), low-normal HR, no inotropes, high SVR (phenylephrine), maintain sinus; adequate depth to blunt sympathetic surges; slow titrated epidural over spinal; arterial line ± CVP/TEE; cardiovert unstable AF; treat hypotension with volume + alpha-agonist."
+      ],
+      post: [
+        "Maintain volume and afterload, control rate and pain to avoid sympathetic surges; watch for arrhythmia and outflow obstruction; restore ICD settings; continue home rate-control therapy."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Hemodynamic goals in HOCM?” → 'full, slow, tight': euvolemia/generous preload, low-normal HR, no inotropes, high afterload (SVR), maintain sinus.",
+        "“Pressor of choice in HOCM and why?” → phenylephrine (raises afterload, slows the heart, no inotropy); avoid epi/norepi/ephedrine.",
+        "“HOCM vs AS — how does the murmur respond to Valsalva?” → HOCM murmur increases with Valsalva/standing (dynamic), AS does not."
+      ],
+      pearls: [
+        "Treat hypotension with volume and an alpha-agonist — never with inotropes (inotropy worsens the dynamic obstruction).",
+        "Maintain sinus rhythm; the stiff hypertrophied ventricle depends on the atrial kick — cardiovert unstable AF.",
+        "Goals mirror aortic stenosis, but the obstruction is dynamic — small/fast/empty/vasodilated all make it worse."
+      ]
+    },
+    source: "OpenAnesthesia: 'Hypertrophic Obstructive Cardiomyopathy' (Carpenter, 2023-08-08), drawing on Hensley et al (Anesth Analg 2015). Cross-cutting reference (not a Jaffe procedure). The Valve Surgery entry covers operative septal myectomy; compare the Aortic Stenosis card (fixed vs dynamic obstruction); see the CIED card for device management."
+  },
+  {
+    id: "anesthesia-essentials-perioperative-myocardial-ischemia",
+    name: "Perioperative Myocardial Ischemia (ACS / MI / MINS)",
+    section: "Anesthesia Essentials",
+    page: "OA 2025",
+    tags: ["MINS","Perioperative MI","ACS","Type 2 / demand ischemia","Troponin surveillance","Silent","Cross-cutting","Reference"],
+    snapshot: { position: "—", time: "—", ebl: "—", painScore: "—", anesthesia: "Reference (perioperative event)", mortality: "MINS 15–20% of noncardiac surgery >45 yr; PMI >2× mortality at 30 d and 1 yr" },
+    flags: [
+      "**Perioperative myocardial ischemia is usually SILENT and usually DEMAND ischemia — keep a low threshold.** Only ~14% of perioperative MI patients report chest pain (anesthesia/analgesia/amnesia mask it); ~65% are **Type 2 MI** (oxygen supply-demand mismatch — tachycardia, hypotension, anemia, hypoxia, hypothermia/shivering), not plaque rupture. The ECG signature is **ST-depression / T-wave inversion**, not ST-elevation.",
+      "**MINS — myocardial injury after noncardiac surgery — occurs in 15–20% of patients ≥45 yr and roughly doubles 30-day and 1-year mortality; troponin surveillance is how you catch it.** In high-MINS-risk patients (age ≥65; CAD/PAD; diabetes; renal dysfunction; elevated NT-proBNP; baseline ST-T changes; major hemorrhage; emergency/vascular surgery — or RCRI ≥2) **draw troponin 6–12 h postop and daily for 3 days**, with a baseline preop value for interpretation; diagnosis needs a rise/fall pattern with nonischemic causes excluded.",
+      "**Intraoperatively, the play is to fix the supply-demand mismatch — decrease demand and increase supply.** Treat **tachycardia and hypertension** (deepen/analgesia for pain, beta-blocker ± vasodilator), treat **arrhythmia**, treat **hypotension** with vasopressors/fluids, and **transfuse to keep Hgb >8 g/dL**. If ECG changes persist despite management or the patient destabilizes, **discuss aborting vs completing surgery** with the surgeon; cardiology for NSTE-ACS (often benefits from revascularization).",
+      "**Type 1 vs Type 2 drives the treatment.** **Type 1** (plaque rupture/thrombosis) → guideline-directed medical therapy (antiplatelet, statin, beta-blocker, ACEi, nitrates as tolerated) with strong consideration of **invasive coronary angiography** — but balance against surgical bleeding. **Type 2** (demand mismatch, the perioperative majority) → **treat the underlying cause** (rate, BP, anemia, oxygenation, temperature) plus GDMT as hemodynamics allow. For a STEMI, ECG within 10 min and reperfusion/PCI ideally within 2 h."
+    ],
+    technique: {
+      summary: "Reference card for perioperative myocardial ischemia — acute coronary syndrome, perioperative MI, and myocardial injury after noncardiac surgery (MINS). Covers the silent/demand-ischemia nature, troponin surveillance, and the Type-1-vs-Type-2 management split. Reference content (not a Jaffe procedure). See the Cardiac Risk Stratification, Perioperative Medication Management, and Intraoperative ACLS cards.",
+      steps: [
+        "Recognize the high-risk patient and the silent presentation; surveil troponin (6–12 h then daily ×3, baseline preop) in high-MINS-risk or RCRI ≥2 patients; serial ECG (ST-depression/T-inversion are typical).",
+        "Diagnose by a troponin rise/fall above the 99th percentile with ischemic features, excluding nonischemic causes (PE, sepsis, COPD, HF, SAH, etc.).",
+        "Intraoperative supply-demand correction: treat tachycardia/hypertension, arrhythmia, hypotension; transfuse to Hgb >8; deepen/analgesia for pain; discuss abort-vs-continue if refractory or unstable.",
+        "Classify Type 1 (plaque rupture → GDMT + consider angiography) vs Type 2 (demand mismatch → treat the cause + GDMT); cardiology for NSTE-ACS; STEMI → ECG <10 min, PCI ideally <2 h; mechanical support (IABP/ECMO) for shock."
+      ]
+    },
+    physiology: [
+      "Surgical stress raises catecholamines and cortisol → tachycardia (less diastolic coronary filling), hypertension (shear/plaque stress), a hypercoagulable state, plus anemia/hypoxia/hypothermia — together a supply-demand mismatch (Type 2) or, less often, plaque rupture/thrombosis (Type 1).",
+      "MINS is troponin-defined ischemic injury after noncardiac surgery; perioperative MI is the subset meeting MI criteria. Demand ischemia predominates, so the lever is hemodynamic control more than thrombolysis."
+    ],
+    comorbid: [
+      "CAD/PAD, prior MI/stent, heart failure, atrial fibrillation, diabetes, hypertension, CKD, smoking, age ≥65, male sex; OSA (STOP-Bang) and RCRI are both independently associated with MINS.",
+      "Mimics of troponin elevation to exclude: pulmonary embolism, sepsis, COPD, heart failure, myocarditis, subarachnoid hemorrhage; Takotsubo (stress) cardiomyopathy can resemble ACS with normal coronaries."
+    ],
+    phases: {
+      pre: [
+        "Risk-stratify (RCRI/NSQIP, functional capacity); identify high-MINS-risk features; obtain a baseline troponin where postop surveillance is planned; optimize/continue cardiac medications and apply the stent-timing rules (see the Medication Management and Cardiac Risk cards)."
+      ],
+      intra: [
+        "Maintain the supply-demand balance: avoid tachycardia, hypotension, anemia (Hgb >8), hypoxia, hypothermia, and pain-driven sympathetic surges; treat ST-depression by correcting the cause; if refractory ischemia or instability, discuss aborting/completing with the surgeon and involve cardiology."
+      ],
+      post: [
+        "Troponin surveillance 6–12 h then daily ×3 in at-risk patients; serial ECG; manage Type 1 (GDMT ± angiography) vs Type 2 (treat the cause + GDMT); aspirin/statin may reduce 30-day mortality after PMI; cardiology follow-up; recover with monitoring."
+      ]
+    },
+    recall: {
+      pimps: [
+        "“Most common type and ECG finding of perioperative MI?” → Type 2 (demand mismatch, ~65%); ST-depression / T-wave inversion (not elevation).",
+        "“MINS troponin surveillance schedule?” → 6–12 h postoperatively then daily for 3 days, with a baseline preop value, in high-risk or RCRI ≥2 patients.",
+        "“Why is perioperative MI easy to miss?” → it's usually silent — only ~14% report chest pain (masked by anesthesia/analgesia)."
+      ],
+      pearls: [
+        "MINS hits 15–20% of patients ≥45 yr at noncardiac surgery and roughly doubles mortality at 30 days and 1 year.",
+        "Type 2 (demand) MI is treated by fixing rate/BP/anemia/oxygenation/temperature — not by reflexive thrombolysis.",
+        "Transfuse to Hgb >8 g/dL and treat tachycardia/hypotension promptly when ischemia is suspected intraoperatively."
+      ]
+    },
+    source: "OpenAnesthesia: 'Acute Coronary Syndrome' (Fan & Matos, 2025-08-07) and 'Perioperative Myocardial Infarction Risk Factors, Diagnosis, and Treatment' (Lee & Ing, 2026-02-23); diagnostic criteria per the Fourth Universal Definition of MI (Thygesen et al, 2018) and the 2024 AHA/ACC perioperative guideline; MINS per Ruetzler et al (AHA scientific statement, Circulation 2021). Cross-cutting reference (not a Jaffe procedure). See the Cardiac Risk Stratification, Perioperative Medication Management (stent/antiplatelet timing), and Intraoperative ACLS cards."
   }
 ];
 
@@ -13375,7 +13541,7 @@ function renderNav(filter="", navId="nav"){
 }
 
 /* Build stamp — bump on each delivery so "am I on the latest?" is a one-glance check. */
-const BUILD_VERSION = "v1.0 beta · 2026-06-05"  /* internal build R47 (v1.0 beta; OA valvular suite + bup/methadone + PDF-table verification — 5 new Anesthesia Essentials cards: buprenorphine/methadone, aortic insufficiency, mitral regurgitation, mitral stenosis, heart-transplant recipient; 3 R46 cards upgraded from recovered PDF tables (RCRI %, AS 60-90 bpm/grading, MG predictors)) */;
+const BUILD_VERSION = "v1.0 beta · 2026-06-05"  /* internal build R48 (v1.0 beta; OA cardiac-comorbidity close-out — 3 new Anesthesia Essentials cards: heart failure, HOCM (noncardiac), perioperative myocardial ischemia (ACS/MI/MINS combined); + medication-management enriched in place with the PCI-to-surgery stent-timing ladder; coronary-anatomy/CPP + CABG deliberately skipped) */;
 
 /* Default landing: quiet prompt that defers to the sidebar (the real landing).
    The full explainer lives in the How-to-use panel, opened from the corner button. */
